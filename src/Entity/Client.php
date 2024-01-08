@@ -17,6 +17,9 @@ class Client
     private ?string $nom = null;
 
     #[ORM\Column(length: 255)]
+    private ?string $prenom = null;
+
+    #[ORM\Column(length: 255)]
     private ?string $email = null;
 
     #[ORM\Column(length: 255)]
@@ -24,6 +27,9 @@ class Client
 
     #[ORM\Column(length: 255)]
     private ?string $adresse = null;
+
+    #[ORM\Column]
+    private ?int $ville = null;
 
     public function getId(): ?int
     {
@@ -35,11 +41,19 @@ class Client
         return $this->nom;
     }
 
-    public function setNom(string $nom): static
+    public function setNom(?string $nom): void
     {
         $this->nom = $nom;
+    }
 
-        return $this;
+    public function getPrenom(): ?string
+    {
+        return $this->prenom;
+    }
+
+    public function setPrenom(?string $prenom): void
+    {
+        $this->prenom = $prenom;
     }
 
     public function getEmail(): ?string
@@ -47,11 +61,9 @@ class Client
         return $this->email;
     }
 
-    public function setEmail(string $email): static
+    public function setEmail(?string $email): void
     {
         $this->email = $email;
-
-        return $this;
     }
 
     public function getTelephone(): ?string
@@ -59,11 +71,9 @@ class Client
         return $this->telephone;
     }
 
-    public function setTelephone(string $telephone): static
+    public function setTelephone(?string $telephone): void
     {
         $this->telephone = $telephone;
-
-        return $this;
     }
 
     public function getAdresse(): ?string
@@ -71,10 +81,18 @@ class Client
         return $this->adresse;
     }
 
-    public function setAdresse(string $adresse): static
+    public function setAdresse(?string $adresse): void
     {
         $this->adresse = $adresse;
+    }
 
-        return $this;
+    public function getVille(): ?int
+    {
+        return $this->ville;
+    }
+
+    public function setVille(?int $ville): void
+    {
+        $this->ville = $ville;
     }
 }

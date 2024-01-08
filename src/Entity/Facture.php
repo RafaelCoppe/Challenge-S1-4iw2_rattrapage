@@ -14,52 +14,123 @@ class Facture
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: '0')]
-    private ?string $montantTotal = null;
+    #[ORM\Column(length: 255)]
+    private ?string $termes = null;
+
+    #[ORM\ManyToOne(inversedBy: 'factures')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?FacturePaymentStatus $payment_status = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $start_date = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $end_date = null;
+
+    #[ORM\OneToOne(mappedBy: 'Facture', cascade: ['persist', 'remove'])]
+    private ?Devis $devis = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $Numero = null;
+    private ?string $payment_address = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $statutPaiement = null;
+    #[ORM\Column]
+    private ?int $payment_city = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getMontantTotal(): ?string
+    public function getTermes(): ?string
     {
-        return $this->montantTotal;
+        return $this->termes;
     }
 
-    public function setMontantTotal(string $montantTotal): static
+    public function setTermes(string $termes): static
     {
-        $this->montantTotal = $montantTotal;
+        $this->termes = $termes;
 
         return $this;
     }
 
-    public function getNumero(): ?string
+    public function getPaymentStatus(): ?FacturePaymentStatus
     {
-        return $this->Numero;
+        return $this->payment_status;
     }
 
-    public function setNumero(string $Numero): static
+    public function setPaymentStatus(?FacturePaymentStatus $payment_status): static
     {
-        $this->Numero = $Numero;
+        $this->payment_status = $payment_status;
 
         return $this;
     }
 
-    public function getStatutPaiement(): ?string
+    public function getStartDate(): ?\DateTimeInterface
     {
-        return $this->statutPaiement;
+        return $this->start_date;
     }
 
-    public function setStatutPaiement(string $statutPaiement): static
+    public function setStartDate(\DateTimeInterface $start_date): static
     {
-        $this->statutPaiement = $statutPaiement;
+        $this->start_date = $start_date;
+
+        return $this;
+    }
+
+    public function getEndDate(): ?\DateTimeInterface
+    {
+        return $this->end_date;
+    }
+
+    public function setEndDate(\DateTimeInterface $end_date): static
+    {
+        $this->end_date = $end_date;
+
+        return $this;
+    }
+
+    public function getDevis(): ?Devis
+    {
+        return $this->devis;
+    }
+
+    public function setDevis(?Devis $devis): static
+    {
+        // unset the owning side of the relation if necessary
+        if ($devis === null && $this->devis !== null) {
+            $this->devis->setFacture(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($devis !== null && $devis->getFacture() !== $this) {
+            $devis->setFacture($this);
+        }
+
+        $this->devis = $devis;
+
+        return $this;
+    }
+
+    public function getPaymentAddress(): ?string
+    {
+        return $this->payment_address;
+    }
+
+    public function setPaymentAddress(string $payment_address): static
+    {
+        $this->payment_address = $payment_address;
+
+        return $this;
+    }
+
+    public function getPaymentCity(): ?int
+    {
+        return $this->payment_city;
+    }
+
+    public function setPaymentCity(int $payment_city): static
+    {
+        $this->payment_city = $payment_city;
 
         return $this;
     }
