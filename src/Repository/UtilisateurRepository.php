@@ -2,7 +2,7 @@
 
 namespace App\Repository;
 
-use App\Entity\Company;
+use App\Entity\Utilisateur;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
@@ -10,20 +10,19 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 
 /**
- * @extends ServiceEntityRepository<Company>
+ * @extends ServiceEntityRepository<Utilisateur>
+* @implements PasswordUpgraderInterface<Utilisateur>
  *
- * @implements PasswordUpgraderInterface<Company>
- *
- * @method Company|null find($id, $lockMode = null, $lockVersion = null)
- * @method Company|null findOneBy(array $criteria, array $orderBy = null)
- * @method Company[]    findAll()
- * @method Company[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Utilisateur|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Utilisateur|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Utilisateur[]    findAll()
+ * @method Utilisateur[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class CompanyRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
+class UtilisateurRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Company::class);
+        parent::__construct($registry, Utilisateur::class);
     }
 
     /**
@@ -31,7 +30,7 @@ class CompanyRepository extends ServiceEntityRepository implements PasswordUpgra
      */
     public function upgradePassword(PasswordAuthenticatedUserInterface $user, string $newHashedPassword): void
     {
-        if (!$user instanceof Company) {
+        if (!$user instanceof Utilisateur) {
             throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', $user::class));
         }
 
@@ -41,24 +40,24 @@ class CompanyRepository extends ServiceEntityRepository implements PasswordUpgra
     }
 
 //    /**
-//     * @return Company[] Returns an array of Company objects
+//     * @return Utilisateur[] Returns an array of Utilisateur objects
 //     */
 //    public function findByExampleField($value): array
 //    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
+//        return $this->createQueryBuilder('u')
+//            ->andWhere('u.exampleField = :val')
 //            ->setParameter('val', $value)
-//            ->orderBy('c.id', 'ASC')
+//            ->orderBy('u.id', 'ASC')
 //            ->setMaxResults(10)
 //            ->getQuery()
 //            ->getResult()
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?Company
+//    public function findOneBySomeField($value): ?Utilisateur
 //    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
+//        return $this->createQueryBuilder('u')
+//            ->andWhere('u.exampleField = :val')
 //            ->setParameter('val', $value)
 //            ->getQuery()
 //            ->getOneOrNullResult()
