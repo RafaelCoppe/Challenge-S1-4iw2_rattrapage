@@ -38,9 +38,8 @@ class Agence
     #[ORM\JoinColumn(nullable: false)]
     private ?AgenceStatus $status = null;
 
-    #[ORM\ManyToOne(inversedBy: 'agences')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?AgenceDomaine $domaine = null;
+    private ?string $domaine = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $create_date = null;
@@ -151,12 +150,12 @@ class Agence
         return $this;
     }
 
-    public function getDomaine(): ?AgenceDomaine
+    public function getDomaine(): ?string
     {
         return $this->domaine;
     }
 
-    public function setDomaine(?AgenceDomaine $domaine): static
+    public function setDomaine(?string $domaine): static
     {
         $this->domaine = $domaine;
 
