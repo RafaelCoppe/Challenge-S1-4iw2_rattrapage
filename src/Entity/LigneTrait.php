@@ -30,6 +30,9 @@ class LigneTrait
     private ?int $ordre = null;
 
     #[ORM\Column]
+    private ?float $prix_unitaire = null;
+
+    #[ORM\Column]
     private ?int $quantite = null;
 
     #[ORM\Column(length: 255)]
@@ -118,6 +121,16 @@ class LigneTrait
         $this->quantite = $quantite;
 
         return $this;
+    }
+
+    public function getPrixUnitaire(): ?float
+    {
+        return $this->prix_unitaire;
+    }
+
+    public function setPrixUnitaire(?float $prix_unitaire): void
+    {
+        $this->prix_unitaire = $prix_unitaire;
     }
 
     public function getAdditional(): ?string

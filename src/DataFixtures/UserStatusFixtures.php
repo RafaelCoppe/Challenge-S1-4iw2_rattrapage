@@ -3,22 +3,23 @@
 namespace App\DataFixtures;
 
 use App\Entity\AgenceStatus;
+use App\Entity\UtilisateurStatus;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker;
 
-class AgenceStatusFixtures extends Fixture
+class UserStatusFixtures extends Fixture
 {
-    const STATUS = ['valid', 'deleted', 'suspended'];
+    const STATUS = ['active', 'inactive', 'suspended', 'deleted'];
 
     public function load(ObjectManager $manager)
     {
         foreach (self::STATUS as $index=>$label) {
-            $status = new AgenceStatus();
+            $status = new UtilisateurStatus();
             $status->setLibelle($label);
 
             $manager->persist($status);
-            $this->addReference("agence_status_" . $index+1, $status);
+            $this->addReference("user_status_" . $index+1, $status);
         }
 
         $manager->flush();

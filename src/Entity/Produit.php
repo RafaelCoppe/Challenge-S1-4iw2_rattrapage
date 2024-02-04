@@ -17,19 +17,7 @@ class Produit
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $nom = null;
-
-    #[ORM\Column(type: Types::TEXT)]
-    private ?string $description = null;
-
-    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: '0')]
-    private ?string $prixUnitaire = null;
-
-    #[ORM\Column(length: 255)]
     private ?string $libelle = null;
-
-    #[ORM\Column]
-    private ?float $prix = null;
 
     #[ORM\ManyToOne(inversedBy: 'produits')]
     #[ORM\JoinColumn(nullable: false)]
@@ -48,42 +36,6 @@ class Produit
         return $this->id;
     }
 
-    public function getNom(): ?string
-    {
-        return $this->nom;
-    }
-
-    public function setNom(string $nom): static
-    {
-        $this->nom = $nom;
-
-        return $this;
-    }
-
-    public function getDescription(): ?string
-    {
-        return $this->description;
-    }
-
-    public function setDescription(string $description): static
-    {
-        $this->description = $description;
-
-        return $this;
-    }
-
-    public function getPrixUnitaire(): ?string
-    {
-        return $this->prixUnitaire;
-    }
-
-    public function setPrixUnitaire(string $prixUnitaire): static
-    {
-        $this->prixUnitaire = $prixUnitaire;
-
-        return $this;
-    }
-
     public function getLibelle(): ?string
     {
         return $this->libelle;
@@ -92,18 +44,6 @@ class Produit
     public function setLibelle(string $libelle): static
     {
         $this->libelle = $libelle;
-
-        return $this;
-    }
-
-    public function getPrix(): ?float
-    {
-        return $this->prix;
-    }
-
-    public function setPrix(float $prix): static
-    {
-        $this->prix = $prix;
 
         return $this;
     }
