@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ProduitRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -15,51 +17,72 @@ class Produit
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $nom = null;
+    private ?string $libelle = null;
 
-    #[ORM\Column(type: Types::TEXT)]
-    private ?string $description = null;
+    #[ORM\ManyToOne(inversedBy: 'produits')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?ProduitType $type = null;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: '0')]
-    private ?string $prixUnitaire = null;
+    #[ORM\ManyToMany(targetEntity: Lignetrait::class, mappedBy: 'produit')]
+    private Collection $prestations;
+
+    public function __construct()
+    {
+        $this->prestations = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getNom(): ?string
+    public function getLibelle(): ?string
     {
-        return $this->nom;
+        return $this->libelle;
     }
 
-    public function setNom(string $nom): static
+    public function setLibelle(string $libelle): static
     {
-        $this->nom = $nom;
+        $this->libelle = $libelle;
 
         return $this;
     }
 
-    public function getDescription(): ?string
+    public function getType(): ?ProduitType
     {
-        return $this->description;
+        return $this->type;
     }
 
-    public function setDescription(string $description): static
+    public function setType(?ProduitType $type): static
     {
-        $this->description = $description;
+        $this->type = $type;
 
         return $this;
     }
 
-    public function getPrixUnitaire(): ?string
+    /**
+     * @return Collection<int, Lignetrait>
+     */
+    public function getPrestations(): Collection
     {
-        return $this->prixUnitaire;
+        return $this->prestations;
     }
 
-    public function setPrixUnitaire(string $prixUnitaire): static
+    public function addPrestation(Lignetrait $prestation): static
     {
-        $this->prixUnitaire = $prixUnitaire;
+        if (!$this->prestations->contains($prestation)) {
+            $this->prestations->add($prestation);
+            $prestation->addProduit($this);
+        }
+
+        return $this;
+    }
+
+    public function removePrestation(Lignetrait $prestation): static
+    {
+        if ($this->prestations->removeElement($prestation)) {
+            $prestation->removeProduit($this);
+        }
 
         return $this;
     }
