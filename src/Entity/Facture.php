@@ -31,10 +31,22 @@ class Facture
     private ?Devis $devis = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $payment_address = null;
+    private ?string $payment_nom = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $payment_prenom = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $payment_email = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $payment_telephone = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $payment_adresse = null;
 
     #[ORM\Column]
-    private ?int $payment_city = null;
+    private ?int $payment_ville = null;
 
     public function getId(): ?int
     {

@@ -35,7 +35,7 @@ class Produit
     #[ORM\JoinColumn(nullable: false)]
     private ?ProduitType $type = null;
 
-    #[ORM\ManyToMany(targetEntity: Lignetrait::class, mappedBy: 'produit')]
+    #[ORM\ManyToMany(targetEntity: Ligne::class, mappedBy: 'produit')]
     private Collection $prestations;
 
     public function __construct()
@@ -121,14 +121,14 @@ class Produit
     }
 
     /**
-     * @return Collection<int, Lignetrait>
+     * @return Collection<int, Ligne>
      */
     public function getPrestations(): Collection
     {
         return $this->prestations;
     }
 
-    public function addPrestation(Lignetrait $prestation): static
+    public function addPrestation(Ligne $prestation): static
     {
         if (!$this->prestations->contains($prestation)) {
             $this->prestations->add($prestation);
@@ -138,7 +138,7 @@ class Produit
         return $this;
     }
 
-    public function removePrestation(Lignetrait $prestation): static
+    public function removePrestation(Ligne $prestation): static
     {
         if ($this->prestations->removeElement($prestation)) {
             $prestation->removeProduit($this);

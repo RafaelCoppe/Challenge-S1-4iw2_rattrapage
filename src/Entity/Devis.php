@@ -30,7 +30,7 @@ class Devis
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?DateTimeInterface $end_date = null;
 
-    #[ORM\OneToMany(mappedBy: 'devis', targetEntity: LigneTrait::class)]
+    #[ORM\OneToMany(mappedBy: 'devis', targetEntity: Ligne::class)]
     private Collection $lignes;
 
     #[ORM\OneToOne(inversedBy: 'devis', cascade: ['persist', 'remove'])]
@@ -95,14 +95,14 @@ class Devis
     }
 
     /**
-     * @return Collection<int, LigneTrait>
+     * @return Collection<int, Ligne>
      */
     public function getLignes(): Collection
     {
         return $this->lignes;
     }
 
-    public function addLigne(LigneTrait $ligne): static
+    public function addLigne(Ligne $ligne): static
     {
         if (!$this->lignes->contains($ligne)) {
             $this->lignes->add($ligne);
@@ -112,7 +112,7 @@ class Devis
         return $this;
     }
 
-    public function removeLigne(LigneTrait $ligne): static
+    public function removeLigne(Ligne $ligne): static
     {
         if ($this->lignes->removeElement($ligne)) {
             // set the owning side to null (unless already changed)
