@@ -1,0 +1,265 @@
+<html>
+<head>
+    <link rel="stylesheet" href="pdf.css">
+</head>
+
+<body>
+<header>
+    {% if dev %}
+        <div id="watermark">ENVIRONNEMENT DE DEVELOPPEMENT</div>
+    {% endif %}
+
+    {#<div class="logo">
+        {% if logo.image %}
+            <img src="{{ logo.data }}"/>
+        {% elseif logo.text %}
+            <p class="dark_red_color">{{ logo.data |raw }}</p>
+        {% else %}
+            {{ traductions.Error }}
+        {% endif %}
+    </div>
+    <div class="infos">
+        {% for uneInfo in infosFacture %}
+            <span class="{{ uneInfo.class }}">{% if uneInfo.label is defined %}{{ uneInfo.label }}{% endif %}{{ uneInfo.data |raw }}</span>
+            <br/>
+        {% endfor %}
+    </div>#}
+</header>
+
+<footer>
+    <div class="small">
+        {% include 'pdf/footer.twig' %}
+    </div>
+</footer>
+
+<main>
+    test
+    test
+    test
+    test
+    test
+    {# Emetteur et recepteur #}{#
+    <div class="adresse_emetteur">
+        <p>{{ billFrom.title }}:</p>
+        <p class="content">
+            <span class="larger bold">{{ billFrom.name }}</span><br/>
+            {{ billFrom.infos |raw }}<br/>
+            {{ billFrom.accuse_reception }}
+        </p>
+    </div>
+    <div class="adresse_client">
+        <p>{{ billTo.title }}:</p>
+        <p class="content">
+            <span class="larger bold">{{ billTo.name }}</span><br/><br/>
+            {{ billTo.infos |raw }}
+        </p>
+    </div>
+    <br class="clear">
+
+    <div class="right">{{ AmountInCurrency }}</div>
+
+    {% for line in lines %}
+        <table class="main-content">
+            <thead></thead>
+            <tfoot></tfoot>
+            <tbody>
+            <tr>
+                <td style="width: 100%;">
+                    {{ line.desc|raw }}
+                </td>
+            </tr>
+            <tr>
+                <td colspan="12">
+                    <hr class="lines_inside_divider">
+                </td>
+            </tr>
+            <tr>
+                <td>{{ line.redevance |raw }}</td>
+                <td>
+                    <table>
+                        <thead class="facture_line_infos_divider">
+                        <tr>
+                            <th class="right nowrap left_padding">{{ traductions.VAT }}</th>
+                            <th class="right nowrap left_padding">{{ traductions.PriceUHT }}</th>
+                            <th class="right nowrap left_padding">{{ traductions.Qty }}</th>
+                            {% if line.remise %}
+                                <th class="right nowrap left_padding">{{ traductions.ReductionShort }}</th>
+                            {% endif %}
+                            <th class="right nowrap left_padding">{{ traductions.TotalHTShort }}</th>
+                        </tr>
+                        </thead>
+                        <tfoot></tfoot>
+                        <tbody>
+                        <tr>
+                            <td class="nowrap right left_padding">{{ line.tva }}</td>
+                            <td class="nowrap right left_padding">{{ line.pu_ht }}</td>
+                            <td class="nowrap right left_padding">{{ line.qte }}</td>
+                            {% if line.remise %}
+                                <td class="nowrap right left_padding">{{ line.remise }}</td>
+                            {% endif %}
+                            <td class="nowrap right left_padding">{{ line.tot_ht }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        {% if loop.index != lines|length %}
+            <hr class="lines_divider">
+        {% endif %}
+    {% endfor %}
+
+    <p>{{ redevance }}</p>
+
+    <div class="bottom_columns">
+        <hr class="post_lines_divider">
+        <div class="facture_left_column">
+            <table class="facture_totaux">
+                <tr>
+                    <td>{{ traductions.TotalHT }}</td>
+                    <td class="right">{{ price(total.ht) }}</td>
+                </tr>
+                {% for title, value in total.tva %}
+                    <tr>
+                        <td>{{ title }}</td>
+                        <td class="right">{{ price(value) }}</td>
+                    </tr>
+                {% endfor %}
+                {% for title, value in total.ttc %}
+                    <tr>
+                        <td>{{ title }}</td>
+                        <td class="right">{{ price(value) }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+
+            <br>
+
+            {% if total.versements %}
+                <div class=no_page_break>
+                    <p class="xx_small">{{ traductions.PaymentsAlreadyDone }}</p>
+                    <table class="versements_table">
+                        <thead>
+                        <tr>
+                            <th class="left">{{ traductions.Payment }}</th>
+                            <th class="left">{{ traductions.Amount }}</th>
+                            <th class="left">{{ traductions.Type }}</th>
+                            <th class="left">{{ traductions.Num }}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for unVersement in versements %}
+                            <tr>
+                                <td>{{ unVersement.payment }}</td>
+                                <td>{{ unVersement.amount }}</td>
+                                <td>{{ unVersement.type }}</td>
+                                <td>{{ unVersement.num }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="smaller facture_infos">
+            {% for infoKey, uneInfo in infos %}
+                <div class="blank_bottom">
+                    {% if infoKey == 'tva' %}
+                        <b>{{ uneInfo |nl2br }}</b>
+                    {% elseif infoKey in ['decret', 'pay_mode', 'compensation'] %}
+                        <p class="no_page_break">{{ uneInfo |raw |nl2br }}</p>
+                    {% elseif infoKey == 'no_pay_mode' %}
+                        <p class="no_page_break dark_red_color">{{ uneInfo |raw |nl2br }}</p>
+                    {% elseif infoKey == 'pay_conditions' %}
+                        <table class="table_full_width">
+                            <tbody>
+                            <tr>
+                                <td><b>{{ uneInfo.title }}</b></td>
+                                <td>{{ uneInfo.data |nl2br }}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    {% elseif infoKey == 'pay_cheque' %}
+                        <table class="table_full_width no_page_break">
+                            <thead>
+                            <tr>
+                                <th class="left" style="width: 25rem;"><b>{{ uneInfo.title }}</b></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>{{ uneInfo.data |nl2br }}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    {% elseif infoKey == 'bank' %}
+                        {% if uneInfo.type == 1 %}
+                            <div class="no_page_break">
+                                <b>{{ uneInfo.libelle_bas |nl2br }}</b><br><br>
+                                <b>{{ uneInfo.bank_name }}</b>
+                                <p>{{ uneInfo.residence |nl2br }}</p>
+                                <p>{{ uneInfo.iban }}</p>
+                                <p>{{ uneInfo.bic }}</p>
+                            </div>
+                        {% elseif uneInfo.type == 2 %}
+                            {% if uneInfo.table_data %}
+                                <br>
+
+                                <b>{{ uneInfo.libelle_bas |nl2br }}</b>
+                                <p>{{ uneInfo.bank_name }}</p><br>
+                                <table class="bank_table table_full_width xx_small">
+                                    <tr>
+                                        {% for col in uneInfo.table_data %}
+                                            <td>{{ col.title }}</td>
+                                        {% endfor %}
+                                    </tr>
+                                    <tr>
+                                        {% for col in uneInfo.table_data %}
+                                            <td>{{ col.data }}</td>
+                                        {% endfor %}
+                                    </tr>
+                                </table>
+
+                                <br>
+
+                                <p>{{ uneInfo.residence |nl2br }}</p>
+                                <p>{{ uneInfo.iban }}</p>
+                                <p>{{ uneInfo.bic }}</p>
+                            {% else %}
+                                <b>{{ uneInfo.libelle_bas |nl2br }}</b><br>
+                                <b>{{ uneInfo.bank_name }}</b><br>
+                                <b>{{ uneInfo.account_number }}</b><br>
+                                <p>{{ uneInfo.residence |nl2br }}</p>
+                                <p>{{ uneInfo.iban }}</p>
+                                <p>{{ uneInfo.bic }}</p>
+                            {% endif %}
+                        {% endif %}
+                    {% else %}
+
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+
+        {% for unVersement in versements %}<br>{% endfor %}
+        <div class="fraud_warning no_page_break clear">
+            <div>
+                <div class="flex">
+                    <div style="float: left;">
+                        <img src="data:image/svg+xml;base64,{{ svgData }}" width="40" height="40"
+                             alt="Dangerfraud"/>
+                        <br>
+                    </div>
+                    <div style="float: left;">
+                        <p class="large red_color"><b>{{ BillWaring.BillWaringHackingTitle }}</b></p>
+                    </div>
+                </div>
+            </div>
+            <p class="clear larger">{{ BillWaring.BillWaringHackingBody |raw }}</p>
+        </div>
+    </div>#}
+</main>
+</body>
+</html>
