@@ -8,6 +8,7 @@ ARG PHP_VERSION=8.1
 ARG CADDY_VERSION=2
 
 # Prod image
+FROM surnet/alpine-wkhtmltopdf:3.16.2-0.12.6-full as wkhtmltopdf
 FROM php:${PHP_VERSION}-fpm-alpine AS app_php
 
 # Allow to use development versions of Symfony
@@ -31,7 +32,10 @@ RUN apk add --no-cache \
 		git \
         linux-headers \
         npm \
+        ttf-dejavu ttf-droid ttf-freefont ttf-liberation \
 	;
+
+COPY --from=wkhtmltopdf /bin/wkhtmltopdf /bin/libwkhtmltox.so /bin/@
 
 RUN set -eux; \
 	apk add --no-cache --virtual .build-deps \
