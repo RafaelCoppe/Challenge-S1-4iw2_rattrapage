@@ -27,13 +27,13 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
             $gender = ([$i%2 == 0 ? $genders[0] : $genders[1], $genders[2]]);
 
             $user = new Utilisateur();
-            $user->setUsername(strtolower("$firstname[0]$lastname"));
+            $user->setUsername(utf8_encode(strtolower("$firstname[0]$lastname")));
             $user->setPassword("12345");
-            $user->setPrenom($firstname);
-            $user->setNom($lastname);
-            $user->setMail("$firstname.$lastname@mail.com");
+            $user->setPrenom(utf8_encode($firstname));
+            $user->setNom(utf8_encode($lastname));
+            $user->setMail(utf8_encode("$firstname.$lastname@mail.com"));
             $user->setTel($faker->phoneNumber);
-            $user->setAdresse($faker->streetAddress);
+            $user->setAdresse(utf8_encode($faker->streetAddress));
             $user->setCity($villes[$i]);
             $user->setGenre($gender[rand(0, 1)]);
             $user->setStatus($status[$i%4]);
