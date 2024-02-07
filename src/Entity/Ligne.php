@@ -2,22 +2,18 @@
 
 namespace App\Entity;
 
-use App\Repository\LigneTraitRepository;
+use App\Repository\LigneRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: LigneTraitRepository::class)]
-class LigneTrait
+#[ORM\Entity(repositoryClass: LigneRepository::class)]
+class Ligne
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
-
-    #[ORM\ManyToOne]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?LigneStatus $status = null;
 
     #[ORM\ManyToMany(targetEntity: Produit::class, inversedBy: 'prestations')]
     private Collection $produit;
@@ -49,18 +45,6 @@ class LigneTrait
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getStatus(): ?LigneStatus
-    {
-        return $this->status;
-    }
-
-    public function setStatus(?LigneStatus $status): static
-    {
-        $this->status = $status;
-
-        return $this;
     }
 
     /**

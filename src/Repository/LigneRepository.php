@@ -2,27 +2,27 @@
 
 namespace App\Repository;
 
-use App\Entity\LigneTrait;
+use App\Entity\Ligne;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<LigneTrait>
+ * @extends ServiceEntityRepository<Ligne>
  *
- * @method LigneTrait|null find($id, $lockMode = null, $lockVersion = null)
- * @method LigneTrait|null findOneBy(array $criteria, array $orderBy = null)
- * @method LigneTrait[]    findAll()
- * @method LigneTrait[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Ligne|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Ligne|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Ligne[]    findAll()
+ * @method Ligne[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class LigneTraitRepository extends ServiceEntityRepository
+class LigneRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, LigneTrait::class);
+        parent::__construct($registry, Ligne::class);
     }
 
 //    /**
-//     * @return LigneTrait[] Returns an array of LigneTrait objects
+//     * @return Ligne[] Returns an array of Ligne objects
 //     */
 //    public function findByExampleField($value): array
 //    {
@@ -36,7 +36,7 @@ class LigneTraitRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?LigneTrait
+//    public function findOneBySomeField($value): ?Ligne
 //    {
 //        return $this->createQueryBuilder('l')
 //            ->andWhere('l.exampleField = :val')
