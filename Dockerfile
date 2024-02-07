@@ -32,10 +32,12 @@ RUN apk add --no-cache \
 		git \
         linux-headers \
         npm \
+        xvfb \
         ttf-dejavu ttf-droid ttf-freefont ttf-liberation \
 	;
 
-COPY --from=wkhtmltopdf /bin/wkhtmltopdf /bin/libwkhtmltox.so /bin/@
+COPY --from=wkhtmltopdf /bin/wkhtmltopdf /bin/libwkhtmltox.so /bin/
+RUN chmod +x /bin/wkhtmltopdf
 
 RUN set -eux; \
 	apk add --no-cache --virtual .build-deps \
