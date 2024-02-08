@@ -2,31 +2,27 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\AgenceStatus;
-use App\Entity\UtilisateurGenre;
+use App\Entity\AgencyStatus;
+use App\Entity\UserGender;
+use App\Entity\UserRole;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker;
 
 class UserRoleFixtures extends Fixture
 {
-    public const ROLES = [];
-    public function load(ObjectManager $manager): void
+    const ROLES = ['user', 'admin'];
+
+    public function load(ObjectManager $manager)
     {
-        $allRole = [];
+        foreach (self::ROLES as $label) {
+            $role = new UserRole();
+            $role->setLibelle($label);
 
-        $role = new UtilisateurGenre();
-        $role->setLibelle("user");
-        $manager->persist($role);
-        $allRole['role_1'] = $role;
-
-        $role = new UtilisateurGenre();
-        $role->setLibelle("admin");
-        $manager->persist($role);
-        $allRole['role_2'] = $role;
+            $manager->persist($role);
+            $this->addReference("role_" . $label, $role);
+        }
 
         $manager->flush();
-
-        $this->addReference(self::ROLES, $allRole);
     }
 }
