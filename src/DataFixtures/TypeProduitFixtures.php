@@ -2,7 +2,7 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\ProduitType;
+use App\Entity\ProductType;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
@@ -13,7 +13,7 @@ class TypeProduitFixtures extends Fixture
     public function load(ObjectManager $manager)
     {
         foreach (self::TYPE as $label) {
-            $type = new ProduitType();
+            $type = new ProductType();
             $type->setLibelle($label);
 
             $manager->persist($type);

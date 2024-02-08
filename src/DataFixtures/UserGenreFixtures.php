@@ -2,7 +2,7 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\UtilisateurGenre;
+use App\Entity\UserGender;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
@@ -13,7 +13,7 @@ class UserGenreFixtures extends Fixture
     public function load(ObjectManager $manager)
     {
         foreach (self::GENDERS as $label) {
-            $gender = new UtilisateurGenre();
+            $gender = new UserGender();
             $gender->setLibelle($label);
 
             $manager->persist($gender);

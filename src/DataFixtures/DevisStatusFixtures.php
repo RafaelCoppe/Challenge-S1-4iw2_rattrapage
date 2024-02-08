@@ -2,9 +2,9 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\AgenceStatus;
-use App\Entity\DevisStatus;
-use App\Entity\UtilisateurStatus;
+use App\Entity\AgencyStatus;
+use App\Entity\QuotationStatus;
+use App\Entity\UserStatus;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker;
@@ -16,7 +16,7 @@ class DevisStatusFixtures extends Fixture
     public function load(ObjectManager $manager)
     {
         foreach (self::STATUS as $index=>$label) {
-            $status = new DevisStatus();
+            $status = new QuotationStatus();
             $status->setLibelle($label);
 
             $manager->persist($status);

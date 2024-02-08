@@ -2,7 +2,7 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Produit;
+use App\Entity\Product;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -19,7 +19,7 @@ class ProduitFixtures extends Fixture implements DependentFixtureInterface
     public function load(ObjectManager $manager)
     {
         foreach (self::PRODUITS as $index=>$obj) {
-            $produit = new Produit();
+            $produit = new Product();
             $produit->setLibelle($obj[0]);
             $produit->setType($this->getReference('produit_type_' . $obj[1]));
 

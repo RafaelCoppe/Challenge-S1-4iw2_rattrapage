@@ -2,27 +2,27 @@
 
 namespace App\Repository;
 
-use App\Entity\FacturePaymentStatus;
+use App\Entity\InvoicePaymentStatus;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<FacturePaymentStatus>
+ * @extends ServiceEntityRepository<InvoicePaymentStatus>
  *
- * @method FacturePaymentStatus|null find($id, $lockMode = null, $lockVersion = null)
- * @method FacturePaymentStatus|null findOneBy(array $criteria, array $orderBy = null)
- * @method FacturePaymentStatus[]    findAll()
- * @method FacturePaymentStatus[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method InvoicePaymentStatus|null find($id, $lockMode = null, $lockVersion = null)
+ * @method InvoicePaymentStatus|null findOneBy(array $criteria, array $orderBy = null)
+ * @method InvoicePaymentStatus[]    findAll()
+ * @method InvoicePaymentStatus[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class FacturePaymentStatusRepository extends ServiceEntityRepository
+class InvoicePaymentStatusRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, FacturePaymentStatus::class);
+        parent::__construct($registry, InvoicePaymentStatus::class);
     }
 
 //    /**
-//     * @return FacturePaymentStatus[] Returns an array of FacturePaymentStatus objects
+//     * @return InvoicePaymentStatus[] Returns an array of InvoicePaymentStatus objects
 //     */
 //    public function findByExampleField($value): array
 //    {
@@ -36,7 +36,7 @@ class FacturePaymentStatusRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?FacturePaymentStatus
+//    public function findOneBySomeField($value): ?InvoicePaymentStatus
 //    {
 //        return $this->createQueryBuilder('f')
 //            ->andWhere('f.exampleField = :val')

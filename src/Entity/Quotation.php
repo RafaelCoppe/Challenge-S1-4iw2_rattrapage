@@ -2,15 +2,15 @@
 
 namespace App\Entity;
 
-use App\Repository\DevisRepository;
+use App\Repository\QuotationRepository;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: DevisRepository::class)]
-class Devis
+#[ORM\Entity(repositoryClass: QuotationRepository::class)]
+class Quotation
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -18,11 +18,11 @@ class Devis
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $termes = null;
+    private ?string $terms = null;
 
-    #[ORM\ManyToOne(inversedBy: 'devis')]
+    #[ORM\ManyToOne(inversedBy: 'invoice')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?DevisStatus $status = null;
+    private ?QuotationStatus $status = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?DateTimeInterface $start_date = null;
@@ -30,15 +30,15 @@ class Devis
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?DateTimeInterface $end_date = null;
 
-    #[ORM\OneToMany(mappedBy: 'devis', targetEntity: Ligne::class)]
-    private Collection $lignes;
+    #[ORM\OneToMany(mappedBy: 'quote', targetEntity: Line::class)]
+    private Collection $lines;
 
-    #[ORM\OneToOne(inversedBy: 'devis', cascade: ['persist', 'remove'])]
-    private ?Facture $Facture = null;
+    #[ORM\OneToOne(inversedBy: 'invoice', cascade: ['persist', 'remove'])]
+    private ?Invoice $invoice = null;
 
     public function __construct()
     {
-        $this->lignes = new ArrayCollection();
+        $this->lines = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -46,24 +46,24 @@ class Devis
         return $this->id;
     }
 
-    public function getTermes(): ?string
+    public function getTerms(): ?string
     {
-        return $this->termes;
+        return $this->terms;
     }
 
-    public function setTermes(string $termes): static
+    public function setTerms(string $terms): static
     {
-        $this->termes = $termes;
+        $this->terms = $terms;
 
         return $this;
     }
 
-    public function getStatus(): ?DevisStatus
+    public function getStatus(): ?QuotationStatus
     {
         return $this->status;
     }
 
-    public function setStatus(?DevisStatus $status): static
+    public function setStatus(?QuotationStatus $status): static
     {
         $this->status = $status;
 
@@ -95,43 +95,43 @@ class Devis
     }
 
     /**
-     * @return Collection<int, Ligne>
+     * @return Collection<int, Line>
      */
-    public function getLignes(): Collection
+    public function getLines(): Collection
     {
-        return $this->lignes;
+        return $this->lines;
     }
 
-    public function addLigne(Ligne $ligne): static
+    public function addLine(Line $line): static
     {
-        if (!$this->lignes->contains($ligne)) {
-            $this->lignes->add($ligne);
-            $ligne->setDevis($this);
+        if (!$this->lines->contains($line)) {
+            $this->lines->add($line);
+            $line->setQuote($this);
         }
 
         return $this;
     }
 
-    public function removeLigne(Ligne $ligne): static
+    public function removeLine(Line $line): static
     {
-        if ($this->lignes->removeElement($ligne)) {
+        if ($this->lines->removeElement($line)) {
             // set the owning side to null (unless already changed)
-            if ($ligne->getDevis() === $this) {
-                $ligne->setDevis(null);
+            if ($line->getQuote() === $this) {
+                $line->setQuote(null);
             }
         }
 
         return $this;
     }
 
-    public function getFacture(): ?Facture
+    public function getInvoice(): ?Invoice
     {
-        return $this->Facture;
+        return $this->invoice;
     }
 
-    public function setFacture(?Facture $Facture): static
+    public function setInvoice(?Invoice $invoice): static
     {
-        $this->Facture = $Facture;
+        $this->invoice = $invoice;
 
         return $this;
     }

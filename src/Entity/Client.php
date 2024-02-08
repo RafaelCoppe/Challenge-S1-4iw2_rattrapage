@@ -14,46 +14,46 @@ class Client
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $nom = null;
+    private ?string $lastname = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $prenom = null;
+    private ?string $firstname = null;
 
     #[ORM\Column(length: 255)]
     private ?string $email = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $telephone = null;
+    private ?string $phone = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $adresse = null;
+    private ?string $address = null;
 
     #[ORM\Column]
-    private ?int $ville = null;
+    private ?int $city = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getNom(): ?string
+    public function getLastName(): ?string
     {
-        return $this->nom;
+        return $this->lastname;
     }
 
-    public function setNom(?string $nom): void
+    public function setLastName(?string $lastname): void
     {
-        $this->nom = $nom;
+        $this->lastname = $lastname;
     }
 
-    public function getPrenom(): ?string
+    public function getFirstName(): ?string
     {
-        return $this->prenom;
+        return $this->firstname;
     }
 
-    public function setPrenom(?string $prenom): void
+    public function setFirstName(?string $firstname): void
     {
-        $this->prenom = $prenom;
+        $this->firstname = $firstname;
     }
 
     public function getEmail(): ?string
@@ -66,33 +66,33 @@ class Client
         $this->email = $email;
     }
 
-    public function getTelephone(): ?string
+    public function getPhone(): ?string
     {
-        return $this->telephone;
+        return $this->phone;
     }
 
-    public function setTelephone(?string $telephone): void
+    public function setPhone(?string $phone): void
     {
-        $this->telephone = $telephone;
+        $this->phone = $phone;
     }
 
-    public function getAdresse(): ?string
+    public function getAddress(): ?string
     {
-        return $this->adresse;
+        return $this->address;
     }
 
-    public function setAdresse(?string $adresse): void
+    public function setAddress(?string $address): void
     {
-        $this->adresse = $adresse;
+        $this->address = $address;
     }
 
-    public function getVille(): ?int
+    public function getCity(): ?int
     {
-        return $this->ville;
+        return $this->city;
     }
 
-    public function setVille(?int $ville): void
+    public function setCity(?int $city): void
     {
-        $this->ville = $ville;
+        $this->city = $city;
     }
 }

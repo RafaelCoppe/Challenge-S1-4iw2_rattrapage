@@ -2,7 +2,7 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Utilisateur;
+use App\Entity\User;
 use DateTime;
 use DateTimeZone;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -26,7 +26,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
             $firstname = $faker->firstName($nameGender);
             $gender = ([$i%2 == 0 ? $genders[0] : $genders[1], $genders[2]]);
 
-            $user = new Utilisateur();
+            $user = new User();
             $user->setUsername(strtolower("$firstname[0]$lastname"));
             $user->setPassword("12345");
             $user->setPrenom($firstname);

@@ -2,10 +2,10 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\AgenceStatus;
-use App\Entity\DevisStatus;
-use App\Entity\FacturePaymentStatus;
-use App\Entity\UtilisateurStatus;
+use App\Entity\AgencyStatus;
+use App\Entity\QuotationStatus;
+use App\Entity\InvoicePaymentStatus;
+use App\Entity\UserStatus;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker;
@@ -17,7 +17,7 @@ class FacturePaymentStatusFixtures extends Fixture
     public function load(ObjectManager $manager)
     {
         foreach (self::STATUS as $index=>$label) {
-            $status = new FacturePaymentStatus();
+            $status = new InvoicePaymentStatus();
             $status->setLibelle($label);
 
             $manager->persist($status);
