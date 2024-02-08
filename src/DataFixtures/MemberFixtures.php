@@ -29,7 +29,7 @@ class MemberFixtures extends Fixture implements DependentFixtureInterface
             $member->setFirstName($firstname);
             $member->setLastName($lastname);
             $member->setMail("$firstname.$lastname@mail.com");
-            $member->setPhone(utf8_encode($faker->phoneNumber));
+            $member->setPhone($faker->phoneNumber);
             $member->setAddress(utf8_encode($faker->streetAddress));
             $member->setCity($villes[$i]);
             $member->setGender($gender == 'male' ? 'homme' : 'femme');
