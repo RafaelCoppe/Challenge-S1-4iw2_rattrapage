@@ -1,3 +1,7 @@
 controllers:
     resource: ../src/Controller/
     type: attribute
+    
+one_page:
+    path: /one-page
+    controller: App\Controller\OnePageController::index
