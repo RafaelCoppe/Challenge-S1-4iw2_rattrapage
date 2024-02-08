@@ -10,7 +10,7 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Faker;
 
-class AgenceFixtures extends Fixture implements DependentFixtureInterface
+class AgenceFixtures extends Fixture
 {
     public const AGENCES = [
         [
@@ -49,19 +49,18 @@ class AgenceFixtures extends Fixture implements DependentFixtureInterface
     {
         $faker = Faker\Factory::create('fr_FR');
 
-        $allStatus = [$this->getReference("agency_status_1"), $this->getReference("agency_status_2"), $this->getReference("agency_status_3")];
+        $allStatus = ['valid', 'deleted', 'suspended'];
 
         foreach (self::AGENCES as $index=>$thisAgence) {
             $agence = new Agency();
             $agence->setName($thisAgence['nom']);
             $agence->setDescription($faker->text);
-            $agence->setAdresse($faker->address);
-            $agence->setVille($thisAgence['city']);
-            $agence->setTel($faker->phoneNumber);
+            $agence->setAddress($faker->address);
+            $agence->setCity($thisAgence['city']);
+            $agence->setPhone($faker->phoneNumber);
             $agence->setMail($thisAgence['mail']);
             $agence->setStatus($allStatus[$index%3]);
-            $agence->setDomaine($thisAgence['domaine']);
-            $agence->setConseils($faker->text);
+            $agence->setDomain($thisAgence['domaine']);
             $agence->setCreateDate(new DateTime('now', new DateTimeZone("Europe/Paris")));
 
             $manager->persist($agence);
@@ -69,12 +68,5 @@ class AgenceFixtures extends Fixture implements DependentFixtureInterface
         }
 
         $manager->flush();
-    }
-
-    public function getDependencies(): array
-    {
-        return [
-            AgenceStatusFixtures::class,
-        ];
     }
 }

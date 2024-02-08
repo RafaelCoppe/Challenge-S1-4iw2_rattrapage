@@ -15,29 +15,26 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
     public function load(ObjectManager $manager): void
     {
         $faker = Faker\Factory::create('fr_FR');
-        $role = ($this->getReference("role_user"));
-        $genders = [$this->getReference("gender_homme"), $this->getReference("gender_femme"), $this->getReference("gender_autre")];
-        $status = [$this->getReference("user_status_1"), $this->getReference("user_status_2"), $this->getReference("user_status_3"), $this->getReference("user_status_4")];
+        $status = ['active', 'inactive', 'suspended', 'deleted'];
         $villes = [21001, 68280, 97601, 59001, 59477, 49381, 49002, 68001, 25004, 25001];
 
         for($i=0; $i<10; $i++) {
-            $nameGender = ($i%2 == 0 ? 'male' : 'female');
-            $lastname = $faker->lastName($nameGender);
-            $firstname = $faker->firstName($nameGender);
-            $gender = ([$i%2 == 0 ? $genders[0] : $genders[1], $genders[2]]);
+            $gender = ($i%2 == 0 ? 'male' : 'female');
+            $lastname = $faker->lastName($gender);
+            $firstname = $faker->firstName($gender);
 
             $user = new User();
             $user->setUsername(strtolower("$firstname[0]$lastname"));
             $user->setPassword("12345");
-            $user->setPrenom(utf8_encode($firstname));
-            $user->setNom(utf8_encode($lastname));
+            $user->setFirstName(utf8_encode($firstname));
+            $user->setLastName(utf8_encode($lastname));
             $user->setMail(utf8_encode("$firstname.$lastname@mail.com"));
-            $user->setTel($faker->phoneNumber);
-            $user->setAdresse(utf8_encode($faker->streetAddress));
+            $user->setPhone($faker->phoneNumber);
+            $user->setAddress(utf8_encode($faker->streetAddress));
             $user->setCity($villes[$i]);
-            $user->setGenre($gender[rand(0, 1)]);
+            $user->setGender($gender == 'male' ? 'homme' : 'femme');
             $user->setStatus($status[$i%4]);
-            $user->setRole($role);
+            $user->setRoles(["ROLE_USER"]);
             $user->setCreateDate(new DateTime('now', new DateTimeZone("Europe/Paris")));
 
             $nb = rand(0, 5);
@@ -49,7 +46,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
                 foreach ($agences_array as $uneAgence) {
                     $uneAgence = $this->getReference('agence_' . $uneAgence);
 
-                    $user->addAgence($uneAgence);
+                    $user->addAgency($uneAgence);
                 }
             }
 
@@ -64,9 +61,6 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
     {
         return [
             AgenceFixtures::class,
-            UserGenreFixtures::class,
-            UserRoleFixtures::class,
-            UserStatusFixtures::class
         ];
     }
 }
