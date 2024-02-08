@@ -3,23 +3,13 @@
 {% block title %}Connexion{% endblock %}
 
 {% block body %}
-<div class="h-screen flex">
-    <div class="flex w-full lg:w-4/12 justify-center items-center bg-white space-y-8">
-        <img src="{{ asset('images/logoDevisio.png') }}" alt="logo" class="w-40">
-        {% include '_composants/_formLogin.html.twig' %}
-    </div>
-    <div class="hidden lg:flex w-full lg:w-8/12 bg-[#004283]
-    justify-around items-center">
-        <div 
-            class=" 
-            bg-black 
-            opacity-20 
-            inset-0 
-            z-0"
-            >
+    <div class="h-screen flex">
+        <div class="flex flex-col w-full lg:w-4/12 justify-center items-center bg-white space-y-8">
+            <img src="{{ asset('images/logoDevisio.png') }}" alt="logo" class="w-40">
+            {% include '_composants/_formLogin.html.twig' %}
         </div>
-        <div class="w-full mx-auto px-20 flex-col items-center space-y-6">
+        <div class="flex items-center justify-center mx-auto lg:w-8/12">
+                <img src="{{ asset('images/imgLogin.jpg') }}" alt="imgLogin" class="w-auto h-full aspect-auto">
         </div>
     </div>
-</div>
 {% endblock %}
