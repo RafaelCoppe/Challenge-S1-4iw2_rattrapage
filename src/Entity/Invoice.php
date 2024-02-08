@@ -17,9 +17,8 @@ class Invoice
     #[ORM\Column(length: 255)]
     private ?string $terms = null;
 
-    #[ORM\ManyToOne(inversedBy: 'factures')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?InvoicePaymentStatus $payment_status = null;
+    private ?string $payment_status = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $start_date = null;
@@ -65,12 +64,12 @@ class Invoice
         return $this;
     }
 
-    public function getPaymentStatus(): ?InvoicePaymentStatus
+    public function getPaymentStatus(): ?string
     {
         return $this->payment_status;
     }
 
-    public function setPaymentStatus(?InvoicePaymentStatus $payment_status): static
+    public function setPaymentStatus(?string $payment_status): static
     {
         $this->payment_status = $payment_status;
 

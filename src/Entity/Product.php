@@ -5,7 +5,6 @@ namespace App\Entity;
 use App\Repository\ProductRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
@@ -19,9 +18,8 @@ class Product
     #[ORM\Column(length: 255)]
     private ?string $label = null;
 
-    #[ORM\ManyToOne(inversedBy: 'products')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?ProductType $type = null;
+    #[ORM\Column]
+    private ?string $type = null;
 
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: Line::class)]
     private Collection $lines;
@@ -48,12 +46,12 @@ class Product
         return $this;
     }
 
-    public function getType(): ?ProductType
+    public function getType(): ?string
     {
         return $this->type;
     }
 
-    public function setType(?ProductType $type): static
+    public function setType(?string $type): static
     {
         $this->type = $type;
 

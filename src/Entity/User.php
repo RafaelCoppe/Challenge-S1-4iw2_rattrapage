@@ -29,10 +29,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private string $password;
 
     #[ORM\Column]
-    private ?int $status = null;
+    private ?string $status = null;
 
     #[ORM\Column]
-    private ?int $gender = null;
+    private ?string $gender = null;
 
     #[ORM\Column(length: 255)]
     private ?string $lastname = null;
@@ -274,22 +274,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getStatus(): ?int
+    public function getStatus(): ?string
     {
         return $this->status;
     }
 
-    public function setStatus(?int $status): void
+    public function setStatus(?string $status): void
     {
         $this->status = $status;
     }
 
-    public function getGender(): ?int
+    public function getGender(): ?string
     {
         return $this->gender;
     }
 
-    public function setGender(?int $gender): void
+    public function setGender(?string $gender): void
     {
         $this->gender = $gender;
     }

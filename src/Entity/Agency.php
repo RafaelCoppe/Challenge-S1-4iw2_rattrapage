@@ -34,9 +34,8 @@ class Agency
     #[ORM\Column(length: 255)]
     private ?string $mail = null;
 
-    #[ORM\ManyToOne(inversedBy: 'agencies')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?AgencyStatus $status = null;
+    private ?string $status = null;
 
     #[ORM\JoinColumn(nullable: false)]
     private ?string $domain = null;
@@ -135,12 +134,12 @@ class Agency
         return $this;
     }
 
-    public function getStatus(): ?AgencyStatus
+    public function getStatus(): ?string
     {
         return $this->status;
     }
 
-    public function setStatus(?AgencyStatus $status): static
+    public function setStatus(?string $status): static
     {
         $this->status = $status;
 

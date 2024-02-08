@@ -20,9 +20,8 @@ class Quotation
     #[ORM\Column(length: 255)]
     private ?string $terms = null;
 
-    #[ORM\ManyToOne(inversedBy: 'invoice')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?QuotationStatus $status = null;
+    #[ORM\Column]
+    private ?string $status = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?DateTimeInterface $start_date = null;
@@ -58,12 +57,12 @@ class Quotation
         return $this;
     }
 
-    public function getStatus(): ?QuotationStatus
+    public function getStatus(): ?string
     {
         return $this->status;
     }
 
-    public function setStatus(?QuotationStatus $status): static
+    public function setStatus(?string $status): static
     {
         $this->status = $status;
 
