@@ -4,46 +4,45 @@
 
 {% block body %}
     <!-- Header -->
-    <header class="bg-orange-500 mx-auto text-white py-4">
+    <header class="bg-third mx-auto text-white py-4 sticky top-0">
         <div class="mx-16 flex justify-between items-center">
             <img src="/images/logoPlane.png" alt="logo" class="h-auto w-24 aspect-auto">
         </div>
     </header>
-
     <!-- Contenu principal -->
     <main class="w-full max-w-full overflow-none">
         <!-- Blocs de texte et d'image -->
         <section class="w-full flex flex-col">
-            <div class="bg-blue-800 text-white flex flex-col h-screen">
-                <div class="flex flex-row h-full w-full">
+            <div class="bg-primary text-white flex flex-col h-screen">
+                <div class="flex h-full w-full md:flex-row flex-col">
                     <div class="flex flex-col justify-center mx-auto w-1/2 p-16">
-                        <img src="/images/logoDevisioWhite.png" alt="logo" class="h-auto w-1/2 aspect-auto mb-16">
+                        <img src="/images/logoDevisioWhite.png" alt="logo" class="h-auto w-2/3 aspect-auto mb-16">
                         <p class="text-4xl font-normal mb-2 mr-16">Un outil unique pour répondre à tous les besoins de votre agence</p>
                     </div>
-                    <div class="flex items-center justify-center mx-auto w-1/2">
-                        <img src="/images/happy-woman.jpg" alt="Image 1" class="h-full w-auto aspect-auto">
+                    <div class="flex items-center justify-center mx-auto w-1/2 overflow-hidden">
+                        <img src="/images/happy-woman.jpg" alt="Image 1" class="w-full h-full object-cover">
                     </div>
                 </div>
             </div>
-            <div class="bg-white text-white p-16 flex flex-col h-screen">
-                <div class="flex flex-row h-auto w-full">
-                    <div class="flex items-center justify-center p-8 mx-auto shadow-2xl rounded-xl w-1/2">
-                        <img src="/images/Dashboard.png" alt="Dashboard" class="">
+            <div class="bg-cream justify-center p-16 flex flex-col h-screen">
+                <div class="flex justify-center h-auto w-full md:flex-row flex-col">
+                    <div class="flex items-center justify-center p-8 mx-auto w-1/2">
+                        <img src="/images/Dashboard.png" alt="Dashboard" class="shadow-2xl rounded-xl">
                     </div>
                     <div class="flex flex-col justify-center mx-auto w-1/2 text-right">
-                        <h2 class="text-6xl font-bold mb-8 text-blue-800">Simplicité</h2>
-                        <h3 class="text-4xl font-bold mb-2 text-blue-500">Des devis simples et rapides en quelques clics seulement.</h3>
+                        <h2 class="text-6xl font-bold mb-8 text-primary">Simplicité</h2>
+                        <h3 class="text-4xl font-bold mb-2 text-secondary">Des devis simples et rapides en quelques clics seulement.</h3>
                     </div>
                 </div>
             </div>
-            <div class="bg-blue-500 text-white p-16 flex flex-col h-screen">
-                <div class="flex flex-row h-auto w-full">
-                    <div class="mx-auto w-1/2">
-                        <h2 class="text-2xl font-bold mb-4">Nous contacter</h2>
-                        <h3 class="text-lg font-bold mb-2">Formulaire de contact</h3>
+            <div class="text-white flex flex-col h-screen w-full">
+                <div class="flex h-full md:flex-row flex-col">
+                    <div class="bg-primary mx-auto p-16 w-1/3">
+                        <h2 class="text-6xl font-bold mb-4">Nous contacter</h2>
+                        <h3 class="text-4xl font-bold mb-2">Formulaire de contact</h3>
                     </div>
-                    <div class="flex items-center justify-center mx-auto w-1/2">
-                        <img src="chemin/vers/image1.jpg" alt="Image 1" class="w-1/2">
+                    <div class="bg-secondary flex items-center justify-center mx-auto w-2/3">
+                        {% include '_composants/_formContact.html.twig' %}
                     </div>
                 </div>
             </div>
@@ -53,7 +52,7 @@
     <!-- Footer -->
     <footer class="bg-blue-800 text-white py-4">
         <div class="container mx-auto">
-            <p>© 2024 Mon Site. Tous droits réservés.</p>
+            <p>© 2024 Devisio. Tous droits réservés.</p>
         </div>
     </footer>
 {% endblock %}
