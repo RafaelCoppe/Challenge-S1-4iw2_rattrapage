@@ -2,29 +2,26 @@
 
 namespace App\Controller;
 
+use Dompdf\Dompdf;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Knp\Snappy\Pdf;
 
 class PdfController extends AbstractController
 {
     #[Route('/pdf', name: 'app_pdf')]
     public function index(): Response
     {
-        $knpSnappyPdf = new Pdf('/usr/local/bin/wkhtmltopdf ');
-        $knpSnappyPdf->generateFromHtml(
-            $this->renderView(
-                'pdf/pdf.twig',
-                [
-                    //'imageSrc'     => $this->imageToBase64($this->getParameter('kernel.project_dir') . '/public/images/sound.png'),
-                    'dev'          => getenv('APP_ENV') == 'dev'
-                ]
-            ),
-            'TestPdf.pdf', [], true
-        );
-
-        /*$knpSnappyPdf->getOutput();*/
+        $data = [
+            //'imageSrc'     => $this->imageToBase64($this->getParameter('kernel.project_dir') . '/public/images/sound.png'),
+            'dev'          => getenv('APP_ENV') == 'dev'
+        ];
+        $html =  $this->renderView('pdf/pdf.html.twig', $data);
+        $dompdf = new Dompdf();
+        $dompdf->loadHtml($html);
+        $dompdf->render();
+        $output = $dompdf->output();
+        file_put_contents('TestPdf.pdf', $output);
 
         return $this->render('default/index.html.twig', [
             'controller_name' => 'index',

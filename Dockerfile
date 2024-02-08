@@ -36,9 +36,6 @@ RUN apk add --no-cache \
         ttf-dejavu ttf-droid ttf-freefont ttf-liberation \
 	;
 
-COPY --from=wkhtmltopdf /bin/wkhtmltopdf /bin/libwkhtmltox.so /bin/
-RUN chmod +x /bin/wkhtmltopdf
-
 RUN set -eux; \
 	apk add --no-cache --virtual .build-deps \
 		$PHPIZE_DEPS \

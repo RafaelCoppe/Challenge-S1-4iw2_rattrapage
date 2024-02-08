@@ -1,0 +1,58 @@
+<html>
+<head>
+
+</head>
+
+<style>
+    @page {
+        margin: 0;
+        font-family: 'Helvetica', serif;
+        font-size: 9pt;
+    }
+
+    #watermark {
+        position: absolute;
+        top: 50%; left: -1em;
+        transform: rotate(-45deg);
+        white-space:nowrap;
+        font-size: 36pt;
+        font-weight: bold;
+        color:#ffc0cb;
+        border: thin solid #ffc0cb;
+        opacity: 0.5;
+    }
+
+    header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height:20mm;
+        padding: 10mm;
+        background-image: ;
+
+    }
+
+    footer { position: fixed; bottom: 0; left: 0; right: 0; height: 20mm; }
+    footer div { margin: 0 10mm; padding-top: 2mm; text-align: center; border-top: thin solid grey; }
+</style>
+
+<body>
+    {% if dev %}
+        <div id="watermark">ENVIRONNEMENT DE DEVELOPPEMENT</div>
+    {% endif %}
+<header>
+    <div>
+
+    </div>
+</header>
+
+<footer>
+    {% include 'pdf/footer.html.twig' %}
+</footer>
+
+<main>
+    test
+</main>
+</body>
+</html>
