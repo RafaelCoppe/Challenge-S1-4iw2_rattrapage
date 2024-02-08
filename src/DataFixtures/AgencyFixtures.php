@@ -10,7 +10,7 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Faker;
 
-class AgenceFixtures extends Fixture
+class AgencyFixtures extends Fixture
 {
     public const AGENCES = [
         [
@@ -53,14 +53,14 @@ class AgenceFixtures extends Fixture
 
         foreach (self::AGENCES as $index=>$thisAgence) {
             $agence = new Agency();
-            $agence->setName($thisAgence['nom']);
+            $agence->setName($thisAgence['name']);
             $agence->setDescription($faker->text);
             $agence->setAddress($faker->address);
             $agence->setCity($thisAgence['city']);
             $agence->setPhone($faker->phoneNumber);
             $agence->setMail($thisAgence['mail']);
             $agence->setStatus($allStatus[$index%3]);
-            $agence->setDomain($thisAgence['domaine']);
+            $agence->setDomain($thisAgence['domain']);
             $agence->setCreateDate(new DateTime('now', new DateTimeZone("Europe/Paris")));
 
             $manager->persist($agence);

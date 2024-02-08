@@ -70,7 +70,7 @@ class Product
     {
         if (!$this->lines->contains($line)) {
             $this->lines->add($line);
-            $line->addProduct($this);
+            $line->setProduct($this);
         }
 
         return $this;
@@ -78,9 +78,7 @@ class Product
 
     public function removeLine(Line $line): static
     {
-        if ($this->lines->removeElement($line)) {
-            $line->removeProduct($this);
-        }
+        $this->lines->removeElement($line);
 
         return $this;
     }

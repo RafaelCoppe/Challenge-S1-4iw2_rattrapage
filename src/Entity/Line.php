@@ -15,15 +15,15 @@ class Line
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(targetEntity: Product::class, inversedBy: 'prestations')]
-    private Collection $product;
+    #[ORM\ManyToOne(targetEntity: Product::class, inversedBy: 'lines')]
+    private Product $product;
 
     #[ORM\ManyToOne(inversedBy: 'lines')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Quotation $quote = null;
 
     #[ORM\Column]
-    private ?int $order = null;
+    private ?int $place = null;
 
     #[ORM\Column]
     private ?float $unit_price = null;
@@ -39,36 +39,11 @@ class Line
 
     public function __construct()
     {
-        $this->product = new ArrayCollection();
     }
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    /**
-     * @return Collection<int, Product>
-     */
-    public function getProduct(): Collection
-    {
-        return $this->product;
-    }
-
-    public function addProduct(Product $product): static
-    {
-        if (!$this->product->contains($product)) {
-            $this->product->add($product);
-        }
-
-        return $this;
-    }
-
-    public function removeProduct(Product $product): static
-    {
-        $this->product->removeElement($product);
-
-        return $this;
     }
 
     public function getQuote(): ?Quotation
@@ -83,14 +58,14 @@ class Line
         return $this;
     }
 
-    public function getOrder(): ?int
+    public function getPlace(): ?int
     {
-        return $this->order;
+        return $this->place;
     }
 
-    public function setOrder(int $order): static
+    public function setPlace(int $place): static
     {
-        $this->order = $order;
+        $this->place = $place;
 
         return $this;
     }
@@ -139,5 +114,15 @@ class Line
         $this->tax = $tax;
 
         return $this;
+    }
+
+    public function getProduct(): Product
+    {
+        return $this->product;
+    }
+
+    public function setProduct(Product $product): void
+    {
+        $this->product = $product;
     }
 }

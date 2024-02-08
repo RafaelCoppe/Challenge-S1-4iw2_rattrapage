@@ -49,7 +49,7 @@ class Agency
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $delete_date = null;
 
-    #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'Agency')]
+    #[ORM\ManyToMany(targetEntity: Member::class, mappedBy: 'Agency')]
     private Collection $users;
 
     public function __construct()
@@ -195,14 +195,14 @@ class Agency
     }
 
     /**
-     * @return Collection<int, User>
+     * @return Collection<int, Member>
      */
     public function getUsers(): Collection
     {
         return $this->users;
     }
 
-    public function addUser(User $user): static
+    public function addUser(Member $user): static
     {
         if (!$this->users->contains($user)) {
             $this->users->add($user);
@@ -212,7 +212,7 @@ class Agency
         return $this;
     }
 
-    public function removeUser(User $user): static
+    public function removeUser(Member $user): static
     {
         if ($this->users->removeElement($user)) {
             $user->removeAgency($this);

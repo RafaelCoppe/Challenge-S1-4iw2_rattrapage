@@ -7,7 +7,7 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class ProduitFixtures extends Fixture
+class ProductFixtures extends Fixture
 {
     const PRODUITS = [
         ["Transport", "reservation"],["Guide", "reservation"],["Restauration", "reservation"],["Autre", "reservation"],
@@ -24,7 +24,7 @@ class ProduitFixtures extends Fixture
             $produit->setType($obj[1]);
 
             $manager->persist($produit);
-            $this->addReference("produit_" . $index, $produit);
+            $this->addReference("produit_" . $index+1, $produit);
         }
 
         $manager->flush();
