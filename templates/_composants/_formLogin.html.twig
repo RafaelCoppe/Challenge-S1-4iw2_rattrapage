@@ -14,18 +14,24 @@
         </svg>
         <input id="email" class=" pl-2 w-full outline-none border-none" type="email" name="email" placeholder="Email Address" value="{{last_username}}" required autofocus/>
     </div>
-    <div class="flex items-center border-2 mb-7 py-2 px-3 rounded-2xl ">
+    <div class="flex items-center border-2 mb-2 py-2 px-3 rounded-2xl ">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
         <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
         </svg>
         <input class="pl-2 w-full outline-none border-none" type="password" name="password" id="password" placeholder="Password" />
     </div>
-    <label class="text-sm ml-2 hover:text-blue-500 cursor-pointer hover:-translate-y-1 duration-500 transition-all">
-        <input type="checkbox" name="_remember_me">
-        Rester connecté ?
-    </label>
-    <button type="submit" class="block w-full bg-[#64c8ff] mt-5 py-2 rounded-2xl hover:bg-[#004283] hover:-translate-y-1 transition-all duration-500 text-white font-semibold mb-2">Login</button>
-    <div class="flex justify-between mt-4">
-        <span class="text-sm ml-2 hover:text-blue-500 cursor-pointer hover:-translate-y-1 duration-500 transition-all">Mot de passe oublié ?</span>
+    <div class="grid grid-cols-2 gap-6 items-center">
+        <div class="grid grid-rows-3 row-span-full gap-3">
+            <span class="text-sm ml-2 hover:text-blue-500 cursor-pointer hover:-translate-y-1 duration-500 transition-all">Mot de passe oublié ?</span>
+            <label class="text-sm ml-2 hover:text-blue-500 cursor-pointer hover:-translate-y-1 duration-500 transition-all">
+                <input type="checkbox" name="_remember_me">
+                    Rester connecté ?
+            </label>
+            <span class="text-sm ml-2 hover:text-blue-500 cursor-pointer hover:-translate-y-1 duration-500 transition-all">Pas encore de compte ?</span>
+        </div>
+        <div class="row-span-full">
+            <button type="submit" class="block w-full bg-[#64c8ff] mt-5 py-2 rounded-2xl hover:bg-[#004283] hover:-translate-y-1 transition-all duration-500 text-white font-semibold mb-2">Login</button>
+        </div>
     </div>
+
 </form> 
