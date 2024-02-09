@@ -38,6 +38,9 @@ class Quotation
     #[ORM\OneToOne(mappedBy: 'quotation', cascade: ['persist', 'remove'])]
     private ?Client $client = null;
 
+    #[ORM\Column]
+    private ?int $duration = null;
+
     public function __construct()
     {
         $this->lines = new ArrayCollection();
@@ -151,6 +154,18 @@ class Quotation
         }
 
         $this->client = $client;
+
+        return $this;
+    }
+
+    public function getDuration(): ?int
+    {
+        return $this->duration;
+    }
+
+    public function setDuration(int $duration): static
+    {
+        $this->duration = $duration;
 
         return $this;
     }

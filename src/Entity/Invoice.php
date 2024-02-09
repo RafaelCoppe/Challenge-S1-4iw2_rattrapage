@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\InvoiceRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -46,6 +48,14 @@ class Invoice
 
     #[ORM\Column]
     private ?int $payment_city = null;
+
+    #[ORM\OneToMany(mappedBy: 'invoice', targetEntity: Travelers::class, orphanRemoval: true)]
+    private Collection $travelers;
+
+    public function __construct()
+    {
+        $this->travelers = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -180,5 +190,35 @@ class Invoice
     public function setPaymentCity(?int $payment_city): void
     {
         $this->payment_city = $payment_city;
+    }
+
+    /**
+     * @return Collection<int, Travelers>
+     */
+    public function getTravelers(): Collection
+    {
+        return $this->travelers;
+    }
+
+    public function addTraveler(Travelers $traveler): static
+    {
+        if (!$this->travelers->contains($traveler)) {
+            $this->travelers->add($traveler);
+            $traveler->setInvoice($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTraveler(Travelers $traveler): static
+    {
+        if ($this->travelers->removeElement($traveler)) {
+            // set the owning side to null (unless already changed)
+            if ($traveler->getInvoice() === $this) {
+                $traveler->setInvoice(null);
+            }
+        }
+
+        return $this;
     }
 }
