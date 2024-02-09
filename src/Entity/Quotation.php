@@ -41,10 +41,6 @@ class Quotation
     #[ORM\Column]
     private ?int $duration = null;
 
-    #[ORM\ManyToOne(inversedBy: 'quotations')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Agency $agency = null;
-
     public function __construct()
     {
         $this->lines = new ArrayCollection();
@@ -170,18 +166,6 @@ class Quotation
     public function setDuration(int $duration): static
     {
         $this->duration = $duration;
-
-        return $this;
-    }
-
-    public function getAgency(): ?Agency
-    {
-        return $this->agency;
-    }
-
-    public function setAgency(?Agency $agency): static
-    {
-        $this->agency = $agency;
 
         return $this;
     }
