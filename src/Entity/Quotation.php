@@ -35,6 +35,9 @@ class Quotation
     #[ORM\OneToOne(inversedBy: 'invoice', cascade: ['persist', 'remove'])]
     private ?Invoice $invoice = null;
 
+    #[ORM\OneToOne(mappedBy: 'quotation', cascade: ['persist', 'remove'])]
+    private ?Client $client = null;
+
     public function __construct()
     {
         $this->lines = new ArrayCollection();
@@ -131,6 +134,23 @@ class Quotation
     public function setInvoice(?Invoice $invoice): static
     {
         $this->invoice = $invoice;
+
+        return $this;
+    }
+
+    public function getClient(): ?Client
+    {
+        return $this->client;
+    }
+
+    public function setClient(Client $client): static
+    {
+        // set the owning side of the relation if necessary
+        if ($client->getQuotation() !== $this) {
+            $client->setQuotation($this);
+        }
+
+        $this->client = $client;
 
         return $this;
     }

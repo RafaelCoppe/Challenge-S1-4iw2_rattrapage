@@ -31,6 +31,10 @@ class Client
     #[ORM\Column]
     private ?int $city = null;
 
+    #[ORM\OneToOne(inversedBy: 'client', cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Quotation $quotation = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -94,5 +98,17 @@ class Client
     public function setCity(?int $city): void
     {
         $this->city = $city;
+    }
+
+    public function getQuotation(): ?Quotation
+    {
+        return $this->quotation;
+    }
+
+    public function setQuotation(Quotation $quotation): static
+    {
+        $this->quotation = $quotation;
+
+        return $this;
     }
 }
