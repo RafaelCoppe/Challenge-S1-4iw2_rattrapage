@@ -52,9 +52,13 @@ class Agency
     #[ORM\ManyToMany(targetEntity: Member::class, mappedBy: 'Agency')]
     private Collection $users;
 
+    #[ORM\OneToMany(mappedBy: 'agency', targetEntity: Quotation::class)]
+    private Collection $quotations;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
+        $this->quotations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -216,6 +220,36 @@ class Agency
     {
         if ($this->users->removeElement($user)) {
             $user->removeAgency($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Quotation>
+     */
+    public function getQuotations(): Collection
+    {
+        return $this->quotations;
+    }
+
+    public function addQuotation(Quotation $quotation): static
+    {
+        if (!$this->quotations->contains($quotation)) {
+            $this->quotations->add($quotation);
+            $quotation->setAgency($this);
+        }
+
+        return $this;
+    }
+
+    public function removeQuotation(Quotation $quotation): static
+    {
+        if ($this->quotations->removeElement($quotation)) {
+            // set the owning side to null (unless already changed)
+            if ($quotation->getAgency() === $this) {
+                $quotation->setAgency(null);
+            }
         }
 
         return $this;
