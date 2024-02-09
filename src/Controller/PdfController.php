@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Repository\QuotationRepository;
+use Doctrine\ORM\EntityManager;
 use Dompdf\Dompdf;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -9,9 +11,12 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class PdfController extends AbstractController
 {
-    #[Route('/pdf', name: 'app_pdf')]
-    public function index(): Response
+    #[Route('/pdf/{id}', name: 'app_pdf')]
+    public function index(QuotationRepository $quotationRepository, int $id): Response
     {
+        $quote = $quotationRepository->find($id);
+        $lines = ($quote->getLines())->toArray();
+        dd($lines);
         $data = [
             //'imageSrc'     => $this->imageToBase64($this->getParameter('kernel.project_dir') . '/public/images/sound.png'),
             'dev'          => getenv('APP_ENV') == 'dev'

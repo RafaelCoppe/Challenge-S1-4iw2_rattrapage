@@ -29,7 +29,7 @@ class Quotation
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?DateTimeInterface $end_date = null;
 
-    #[ORM\OneToMany(mappedBy: 'quote', targetEntity: Line::class)]
+    #[ORM\OneToMany(mappedBy: 'quote', targetEntity: Line::class, fetch: "EAGER")]
     private Collection $lines;
 
     #[ORM\OneToOne(inversedBy: 'invoice', cascade: ['persist', 'remove'])]
