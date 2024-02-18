@@ -15,10 +15,23 @@ class PdfController extends AbstractController
     public function index(QuotationRepository $quotationRepository, int $id): Response
     {
         $quote = $quotationRepository->find($id);
-        $lines = ($quote->getLines())->toArray();
-        dd($lines);
+        $lines = [];
+        foreach (($quote->getLines())->toArray() as $uneLigne) {
+            $lines[] = [
+                "place" => $uneLigne->getPlace(),
+                "additional" => $uneLigne->getAdditional(),
+                "unit_price" => $uneLigne->getUnitPrice(),
+                "quantity" => $uneLigne->getQuantity(),
+                "tax" => $uneLigne->getTax(),
+                "totalHt" => $uneLigne->getUnitPrice() * $uneLigne->getQuantity(),
+                "totalTax" => ($uneLigne->getUnitPrice() * $uneLigne->getQuantity()) * (100 + $uneLigne->getTax())/100,
+                "product" => $uneLigne->getProduct()
+            ];
+        };
         $data = [
             //'imageSrc'     => $this->imageToBase64($this->getParameter('kernel.project_dir') . '/public/images/sound.png'),
+            'quote'          => $quote,
+            'lines'          => $lines,
             'dev'          => getenv('APP_ENV') == 'dev'
         ];
         $html =  $this->renderView('pdf/pdf.html.twig', $data);
