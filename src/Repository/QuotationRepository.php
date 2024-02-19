@@ -2,27 +2,27 @@
 
 namespace App\Repository;
 
-use App\Entity\DevisStatus;
+use App\Entity\Quotation;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<DevisStatus>
+ * @extends ServiceEntityRepository<Quotation>
  *
- * @method DevisStatus|null find($id, $lockMode = null, $lockVersion = null)
- * @method DevisStatus|null findOneBy(array $criteria, array $orderBy = null)
- * @method DevisStatus[]    findAll()
- * @method DevisStatus[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Quotation|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Quotation|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Quotation[]    findAll()
+ * @method Quotation[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class DevisStatusRepository extends ServiceEntityRepository
+class QuotationRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, DevisStatus::class);
+        parent::__construct($registry, Quotation::class);
     }
 
 //    /**
-//     * @return DevisStatus[] Returns an array of DevisStatus objects
+//     * @return Quotation[] Returns an array of Quotation objects
 //     */
 //    public function findByExampleField($value): array
 //    {
@@ -36,7 +36,7 @@ class DevisStatusRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?DevisStatus
+//    public function findOneBySomeField($value): ?Quotation
 //    {
 //        return $this->createQueryBuilder('d')
 //            ->andWhere('d.exampleField = :val')

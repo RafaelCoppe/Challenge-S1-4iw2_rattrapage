@@ -2,12 +2,12 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Produit;
+use App\Entity\Product;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class ProduitFixtures extends Fixture implements DependentFixtureInterface
+class ProductFixtures extends Fixture
 {
     const PRODUITS = [
         ["Transport", "reservation"],["Guide", "reservation"],["Restauration", "reservation"],["Autre", "reservation"],
@@ -19,21 +19,14 @@ class ProduitFixtures extends Fixture implements DependentFixtureInterface
     public function load(ObjectManager $manager)
     {
         foreach (self::PRODUITS as $index=>$obj) {
-            $produit = new Produit();
-            $produit->setLibelle($obj[0]);
-            $produit->setType($this->getReference('produit_type_' . $obj[1]));
+            $produit = new Product();
+            $produit->setLabel($obj[0]);
+            $produit->setType($obj[1]);
 
             $manager->persist($produit);
-            $this->addReference("produit_" . $index, $produit);
+            $this->addReference("produit_" . $index+1, $produit);
         }
 
         $manager->flush();
-    }
-
-    public function getDependencies(): array
-    {
-        return [
-            TypeProduitFixtures::class,
-        ];
     }
 }

@@ -2,14 +2,14 @@
 
 namespace App\Entity;
 
-use App\Repository\AgenceRepository;
+use App\Repository\AgencyRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: AgenceRepository::class)]
-class Agence
+#[ORM\Entity(repositoryClass: AgencyRepository::class)]
+class Agency
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -17,29 +17,28 @@ class Agence
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $nom = null;
+    private ?string $name = null;
 
     #[ORM\Column(length: 255)]
     private ?string $description = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $adresse = null;
+    private ?string $address = null;
 
     #[ORM\Column]
-    private ?int $ville = null;
+    private ?int $city = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $tel = null;
+    private ?string $phone = null;
 
     #[ORM\Column(length: 255)]
     private ?string $mail = null;
 
-    #[ORM\ManyToOne(inversedBy: 'agences')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?AgenceStatus $status = null;
+    private ?string $status = null;
 
     #[ORM\JoinColumn(nullable: false)]
-    private ?string $domaine = null;
+    private ?string $domain = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $create_date = null;
@@ -50,15 +49,16 @@ class Agence
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $delete_date = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $conseils = null;
+    #[ORM\ManyToMany(targetEntity: Member::class, mappedBy: 'Agency')]
+    private Collection $users;
 
-    #[ORM\ManyToMany(targetEntity: Utilisateur::class, mappedBy: 'Agence')]
-    private Collection $utilisateurs;
+    #[ORM\OneToMany(mappedBy: 'agency', targetEntity: Quotation::class)]
+    private Collection $quotations;
 
     public function __construct()
     {
-        $this->utilisateurs = new ArrayCollection();
+        $this->users = new ArrayCollection();
+        $this->quotations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -66,14 +66,14 @@ class Agence
         return $this->id;
     }
 
-    public function getNom(): ?string
+    public function getName(): ?string
     {
-        return $this->nom;
+        return $this->name;
     }
 
-    public function setNom(string $nom): static
+    public function setName(string $name): static
     {
-        $this->nom = $nom;
+        $this->name = $name;
 
         return $this;
     }
@@ -90,38 +90,38 @@ class Agence
         return $this;
     }
 
-    public function getAdresse(): ?string
+    public function getAddress(): ?string
     {
-        return $this->adresse;
+        return $this->address;
     }
 
-    public function setAdresse(string $adresse): static
+    public function setAddress(string $address): static
     {
-        $this->adresse = $adresse;
+        $this->address = $address;
 
         return $this;
     }
 
-    public function getVille(): ?int
+    public function getCity(): ?int
     {
-        return $this->ville;
+        return $this->city;
     }
 
-    public function setVille(int $ville): static
+    public function setCity(int $city): static
     {
-        $this->ville = $ville;
+        $this->city = $city;
 
         return $this;
     }
 
-    public function getTel(): ?string
+    public function getPhone(): ?string
     {
-        return $this->tel;
+        return $this->phone;
     }
 
-    public function setTel(string $tel): static
+    public function setPhone(string $phone): static
     {
-        $this->tel = $tel;
+        $this->phone = $phone;
 
         return $this;
     }
@@ -138,26 +138,26 @@ class Agence
         return $this;
     }
 
-    public function getStatus(): ?AgenceStatus
+    public function getStatus(): ?string
     {
         return $this->status;
     }
 
-    public function setStatus(?AgenceStatus $status): static
+    public function setStatus(?string $status): static
     {
         $this->status = $status;
 
         return $this;
     }
 
-    public function getDomaine(): ?string
+    public function getDomain(): ?string
     {
-        return $this->domaine;
+        return $this->domain;
     }
 
-    public function setDomaine(?string $domaine): static
+    public function setDomain(?string $domain): static
     {
-        $this->domaine = $domaine;
+        $this->domain = $domain;
 
         return $this;
     }
@@ -198,40 +198,58 @@ class Agence
         return $this;
     }
 
-    public function getConseils(): ?string
-    {
-        return $this->conseils;
-    }
-
-    public function setConseils(string $conseils): static
-    {
-        $this->conseils = $conseils;
-
-        return $this;
-    }
-
     /**
-     * @return Collection<int, Utilisateur>
+     * @return Collection<int, Member>
      */
-    public function getUtilisateurs(): Collection
+    public function getUsers(): Collection
     {
-        return $this->utilisateurs;
+        return $this->users;
     }
 
-    public function addUtilisateur(Utilisateur $utilisateur): static
+    public function addUser(Member $user): static
     {
-        if (!$this->utilisateurs->contains($utilisateur)) {
-            $this->utilisateurs->add($utilisateur);
-            $utilisateur->addAgence($this);
+        if (!$this->users->contains($user)) {
+            $this->users->add($user);
+            $user->addAgency($this);
         }
 
         return $this;
     }
 
-    public function removeUtilisateur(Utilisateur $utilisateur): static
+    public function removeUser(Member $user): static
     {
-        if ($this->utilisateurs->removeElement($utilisateur)) {
-            $utilisateur->removeAgence($this);
+        if ($this->users->removeElement($user)) {
+            $user->removeAgency($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Quotation>
+     */
+    public function getQuotations(): Collection
+    {
+        return $this->quotations;
+    }
+
+    public function addQuotation(Quotation $quotation): static
+    {
+        if (!$this->quotations->contains($quotation)) {
+            $this->quotations->add($quotation);
+            $quotation->setAgency($this);
+        }
+
+        return $this;
+    }
+
+    public function removeQuotation(Quotation $quotation): static
+    {
+        if ($this->quotations->removeElement($quotation)) {
+            // set the owning side to null (unless already changed)
+            if ($quotation->getAgency() === $this) {
+                $quotation->setAgency(null);
+            }
         }
 
         return $this;

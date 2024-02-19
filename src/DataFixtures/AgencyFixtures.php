@@ -2,46 +2,45 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Agence;
+use App\Entity\Agency;
 use DateTime;
 use DateTimeZone;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Faker;
-use Symfony\Component\Validator\Constraints\Date;
 
-class AgenceFixtures extends Fixture implements DependentFixtureInterface
+class AgencyFixtures extends Fixture
 {
     public const AGENCES = [
         [
-            "nom" => "Aventure Horizon",
+            "name" => "Aventure Horizon",
             "mail" => "info@aventurehorizon.com",
-            "domaine" => "www.aventurehorizon.com",
+            "domain" => "www.aventurehorizon.com",
             "city" => 03001,
         ],
         [
-            "nom" => "Escale Découverte",
+            "name" => "Escale Découverte",
             "mail" => "contact@escaledécouverte.travel",
-            "domaine" => "www.escaledécouverte.travel",
+            "domain" => "www.escaledécouverte.travel",
             "city" => 22001,
         ],
         [
-            "nom" => "Destinations Enchantées",
+            "name" => "Destinations Enchantées",
             "mail" => "info@destinationsenchantées.net",
-            "domaine" => "www.destinationsenchantées.net",
+            "domain" => "www.destinationsenchantées.net",
             "city" => 19001,
         ],
         [
-            "nom" => "Voyages Magiques",
+            "name" => "Voyages Magiques",
             "mail" => "contact@voyagesmagiques.org",
-            "domaine" => "www.voyagesmagiques.org",
+            "domain" => "www.voyagesmagiques.org",
             "city" => 47001,
         ],
         [
-            "nom" => "ExplorePlus",
+            "name" => "ExplorePlus",
             "mail" => "Voyagesinfo@exploreplusvoyages.com",
-            "domaine" => "www.exploreplusvoyages.com",
+            "domain" => "www.exploreplusvoyages.com",
             "city" => 88001,
         ],
     ];
@@ -50,19 +49,18 @@ class AgenceFixtures extends Fixture implements DependentFixtureInterface
     {
         $faker = Faker\Factory::create('fr_FR');
 
-        $allStatus = [$this->getReference("agence_status_1"), $this->getReference("agence_status_2"), $this->getReference("agence_status_3")];
+        $allStatus = ['valid', 'deleted', 'suspended'];
 
         foreach (self::AGENCES as $index=>$thisAgence) {
-            $agence = new Agence();
-            $agence->setNom($thisAgence['nom']);
+            $agence = new Agency();
+            $agence->setName($thisAgence['name']);
             $agence->setDescription($faker->text);
-            $agence->setAdresse($faker->address);
-            $agence->setVille($thisAgence['city']);
-            $agence->setTel($faker->phoneNumber);
+            $agence->setAddress($faker->address);
+            $agence->setCity($thisAgence['city']);
+            $agence->setPhone($faker->phoneNumber);
             $agence->setMail($thisAgence['mail']);
             $agence->setStatus($allStatus[$index%3]);
-            $agence->setDomaine($thisAgence['domaine']);
-            $agence->setConseils($faker->text);
+            $agence->setDomain($thisAgence['domain']);
             $agence->setCreateDate(new DateTime('now', new DateTimeZone("Europe/Paris")));
 
             $manager->persist($agence);
@@ -70,12 +68,5 @@ class AgenceFixtures extends Fixture implements DependentFixtureInterface
         }
 
         $manager->flush();
-    }
-
-    public function getDependencies(): array
-    {
-        return [
-            AgenceStatusFixtures::class,
-        ];
     }
 }
