@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-use App\Repository\UtilisateurRepository;
+use App\Repository\MemberRepository;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -11,8 +11,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-#[ORM\Entity(repositoryClass: UtilisateurRepository::class)]
-class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
+#[ORM\Entity(repositoryClass: MemberRepository::class)]
+class Member implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -22,44 +22,38 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 180, unique: true)]
     private ?string $username = null;
 
-    #[ORM\Column]
-    private array $roles = [];
-
     /**
      * @var string The hashed password
      */
     #[ORM\Column]
-    private ?string $password = null;
+    private string $password;
+
+    #[ORM\Column]
+    private ?string $status = null;
+
+    #[ORM\Column]
+    private ?string $gender = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $nom = null;
+    private ?string $lastname = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $prenom = null;
+    private ?string $firstname = null;
 
     #[ORM\Column(length: 255)]
     private ?string $mail = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $tel = null;
+    private ?string $phone = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $adresse = null;
+    private ?string $address = null;
 
     #[ORM\Column]
     private ?int $city = null;
 
-    #[ORM\ManyToOne(inversedBy: 'utilisateurs')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?UtilisateurGenre $genre = null;
-
-    #[ORM\ManyToOne(inversedBy: 'utilisateurs')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?UtilisateurStatus $status = null;
-
-    #[ORM\ManyToOne(inversedBy: 'utilisateurs')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?UtilisateurRole $role = null;
+    #[ORM\Column(type: 'json')]
+    private array $roles = [];
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?DateTimeInterface $create_date = null;
@@ -70,12 +64,12 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?DateTimeInterface $delete_date = null;
 
-    #[ORM\ManyToMany(targetEntity: Agence::class, inversedBy: 'utilisateurs')]
-    private Collection $Agence;
+    #[ORM\ManyToMany(targetEntity: Agency::class, inversedBy: 'users')]
+    private Collection $agencies;
 
     public function __construct()
     {
-        $this->Agence = new ArrayCollection();
+        $this->agencies = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -148,26 +142,26 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
         // $this->plainPassword = null;
     }
 
-    public function getNom(): ?string
+    public function getLastName(): ?string
     {
-        return $this->nom;
+        return $this->lastname;
     }
 
-    public function setNom(string $nom): static
+    public function setLastName(string $lastname): static
     {
-        $this->nom = $nom;
+        $this->lastname = $lastname;
 
         return $this;
     }
 
-    public function getPrenom(): ?string
+    public function getFirstName(): ?string
     {
-        return $this->prenom;
+        return $this->firstname;
     }
 
-    public function setPrenom(string $prenom): static
+    public function setFirstName(string $firstname): static
     {
-        $this->prenom = $prenom;
+        $this->firstname = $firstname;
 
         return $this;
     }
@@ -184,26 +178,26 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getTel(): ?string
+    public function getPhone(): ?string
     {
-        return $this->tel;
+        return $this->phone;
     }
 
-    public function setTel(string $tel): static
+    public function setPhone(string $phone): static
     {
-        $this->tel = $tel;
+        $this->phone = $phone;
 
         return $this;
     }
 
-    public function getAdresse(): ?string
+    public function getAddress(): ?string
     {
-        return $this->adresse;
+        return $this->address;
     }
 
-    public function setAdresse(string $adresse): static
+    public function setAddress(string $address): static
     {
-        $this->adresse = $adresse;
+        $this->address = $address;
 
         return $this;
     }
@@ -216,42 +210,6 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     public function setCity(int $city): static
     {
         $this->city = $city;
-
-        return $this;
-    }
-
-    public function getGenre(): ?UtilisateurGenre
-    {
-        return $this->genre;
-    }
-
-    public function setGenre(?UtilisateurGenre $genre): static
-    {
-        $this->genre = $genre;
-
-        return $this;
-    }
-
-    public function getStatus(): ?UtilisateurStatus
-    {
-        return $this->status;
-    }
-
-    public function setStatus(?UtilisateurStatus $status): static
-    {
-        $this->status = $status;
-
-        return $this;
-    }
-
-    public function getRole(): ?UtilisateurRole
-    {
-        return $this->role;
-    }
-
-    public function setRole(?UtilisateurRole $role): static
-    {
-        $this->role = $role;
 
         return $this;
     }
@@ -293,26 +251,46 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @return Collection<int, Agence>
+     * @return Collection<int, Agency>
      */
-    public function getAgence(): Collection
+    public function getAgency(): Collection
     {
-        return $this->Agence;
+        return $this->agencies;
     }
 
-    public function addAgence(Agence $agence): static
+    public function addAgency(Agency $agency): static
     {
-        if (!$this->Agence->contains($agence)) {
-            $this->Agence->add($agence);
+        if (!$this->agencies->contains($agency)) {
+            $this->agencies->add($agency);
         }
 
         return $this;
     }
 
-    public function removeAgence(Agence $agence): static
+    public function removeAgency(Agency $agency): static
     {
-        $this->Agence->removeElement($agence);
+        $this->agencies->removeElement($agency);
 
         return $this;
+    }
+
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(?string $status): void
+    {
+        $this->status = $status;
+    }
+
+    public function getGender(): ?string
+    {
+        return $this->gender;
+    }
+
+    public function setGender(?string $gender): void
+    {
+        $this->gender = $gender;
     }
 }

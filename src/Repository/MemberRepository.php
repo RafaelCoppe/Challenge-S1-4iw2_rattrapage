@@ -2,7 +2,7 @@
 
 namespace App\Repository;
 
-use App\Entity\Utilisateur;
+use App\Entity\Member;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
@@ -10,19 +10,19 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 
 /**
- * @extends ServiceEntityRepository<Utilisateur>
-* @implements PasswordUpgraderInterface<Utilisateur>
+ * @extends ServiceEntityRepository<Member>
+* @implements PasswordUpgraderInterface<Member>
  *
- * @method Utilisateur|null find($id, $lockMode = null, $lockVersion = null)
- * @method Utilisateur|null findOneBy(array $criteria, array $orderBy = null)
- * @method Utilisateur[]    findAll()
- * @method Utilisateur[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Member|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Member|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Member[]    findAll()
+ * @method Member[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class UtilisateurRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
+class MemberRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Utilisateur::class);
+        parent::__construct($registry, Member::class);
     }
 
     /**
@@ -30,7 +30,7 @@ class UtilisateurRepository extends ServiceEntityRepository implements PasswordU
      */
     public function upgradePassword(PasswordAuthenticatedUserInterface $user, string $newHashedPassword): void
     {
-        if (!$user instanceof Utilisateur) {
+        if (!$user instanceof Member) {
             throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', $user::class));
         }
 
@@ -40,7 +40,7 @@ class UtilisateurRepository extends ServiceEntityRepository implements PasswordU
     }
 
 //    /**
-//     * @return Utilisateur[] Returns an array of Utilisateur objects
+//     * @return Member[] Returns an array of Member objects
 //     */
 //    public function findByExampleField($value): array
 //    {
@@ -54,7 +54,7 @@ class UtilisateurRepository extends ServiceEntityRepository implements PasswordU
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?Utilisateur
+//    public function findOneBySomeField($value): ?Member
 //    {
 //        return $this->createQueryBuilder('u')
 //            ->andWhere('u.exampleField = :val')
