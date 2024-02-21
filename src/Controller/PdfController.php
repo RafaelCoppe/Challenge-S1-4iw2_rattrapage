@@ -16,6 +16,7 @@ class PdfController extends AbstractController
     {
         $quote = $quotationRepository->find($id);
         $lines = [];
+        $total = $totalHT = $totalTaxe = 0;
         foreach (($quote->getLines())->toArray() as $uneLigne) {
             $lines[] = [
                 "place" => $uneLigne->getPlace(),
@@ -27,13 +28,22 @@ class PdfController extends AbstractController
                 "totalTax" => ($uneLigne->getUnitPrice() * $uneLigne->getQuantity()) * (100 + $uneLigne->getTax())/100,
                 "product" => $uneLigne->getProduct()
             ];
+
+            $total += $uneLigne->getUnitPrice() * $uneLigne->getQuantity();
+            $totalHT += ($uneLigne->getUnitPrice() * $uneLigne->getQuantity()) * (100 + $uneLigne->getTax())/100;
+            $totalTaxe += ($uneLigne->getUnitPrice() * $uneLigne->getQuantity()) * ($uneLigne->getTax())/100;
         };
+
         $data = [
             //'imageSrc'     => $this->imageToBase64($this->getParameter('kernel.project_dir') . '/public/images/sound.png'),
             'quote'          => $quote,
             'lines'          => $lines,
+            'total'          => $total,
+            'totalHT'        => $totalHT,
+            'totalTaxe'      => $totalTaxe,
             'dev'          => getenv('APP_ENV') == 'dev'
         ];
+        //dd($quote, $lines);
         $html =  $this->renderView('pdf/pdf.html.twig', $data);
         $dompdf = new Dompdf();
         $dompdf->loadHtml($html);

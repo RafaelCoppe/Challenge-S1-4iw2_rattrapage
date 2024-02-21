@@ -10,6 +10,7 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Faker;
 
+require_once('assets/utilities/Encoding.php');
 use ForceUTF8\Encoding;
 class MemberFixtures extends Fixture implements DependentFixtureInterface
 {

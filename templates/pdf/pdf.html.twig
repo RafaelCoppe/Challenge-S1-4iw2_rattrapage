@@ -42,6 +42,10 @@
         margin: 40mm 10mm 20mm 10mm;
     }
 
+    .quoteNumber {
+        margin-bottom: 3em;
+    }
+
     .quoteNumber > * {
         margin: 5px 0;
     }
@@ -54,10 +58,87 @@
         color: #3886CE;
     }
 
+    .mainTable {
+        width: 90%;
+        margin: 0 auto;
+    }
+
     .productsTable {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: smaller;
+    }
+
+    .productsTable th,
+    .productsTable td {
+        padding: 6px;
         text-align: left;
+        border-bottom: thin solid #3886CE;
+    }
+
+    .productsTable th {
+        color: #004283;
+    }
+
+    .empty {
+        width: 5%;
+        border-bottom: thin solid transparent !important;
+    }
+
+    .productsTable th:nth-child(2),
+    .productsTable td:nth-child(2) {
+        width: 50%;
+    }
+
+    .productsTable th:nth-child(3),
+    .productsTable td:nth-child(3) {
+        width: 5%;
+    }
+
+    .productsTable th:nth-child(4),
+    .productsTable td:nth-child(4),
+    .productsTable th:nth-child(5),
+    .productsTable td:nth-child(5),
+    .productsTable th:nth-child(6),
+    .productsTable td:nth-child(6),
+    .productsTable th:nth-child(7),
+    .productsTable td:nth-child(7) {
+        width: 7.5%;
+    }
+
+    .productsTable td:nth-child(1) {
+        vertical-align: top;
+    }
+
+    .productsTotalTable {
+        width: 35%;
+        margin: 0 0 auto auto;
+        font-size: x-small;
+        border-collapse: collapse;
+    }
+
+    .productsTotalTable th,
+    .productsTotalTable td {
+        padding: 3px;
+        text-align: left;
+        border-bottom: thin solid #3886CE;
+    }
+
+    .productsTotalTable tbody tr:nth-child(1) {
+    }
+    .productsTotalTable tbody tr:nth-child(2) {
+    }
+    .productsTotalTable tbody tr:nth-child(3) {
+    }
+
+    .productsTotalTable tbody th:nth-child(1) {
+        width: 15%;
+    }
+    .productsTotalTable tbody th:nth-child(2) {
+        width: 20%;
     }
 </style>
+c
 
 <body>
 {% if dev %}
@@ -83,19 +164,19 @@
         <table class="productsTable">
             <thead>
             <tr>
-                <th></th>
+                <th class="empty"></th>
                 <th>Description</th>
-                <th>Quantité</th>
-                <th>Prix unitaire</th>
+                <th>Qté</th>
+                <th>P.U.</th>
                 <th>Total HT</th>
-                <th>Taxe (%)</th>
+                <th>Taxe %</th>
                 <th>Total</th>
             </tr>
             </thead>
             <tbody>
             {% for line in lines %}
                 <tr>
-                    <td>#{{ line.place }}</td>
+                    <td class="empty">#{{ line.place }}</td>
                     <td>
                         {{ line.product.label }} - {{ line.product.type }}<br>
                         {{ line.additional }}
@@ -108,6 +189,23 @@
                 </tr>
             {% endfor %}
             </tbody>
+        </table>
+
+        <br>
+
+        <table class="productsTotalTable">
+            <tr>
+                <td>Total HT</td>
+                <td>{{ total }} €</td>
+            </tr>
+            <tr>
+                <td>Total Taxes</td>
+                <td>{{ totalTaxe }} €</td>
+            </tr>
+            <tr>
+                <td>Total</td>
+                <td>{{ totalHT }} €</td>
+            </tr>
         </table>
     </div>
 </main>
