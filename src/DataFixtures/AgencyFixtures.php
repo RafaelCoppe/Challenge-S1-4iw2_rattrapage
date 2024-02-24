@@ -55,7 +55,7 @@ class AgencyFixtures extends Fixture
             $agence = new Agency();
             $agence->setName($thisAgence['name']);
             $agence->setDescription($faker->text);
-            $agence->setAddress($faker->address);
+            $agence->setAddress($faker->streetAddress);
             $agence->setCity($thisAgence['city']);
             $agence->setPhone($faker->phoneNumber);
             $agence->setMail($thisAgence['mail']);

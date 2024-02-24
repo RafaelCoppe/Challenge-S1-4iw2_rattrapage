@@ -41,7 +41,7 @@ class Quotation
     #[ORM\Column]
     private ?int $duration = null;
 
-    #[ORM\ManyToOne(inversedBy: 'quotations')]
+    #[ORM\ManyToOne(fetch: "EAGER", inversedBy: 'quotations')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Agency $agency = null;
 

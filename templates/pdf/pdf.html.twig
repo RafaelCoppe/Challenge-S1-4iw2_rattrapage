@@ -30,7 +30,6 @@
         right: 0;
         height: 20mm;
     }
-
     footer div {
         margin: 0 10mm;
         padding-top: 2mm;
@@ -39,23 +38,45 @@
     }
 
     body {
-        margin: 40mm 10mm 20mm 10mm;
+        margin: 5em 2em 5em 2em;
     }
 
     .quoteNumber {
         margin-bottom: 3em;
     }
-
     .quoteNumber > * {
         margin: 5px 0;
     }
-
     .quoteNumber h1 {
         color: #004283;
     }
-
     .quoteNumber h2 {
         color: #3886CE;
+    }
+
+    .agency_client {
+        height: 15em;
+    }
+    .agency_client div {
+        width: 40%;
+        background-color: lightgrey;
+        padding: 1rem;
+        border-radius: 25px;
+        line-height: 75%;
+        border: thin solid #3886CE;
+    }
+    .agency_client div:nth-child(1) {
+        float: left;
+        margin-left: 1em;
+    }
+    .agency_client div:nth-child(2) {
+        float: right;
+        margin-right: 1em;
+    }
+    .agency_client .label {
+        font-size: smaller;
+        margin-bottom: 2em;
+        font-weight: bold;
     }
 
     .mainTable {
@@ -68,14 +89,12 @@
         border-collapse: collapse;
         font-size: smaller;
     }
-
     .productsTable th,
     .productsTable td {
         padding: 6px;
         text-align: left;
         border-bottom: thin solid #3886CE;
     }
-
     .productsTable th {
         color: #004283;
     }
@@ -89,12 +108,10 @@
     .productsTable td:nth-child(2) {
         width: 50%;
     }
-
     .productsTable th:nth-child(3),
     .productsTable td:nth-child(3) {
         width: 5%;
     }
-
     .productsTable th:nth-child(4),
     .productsTable td:nth-child(4),
     .productsTable th:nth-child(5),
@@ -105,50 +122,49 @@
     .productsTable td:nth-child(7) {
         width: 7.5%;
     }
-
     .productsTable td:nth-child(1) {
         vertical-align: top;
     }
 
     .productsTotalTable {
-        width: 35%;
+        width: 25%;
         margin: 0 0 auto auto;
-        font-size: x-small;
         border-collapse: collapse;
+        color: #004283;
     }
-
     .productsTotalTable th,
     .productsTotalTable td {
         padding: 3px;
         text-align: left;
-        border-bottom: thin solid #3886CE;
     }
-
     .productsTotalTable tbody tr:nth-child(1) {
-    }
-    .productsTotalTable tbody tr:nth-child(2) {
-    }
-    .productsTotalTable tbody tr:nth-child(3) {
-    }
-
-    .productsTotalTable tbody th:nth-child(1) {
         width: 15%;
     }
-    .productsTotalTable tbody th:nth-child(2) {
-        width: 20%;
+    .productsTotalTable tbody tr:nth-child(2) {
+        width: 15%;
+    }
+    .productsTotalTable tbody tr td:nth-child(1) {
+        font-size: larger;
+        font-weight: bold;
+    }
+
+    .description {
+        line-height: 75%;
+        margin-left: 1em;
+    }
+    .description .label {
+        color: #004283;
+    }
+    .description .content {
+        color: #3886CE;
     }
 </style>
-c
+
 
 <body>
 {% if dev %}
     <div id="watermark">ENVIRONNEMENT DE DEVELOPPEMENT</div>
 {% endif %}
-<header>
-    <div>
-        <p>aaaaa</p>
-    </div>
-</header>
 
 <footer>
     {% include 'pdf/footer.html.twig' %}
@@ -158,6 +174,31 @@ c
     <div class="quoteNumber">
         <h1>DEVIS</h1>
         <h2>No. #{{ quote.ref }}</h2>
+    </div>
+
+    <img src="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg" alt="test">
+
+    <div class="agency_client">
+        <div class="agency">
+            <p class="label">Agence : </p>
+            <p class="name">{{ agency.name }}</p>
+            <p class="phone">{{ agency.phone }}</p>
+            <p class="mail">{{ agency.mail }}</p>
+            <p class="address">{{ agency.address }}</p>
+        </div>
+
+        <div class="client">
+            <p class="label">Client : </p>
+            <p class="name">{{ client.name }}</p>
+            <p class="phone">{{ client.phone }}</p>
+            <p class="mail">{{ client.mail }}</p>
+            <p class="address">{{ client.address }}</p>
+        </div>
+    </div>
+
+    <div class="description">
+        <p class="label">Description : </p>
+        <p class="content">{{ quote.terms }}</p>
     </div>
 
     <div class="mainTable">

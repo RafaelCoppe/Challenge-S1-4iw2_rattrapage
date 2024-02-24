@@ -8,11 +8,12 @@ use Dompdf\Dompdf;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class PdfController extends AbstractController
 {
     #[Route('/pdf/{id}', name: 'app_pdf')]
-    public function index(QuotationRepository $quotationRepository, int $id): Response
+    public function index(QuotationRepository $quotationRepository, HttpClientInterface $client, int $id): Response
     {
         $quote = $quotationRepository->find($id);
         $lines = [];
@@ -34,6 +35,34 @@ class PdfController extends AbstractController
             $totalTaxe += ($uneLigne->getUnitPrice() * $uneLigne->getQuantity()) * ($uneLigne->getTax())/100;
         };
 
+        $response = $client->request(
+            'GET',
+            'https://geo.api.gouv.fr/communes/' . $quote->getClient()->getCity()
+        );
+        $response = $response->toArray();
+        $clientCity = $response['codesPostaux'][0] . " " . $response['nom'];
+
+        $quoteClient = [
+            "name" => $quote->getClient()->getLastName() . " " . $quote->getClient()->getFirstName(),
+            "phone" => $quote->getClient()->getPhone(),
+            "mail" => $quote->getClient()->getEmail(),
+            "address" => $quote->getClient()->getAddress() . " " . $clientCity,
+        ];
+
+        $response = $client->request(
+            'GET',
+            'https://geo.api.gouv.fr/communes/' . $quote->getAgency()->getCity()
+        );
+        $response = $response->toArray();
+        $agencyCity = $response['codesPostaux'][0] . " " . $response['nom'];
+
+        $quoteAgency = [
+            "name" => $quote->getAgency()->getName(),
+            "phone" => $quote->getAgency()->getPhone(),
+            "mail" => $quote->getAgency()->getMail(),
+            "address" => $quote->getAgency()->getAddress() . " " . $agencyCity,
+        ];
+
         $data = [
             //'imageSrc'     => $this->imageToBase64($this->getParameter('kernel.project_dir') . '/public/images/sound.png'),
             'quote'          => $quote,
@@ -41,9 +70,11 @@ class PdfController extends AbstractController
             'total'          => $total,
             'totalHT'        => $totalHT,
             'totalTaxe'      => $totalTaxe,
-            'dev'          => getenv('APP_ENV') == 'dev'
+            'client'         => $quoteClient,
+            'agency'         => $quoteAgency,
+            'dev'            => getenv('APP_ENV') == 'dev'
         ];
-        //dd($quote, $lines);
+        //dd($data);
         $html =  $this->renderView('pdf/pdf.html.twig', $data);
         $dompdf = new Dompdf();
         $dompdf->loadHtml($html);

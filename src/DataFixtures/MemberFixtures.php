@@ -10,7 +10,12 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Faker;
 
-require_once('assets/utilities/Encoding.php');
+/*
+ * BUg non résolu :
+ * Si erreur "Attempted to load class" ou "failed to open stream: No such file or directory"
+ * Commenter / Décommenter ligne 18
+ */
+include('assets/utilities/Encoding.php');
 use ForceUTF8\Encoding;
 class MemberFixtures extends Fixture implements DependentFixtureInterface
 {
