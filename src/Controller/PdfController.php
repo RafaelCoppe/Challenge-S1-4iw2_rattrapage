@@ -12,9 +12,10 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class PdfController extends AbstractController
 {
-    #[Route('/pdf/{id}', name: 'app_pdf')]
-    public function index(QuotationRepository $quotationRepository, HttpClientInterface $client, int $id): Response
+    #[Route('/pdf/{id}/{facture}', name: 'app_pdf')]
+    public function index(QuotationRepository $quotationRepository, HttpClientInterface $client, int $id, int $facture): Response
     {
+        $isFacture = ($facture == 1);
         $quote = $quotationRepository->find($id);
         $lines = [];
         $total = $totalHT = $totalTaxe = 0;
@@ -64,7 +65,7 @@ class PdfController extends AbstractController
         ];
 
         $data = [
-            //'imageSrc'     => $this->imageToBase64($this->getParameter('kernel.project_dir') . '/public/images/sound.png'),
+            'imageSrc'       => $this->imageToBase64($this->getParameter('kernel.project_dir') . '/public/images/logoDevisio.png'),
             'quote'          => $quote,
             'lines'          => $lines,
             'total'          => $total,
@@ -74,7 +75,13 @@ class PdfController extends AbstractController
             'agency'         => $quoteAgency,
             'dev'            => getenv('APP_ENV') == 'dev'
         ];
+
+        if($isFacture){
+
+        }
+
         //dd($data);
+
         $html =  $this->renderView('pdf/pdf.html.twig', $data);
         $dompdf = new Dompdf();
         $dompdf->loadHtml($html);
