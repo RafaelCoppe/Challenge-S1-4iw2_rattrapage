@@ -13,7 +13,7 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 class PdfController extends AbstractController
 {
     #[Route('/pdf/{id}/{facture}', name: 'app_pdf')]
-    public function index(QuotationRepository $quotationRepository, HttpClientInterface $client, int $id, int $facture): Response
+    public function index(QuotationRepository $quotationRepository, HttpClientInterface $client, int $id, int $facture)
     {
         $isFacture = ($facture == 1);
         $quote = $quotationRepository->find($id);
@@ -114,10 +114,6 @@ class PdfController extends AbstractController
         $dompdf->render();
         $titre = ($isFacture ? 'facture_' : 'devis_') . $quote->getRef();
         $dompdf->stream($titre . '.pdf');
-
-        return $this->render('default/index.html.twig', [
-            'controller_name' => 'index',
-        ]);
     }
 
     private function imageToBase64($path): string
