@@ -30,6 +30,7 @@
         right: 0;
         height: 20mm;
     }
+
     footer div {
         margin: 0 10mm;
         padding-top: 2mm;
@@ -44,12 +45,15 @@
     .quoteNumber {
         margin-bottom: 3em;
     }
+
     .quoteNumber > * {
         margin: 5px 0;
     }
+
     .quoteNumber h1 {
         color: #004283;
     }
+
     .quoteNumber h2 {
         color: #3886CE;
     }
@@ -64,6 +68,7 @@
     .agency_client {
         height: 15em;
     }
+
     .agency_client div {
         width: 40%;
         background-color: lightgrey;
@@ -72,14 +77,17 @@
         line-height: 75%;
         border: thin solid #3886CE;
     }
+
     .agency_client div:nth-child(1) {
         float: left;
         margin-left: 1em;
     }
+
     .agency_client div:nth-child(2) {
         float: right;
         margin-right: 1em;
     }
+
     .agency_client .label {
         font-size: smaller;
         margin-bottom: 2em;
@@ -96,12 +104,14 @@
         border-collapse: collapse;
         font-size: smaller;
     }
+
     .productsTable th,
     .productsTable td {
         padding: 6px;
         text-align: left;
         border-bottom: thin solid #3886CE;
     }
+
     .productsTable th {
         color: #004283;
     }
@@ -115,10 +125,12 @@
     .productsTable td:nth-child(2) {
         width: 50%;
     }
+
     .productsTable th:nth-child(3),
     .productsTable td:nth-child(3) {
         width: 5%;
     }
+
     .productsTable th:nth-child(4),
     .productsTable td:nth-child(4),
     .productsTable th:nth-child(5),
@@ -129,6 +141,7 @@
     .productsTable td:nth-child(7) {
         width: 7.5%;
     }
+
     .productsTable td:nth-child(1) {
         vertical-align: top;
     }
@@ -139,17 +152,21 @@
         border-collapse: collapse;
         color: #004283;
     }
+
     .productsTotalTable th,
     .productsTotalTable td {
         padding: 3px;
         text-align: left;
     }
+
     .productsTotalTable tbody tr:nth-child(1) {
         width: 15%;
     }
+
     .productsTotalTable tbody tr:nth-child(2) {
         width: 15%;
     }
+
     .productsTotalTable tbody tr td:nth-child(1) {
         font-size: larger;
         font-weight: bold;
@@ -159,11 +176,58 @@
         line-height: 75%;
         margin-left: 1em;
     }
+
     .description .label {
         color: #004283;
     }
+
     .description .content {
         color: #3886CE;
+    }
+
+    .facture_only {
+        margin-bottom: 100mm;
+        break-inside: avoid;
+    }
+
+    .travelers,
+    .payment {
+        margin-left: 1em;
+    }
+
+    .travelers_table {
+        width: 35%;
+        border-collapse: collapse;
+        font-size: smaller;
+    }
+
+    .travelers_table th {
+        color: #004283;
+    }
+
+    .travelers_table th,
+    .travelers_table td {
+        padding: 6px;
+        text-align: left;
+        border-bottom: thin solid #3886CE;
+    }
+
+    .travelers_table tbody tr:nth-child(3) {
+        width: 5%;
+    }
+
+    .payment_infos {
+        margin-left: 1em;
+    }
+    .payment_infos tr td:nth-child(2) {
+        padding-left: 1em;
+    }
+
+    .bottom_plane{
+        position: fixed;
+        bottom: 40mm;
+        right: 6em;
+        width: 20%
     }
 </style>
 
@@ -183,7 +247,7 @@
         <h2>No. #{{ quote.ref }}</h2>
     </div>
 
-    <img class="logoDevisio" src="{{ imageSrc }}" alt="Logo de Devisio">
+    <img class="logoDevisio" src="{{ logoDevisio }}" alt="Logo de Devisio">
 
     <div class="agency_client">
         <div class="agency">
@@ -256,6 +320,58 @@
             </tr>
         </table>
     </div>
+
+    {% if isFacture %}
+        <div class="facture_only">
+            <div class="travelers">
+                <p>Voyageurs : </p>
+                <table class="travelers_table">
+                    <thead>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Prénom</th>
+                        <th>Age</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for traveler in travelers %}
+                        <tr>
+                            <td>{{ traveler.lastname }}</td>
+                            <td>{{ traveler.firstname }}</td>
+                            <td>{{ traveler.age }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <br>
+
+            <div class="payment">
+                <p>Informations de paiement : </p>
+                <table class="payment_infos">
+                    <tr>
+                        <td>Nom :</td>
+                        <td>{{ payment.lastname }} {{ payment.firstname }}</td>
+                    </tr>
+                    <tr>
+                        <td>Mail :</td>
+                        <td>{{ payment.mail }}</td>
+                    </tr>
+                    <tr>
+                        <td>Telephone :</td>
+                        <td>{{ payment.phone }}</td>
+                    </tr>
+                    <tr>
+                        <td>Adresse :</td>
+                        <td>{{ payment.address }}</td>
+                    </tr>
+                </table>
+            </div>
+
+            <img class="bottom_plane" src="{{ planeImage }}" alt="Avion en vol">
+        </div>
+    {% endif %}
 </main>
 </body>
 </html>

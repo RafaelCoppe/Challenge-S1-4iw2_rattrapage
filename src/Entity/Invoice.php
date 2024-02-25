@@ -22,7 +22,7 @@ class Invoice
     #[ORM\JoinColumn(nullable: false)]
     private ?string $payment_status = null;
 
-    #[ORM\OneToOne(mappedBy: 'Invoice', cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(mappedBy: 'invoice', cascade: ['persist', 'remove'])]
     private ?Quotation $quote = null;
 
     #[ORM\Column(length: 255)]

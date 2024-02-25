@@ -65,7 +65,7 @@ class PdfController extends AbstractController
         ];
 
         $data = [
-            'imageSrc'       => $this->imageToBase64($this->getParameter('kernel.project_dir') . '/public/images/logoDevisio.png'),
+            'logoDevisio'   => $this->imageToBase64($this->getParameter('kernel.project_dir') . '/public/images/logoDevisio.png'),
             'quote'          => $quote,
             'lines'          => $lines,
             'total'          => $total,
@@ -73,21 +73,47 @@ class PdfController extends AbstractController
             'totalTaxe'      => $totalTaxe,
             'client'         => $quoteClient,
             'agency'         => $quoteAgency,
+            'isFacture'      => $isFacture,
+            'planeImage'     => $this->imageToBase64($this->getParameter('kernel.project_dir') . '/public/images/plane.png'),
             'dev'            => getenv('APP_ENV') == 'dev'
         ];
 
         if($isFacture){
+            $invoice = $quote->getInvoice();
 
+            $response = $client->request(
+                'GET',
+                'https://geo.api.gouv.fr/communes/' . $invoice->getPaymentCity()
+            );
+            $response = $response->toArray();
+            $paymentCity = $response['codesPostaux'][0] . " " . $response['nom'];
+
+            $payment = [
+                "lastname" => $invoice->getPaymentLastname(),
+                "firstname" => $invoice->getPaymentFirstname(),
+                "mail" => $invoice->getPaymentEmail(),
+                "phone" => $invoice->getPaymentPhone(),
+                "address" => $invoice->getPaymentAddress() . " " . $paymentCity,
+            ];
+            $data['payment'] = $payment;
+
+            $travelers = [];
+            foreach ($quote->getInvoice()->getTravelers() as $traveler) {
+                $travelers[] = [
+                    "lastname" => $traveler->getLastname(),
+                    "firstname" => $traveler->getFirstname(),
+                    "age" => $traveler->getAge(),
+                ];
+            }
+            $data['travelers'] = $travelers;
         }
-
-        //dd($data);
 
         $html =  $this->renderView('pdf/pdf.html.twig', $data);
         $dompdf = new Dompdf();
         $dompdf->loadHtml($html);
         $dompdf->render();
-        $output = $dompdf->output();
-        file_put_contents('TestPdf.pdf', $output);
+        $titre = ($isFacture ? 'facture_' : 'devis_') . $quote->getRef();
+        $dompdf->stream($titre . '.pdf');
 
         return $this->render('default/index.html.twig', [
             'controller_name' => 'index',

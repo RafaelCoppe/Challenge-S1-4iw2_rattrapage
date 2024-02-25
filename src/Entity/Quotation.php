@@ -32,7 +32,7 @@ class Quotation
     #[ORM\OneToMany(mappedBy: 'quote', targetEntity: Line::class, fetch: "EAGER")]
     private Collection $lines;
 
-    #[ORM\OneToOne(inversedBy: 'invoice', cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(inversedBy: 'quote', cascade: ['persist', 'remove'])]
     private ?Invoice $invoice = null;
 
     #[ORM\OneToOne(mappedBy: 'quotation', cascade: ['persist', 'remove'])]
