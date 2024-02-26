@@ -32,7 +32,7 @@ class Client
     private ?int $city = null;
 
     #[ORM\OneToOne(inversedBy: 'client', cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Quotation $quotation = null;
 
     public function getId(): ?int

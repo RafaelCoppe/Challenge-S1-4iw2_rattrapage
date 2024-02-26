@@ -114,6 +114,7 @@ class PdfController extends AbstractController
         $dompdf->render();
         $titre = ($isFacture ? 'facture_' : 'devis_') . $quote->getRef();
         $dompdf->stream($titre . '.pdf');
+        return $this->render('default/index.html.twig');
     }
 
     private function imageToBase64($path): string
