@@ -8,7 +8,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class DefaultController extends AbstractController
 {
-    #[Route('/', name: 'default_index')]
+    #[Route('/', name: 'default')]
     public function index(): Response
     {
         return $this->redirectToRoute('app_login');
