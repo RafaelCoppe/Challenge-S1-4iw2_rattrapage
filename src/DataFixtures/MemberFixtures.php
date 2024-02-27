@@ -10,6 +10,13 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Faker;
 
+/*
+ * BUg non résolu :
+ * Si erreur "Attempted to load class" ou "failed to open stream: No such file or directory"
+ * Commenter / Décommenter ligne 18
+ */
+include('assets/utilities/Encoding.php');
+use ForceUTF8\Encoding;
 class MemberFixtures extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager): void
@@ -20,17 +27,17 @@ class MemberFixtures extends Fixture implements DependentFixtureInterface
 
         for($i=0; $i<10; $i++) {
             $gender = ($i%2 == 0 ? 'male' : 'female');
-            $lastname = utf8_encode($faker->lastName($gender));
-            $firstname = utf8_encode($faker->firstName($gender));
+            $lastname = strtolower(Encoding::fixUTF8($faker->lastName($gender)));
+            $firstname = strtolower(Encoding::fixUTF8($faker->firstName($gender)));
 
             $member = new Member();
-            $member->setUsername(strtolower("$firstname[0]$lastname"));
+            $member->setUsername("$firstname[0]$lastname");
             $member->setPassword("12345");
             $member->setFirstName($firstname);
             $member->setLastName($lastname);
             $member->setMail("$firstname.$lastname@mail.com");
-            $member->setPhone(utf8_encode($faker->phoneNumber));
-            $member->setAddress(utf8_encode($faker->streetAddress));
+            $member->setPhone($faker->phoneNumber);
+            $member->setAddress(Encoding::fixUTF8($faker->streetAddress));
             $member->setCity($villes[$i]);
             $member->setGender($gender == 'male' ? 'homme' : 'femme');
             $member->setStatus($status[$i%4]);

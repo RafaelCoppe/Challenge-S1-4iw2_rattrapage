@@ -15,7 +15,7 @@ class Line
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(targetEntity: Product::class, inversedBy: 'lines')]
+    #[ORM\ManyToOne(targetEntity: Product::class, fetch: "EAGER", inversedBy: 'lines')]
     private Product $product;
 
     #[ORM\ManyToOne(inversedBy: 'lines')]

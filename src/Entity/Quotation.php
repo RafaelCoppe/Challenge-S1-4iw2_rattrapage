@@ -29,21 +29,24 @@ class Quotation
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?DateTimeInterface $end_date = null;
 
-    #[ORM\OneToMany(mappedBy: 'quote', targetEntity: Line::class)]
+    #[ORM\OneToMany(mappedBy: 'quote', targetEntity: Line::class, fetch: "EAGER")]
     private Collection $lines;
 
-    #[ORM\OneToOne(inversedBy: 'invoice', cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(inversedBy: 'quote', cascade: ['persist', 'remove'])]
     private ?Invoice $invoice = null;
-
-    #[ORM\OneToOne(mappedBy: 'quotation', cascade: ['persist', 'remove'])]
-    private ?Client $client = null;
 
     #[ORM\Column]
     private ?int $duration = null;
 
-    #[ORM\ManyToOne(inversedBy: 'quotations')]
+    #[ORM\ManyToOne(fetch: "EAGER", inversedBy: 'quotations')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Agency $agency = null;
+
+    #[ORM\Column(length: 10, nullable: true)]
+    private ?string $ref = null;
+
+    #[ORM\ManyToOne(inversedBy: 'quotation')]
+    private ?Client $client = null;
 
     public function __construct()
     {
@@ -145,23 +148,6 @@ class Quotation
         return $this;
     }
 
-    public function getClient(): ?Client
-    {
-        return $this->client;
-    }
-
-    public function setClient(Client $client): static
-    {
-        // set the owning side of the relation if necessary
-        if ($client->getQuotation() !== $this) {
-            $client->setQuotation($this);
-        }
-
-        $this->client = $client;
-
-        return $this;
-    }
-
     public function getDuration(): ?int
     {
         return $this->duration;
@@ -182,6 +168,30 @@ class Quotation
     public function setAgency(?Agency $agency): static
     {
         $this->agency = $agency;
+
+        return $this;
+    }
+
+    public function getRef(): ?string
+    {
+        return $this->ref;
+    }
+
+    public function setRef(?string $ref): static
+    {
+        $this->ref = $ref;
+
+        return $this;
+    }
+
+    public function getClient(): ?Client
+    {
+        return $this->client;
+    }
+
+    public function setClient(?Client $client): static
+    {
+        $this->client = $client;
 
         return $this;
     }

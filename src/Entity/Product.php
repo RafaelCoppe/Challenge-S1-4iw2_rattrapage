@@ -24,6 +24,10 @@ class Product
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: Line::class)]
     private Collection $lines;
 
+    #[ORM\ManyToOne(inversedBy: 'products')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Agency $agency = null;
+
     public function __construct()
     {
         $this->lines = new ArrayCollection();
@@ -79,6 +83,18 @@ class Product
     public function removeLine(Line $line): static
     {
         $this->lines->removeElement($line);
+
+        return $this;
+    }
+
+    public function getAgency(): ?Agency
+    {
+        return $this->agency;
+    }
+
+    public function setAgency(?Agency $agency): static
+    {
+        $this->agency = $agency;
 
         return $this;
     }

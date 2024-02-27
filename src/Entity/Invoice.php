@@ -22,13 +22,7 @@ class Invoice
     #[ORM\JoinColumn(nullable: false)]
     private ?string $payment_status = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $start_date = null;
-
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $end_date = null;
-
-    #[ORM\OneToOne(mappedBy: 'Invoice', cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(mappedBy: 'invoice', cascade: ['persist', 'remove'])]
     private ?Quotation $quote = null;
 
     #[ORM\Column(length: 255)]
@@ -86,30 +80,6 @@ class Invoice
         return $this;
     }
 
-    public function getStartDate(): ?\DateTimeInterface
-    {
-        return $this->start_date;
-    }
-
-    public function setStartDate(\DateTimeInterface $start_date): static
-    {
-        $this->start_date = $start_date;
-
-        return $this;
-    }
-
-    public function getEndDate(): ?\DateTimeInterface
-    {
-        return $this->end_date;
-    }
-
-    public function setEndDate(\DateTimeInterface $end_date): static
-    {
-        $this->end_date = $end_date;
-
-        return $this;
-    }
-
     public function getQuote(): ?Quotation
     {
         return $this->quote;
@@ -119,12 +89,12 @@ class Invoice
     {
         // unset the owning side of the relation if necessary
         if ($quote === null && $this->quote !== null) {
-            $this->quote->setFacture(null);
+            $this->quote->setInvoice(null);
         }
 
         // set the owning side of the relation if necessary
-        if ($quote !== null && $quote->getFacture() !== $this) {
-            $quote->setFacture($this);
+        if ($quote !== null && $quote->getInvoice() !== $this) {
+            $quote->setInvoice($this);
         }
 
         $this->quote = $quote;
