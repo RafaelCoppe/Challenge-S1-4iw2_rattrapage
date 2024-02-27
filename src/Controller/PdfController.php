@@ -3,17 +3,15 @@
 namespace App\Controller;
 
 use App\Repository\QuotationRepository;
-use Doctrine\ORM\EntityManager;
 use Dompdf\Dompdf;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class PdfController extends AbstractController
 {
     #[Route('/pdf/{id}/{facture}', name: 'app_pdf')]
-    public function index(QuotationRepository $quotationRepository, HttpClientInterface $client, int $id, int $facture): Response
+    public function index(QuotationRepository $quotationRepository, HttpClientInterface $client, int $id, int $facture): void
     {
         $isFacture = ($facture == 1);
         $quote = $quotationRepository->find($id);
@@ -112,11 +110,14 @@ class PdfController extends AbstractController
         $dompdf = new Dompdf();
         $dompdf->loadHtml($html);
         $dompdf->render();
-        $titre = ($isFacture ? 'facture_' : 'devis_') . $quote->getRef();
-        $dompdf->stream($titre . '.pdf');
-        return $this->render('default/index.html.twig', [
-            'controller_name' => "testController"
-        ]);
+        $dompdf->output();
+        $titre = ($isFacture ? 'facture_' : 'devis_') . $quote->getRef() . '.pdf';
+        file_put_contents($titre, $dompdf->output());
+
+        header("Content-type:application/pdf");
+        header("Content-Disposition:attachment;filename=\"$titre\"");
+        readfile($titre);
+        unlink($titre);
     }
 
     private function imageToBase64($path): string
