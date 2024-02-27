@@ -17,7 +17,7 @@ class AgencyFixtures extends Fixture
             "name" => "Aventure Horizon",
             "mail" => "info@aventurehorizon.com",
             "domain" => "www.aventurehorizon.com",
-            "city" => 03001,
+            "city" => 23001,
         ],
         [
             "name" => "Escale Découverte",

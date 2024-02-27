@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ClientRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ClientRepository::class)]
@@ -31,9 +33,16 @@ class Client
     #[ORM\Column]
     private ?int $city = null;
 
-    #[ORM\OneToOne(inversedBy: 'client', cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: true)]
-    private ?Quotation $quotation = null;
+    #[ORM\ManyToOne(inversedBy: 'clients')]
+    private ?Agency $agency = null;
+
+    #[ORM\OneToMany(mappedBy: 'client', targetEntity: Quotation::class)]
+    private Collection $quotation;
+
+    public function __construct()
+    {
+        $this->quotation = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -100,14 +109,44 @@ class Client
         $this->city = $city;
     }
 
-    public function getQuotation(): ?Quotation
+    public function getAgency(): ?Agency
+    {
+        return $this->agency;
+    }
+
+    public function setAgency(?Agency $agency): static
+    {
+        $this->agency = $agency;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Quotation>
+     */
+    public function getQuotation(): Collection
     {
         return $this->quotation;
     }
 
-    public function setQuotation(Quotation $quotation): static
+    public function addQuotation(Quotation $quotation): static
     {
-        $this->quotation = $quotation;
+        if (!$this->quotation->contains($quotation)) {
+            $this->quotation->add($quotation);
+            $quotation->setClient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeQuotation(Quotation $quotation): static
+    {
+        if ($this->quotation->removeElement($quotation)) {
+            // set the owning side to null (unless already changed)
+            if ($quotation->getClient() === $this) {
+                $quotation->setClient(null);
+            }
+        }
 
         return $this;
     }

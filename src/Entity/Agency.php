@@ -55,10 +55,18 @@ class Agency
     #[ORM\OneToMany(mappedBy: 'agency', targetEntity: Quotation::class)]
     private Collection $quotations;
 
+    #[ORM\OneToMany(mappedBy: 'agency', targetEntity: Product::class, orphanRemoval: true)]
+    private Collection $products;
+
+    #[ORM\OneToMany(mappedBy: 'agency', targetEntity: Client::class, orphanRemoval: true)]
+    private Collection $clients;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
         $this->quotations = new ArrayCollection();
+        $this->products = new ArrayCollection();
+        $this->clients = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -249,6 +257,66 @@ class Agency
             // set the owning side to null (unless already changed)
             if ($quotation->getAgency() === $this) {
                 $quotation->setAgency(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Product>
+     */
+    public function getProducts(): Collection
+    {
+        return $this->products;
+    }
+
+    public function addProduct(Product $product): static
+    {
+        if (!$this->products->contains($product)) {
+            $this->products->add($product);
+            $product->setAgency($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProduct(Product $product): static
+    {
+        if ($this->products->removeElement($product)) {
+            // set the owning side to null (unless already changed)
+            if ($product->getAgency() === $this) {
+                $product->setAgency(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Client>
+     */
+    public function getClients(): Collection
+    {
+        return $this->clients;
+    }
+
+    public function addClient(Client $client): static
+    {
+        if (!$this->clients->contains($client)) {
+            $this->clients->add($client);
+            $client->setAgency($this);
+        }
+
+        return $this;
+    }
+
+    public function removeClient(Client $client): static
+    {
+        if ($this->clients->removeElement($client)) {
+            // set the owning side to null (unless already changed)
+            if ($client->getAgency() === $this) {
+                $client->setAgency(null);
             }
         }
 

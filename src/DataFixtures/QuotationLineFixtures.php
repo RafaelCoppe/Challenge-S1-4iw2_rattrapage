@@ -11,7 +11,7 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Faker;
 
-class QuotationLineFixtures extends Fixture
+class QuotationLineFixtures extends Fixture implements DependentFixtureInterface
 {
     const LINES = [
         [55, 5, "Hotel 'Le Palmier', 17 avenue des champs", 10, 12],
@@ -38,5 +38,12 @@ class QuotationLineFixtures extends Fixture
 
 
         $manager->flush();
+    }
+
+    public function getDependencies(): array
+    {
+        return [
+            ProductFixtures::class,
+        ];
     }
 }

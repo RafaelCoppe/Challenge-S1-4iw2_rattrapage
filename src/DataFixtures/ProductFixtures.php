@@ -7,7 +7,7 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class ProductFixtures extends Fixture
+class ProductFixtures extends Fixture implements DependentFixtureInterface
 {
     const PRODUITS = [
         ["Transport", "reservation"],["Guide", "reservation"],["Restauration", "reservation"],["Autre", "reservation"],
@@ -22,11 +22,19 @@ class ProductFixtures extends Fixture
             $produit = new Product();
             $produit->setLabel($obj[0]);
             $produit->setType($obj[1]);
+            $produit->setAgency($this->getReference('agence_1'));
 
             $manager->persist($produit);
             $this->addReference("produit_" . $index+1, $produit);
         }
 
         $manager->flush();
+    }
+
+    public function getDependencies(): array
+    {
+        return [
+            AgencyFixtures::class,
+        ];
     }
 }

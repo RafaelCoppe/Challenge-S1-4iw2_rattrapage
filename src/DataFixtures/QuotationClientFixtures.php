@@ -23,7 +23,8 @@ class QuotationClientFixtures extends Fixture implements DependentFixtureInterfa
         $client->setPhone($faker->phoneNumber);
         $client->setAddress("14 impasse des acacias");
         $client->setCity(60342);
-        $client->setQuotation($this->getReference('devis_1'));
+        $client->addQuotation($this->getReference('devis_1'));
+        $client->setAgency($this->getReference('agence_1'));
 
         $manager->persist($client);
         $manager->flush();
