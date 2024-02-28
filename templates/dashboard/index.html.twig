@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello HomeController!
+{% endblock %}
+
+{% block body %}
+    <div class="h-screen flex">
+            {% include '_composants/_topBar.html.twig' %}
+        <div class="flex-1 flex mt-14">
+            {% include '_composants/_sideBar.html.twig' %}
+            {% include '_composants/_mainDashboard.html.twig' %}
+            {% include '_composants/_sidebarRight.html.twig' %}
+        </div>
+    </div>
+<script>
+
+    // Agregar lógica para mostrar/ocultar la navegación lateral al hacer clic en el ícono de menú
+    const menuBtn = document.getElementById('menuBtn');
+    const sideNav = document.getElementById('sidebar');
+    const sidebarRigth = document.getElementById('sidebarRigth');
+    const btnAction = document.getElementById('btnAction');
+
+    menuBtn.addEventListener('click', () => {
+        sideNav.classList.toggle('hidden'); // Agrega o quita la clase 'hidden' para mostrar u ocultar la navegación lateral
+    });
+
+    btnAction.addEventListener('click', () => {
+        sidebarRigth.classList.toggle('hidden'); // Agrega o quita la clase 'hidden' para mostrar u ocultar la navegación lateral
+    });
+</script>
+
+{% endblock %}
+
