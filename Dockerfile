@@ -8,6 +8,7 @@ ARG PHP_VERSION=8.1
 ARG CADDY_VERSION=2
 
 # Prod image
+FROM surnet/alpine-wkhtmltopdf:3.16.2-0.12.6-full as wkhtmltopdf
 FROM php:${PHP_VERSION}-fpm-alpine AS app_php
 
 # Allow to use development versions of Symfony
@@ -31,6 +32,8 @@ RUN apk add --no-cache \
 		git \
         linux-headers \
         npm \
+        xvfb \
+        ttf-dejavu ttf-droid ttf-freefont ttf-liberation \
 	;
 
 RUN set -eux; \
@@ -74,6 +77,15 @@ RUN apk add --no-cache --virtual .pgsql-deps postgresql-dev; \
 	apk del .pgsql-deps
 ###< doctrine/doctrine-bundle ###
 ###< recipes ###
+
+RUN apk add --no-cache \
+        libjpeg-turbo-dev \
+        libpng-dev \
+        libwebp-dev \
+        freetype-dev
+# As of PHP 7.4 we don't need to add --with-png
+RUN docker-php-ext-configure gd --with-jpeg --with-webp --with-freetype
+RUN docker-php-ext-install gd
 
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 COPY docker/php/conf.d/app.ini $PHP_INI_DIR/conf.d/
