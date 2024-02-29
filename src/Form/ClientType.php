@@ -37,14 +37,13 @@ class ClientType extends AbstractType
                 ],
                 
             ])
-            ->add('phone', NumberType::class, [
+            ->add('phone', TextType::class, [
                 'label' => 'Téléphone',
                 'label_attr' => ['class' => 'block text-xl mb-3 font-medium text-gray-700 font-semibold'],
                 'attr' => [
                     'class' => 'mt-2 bg-transparent border-2 p-2 rounded-md w-full',
                     'type' => 'numeric',
                 ],
-                'html5' => true,
                 ])
             ->add('address', TextType::class, [
                 'label' => 'Adresse',

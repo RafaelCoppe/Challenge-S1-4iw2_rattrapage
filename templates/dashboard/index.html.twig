@@ -12,22 +12,22 @@
             {% include '_composants/_sidebarRight.html.twig' %}
         </div>
     </div>
-<script>
+{# <script>
 
-    // Agregar lógica para mostrar/ocultar la navegación lateral al hacer clic en el ícono de menú
     const menuBtn = document.getElementById('menuBtn');
     const sideNav = document.getElementById('sidebar');
     const sidebarRigth = document.getElementById('sidebarRigth');
     const btnAction = document.getElementById('btnAction');
 
     menuBtn.addEventListener('click', () => {
-        sideNav.classList.toggle('hidden'); // Agrega o quita la clase 'hidden' para mostrar u ocultar la navegación lateral
+        sideNav.classList.toggle('hidden'); 
     });
 
     btnAction.addEventListener('click', () => {
-        sidebarRigth.classList.toggle('hidden'); // Agrega o quita la clase 'hidden' para mostrar u ocultar la navegación lateral
+        sidebarRigth.classList.toggle('hidden');
     });
-</script>
+</script> #}
+
 
 {% endblock %}
 

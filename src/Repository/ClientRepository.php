@@ -45,4 +45,15 @@ class ClientRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+        public function findBySearchTerm($searchTerm)
+        {
+            return $this->createQueryBuilder('c')
+                ->where('c.lastname LIKE :searchTerm')
+                ->orWhere('c.firstname LIKE :searchTerm')
+                ->setParameter('searchTerm', '%' . $searchTerm . '%')
+                ->getQuery()
+                ->getResult();
+        }
+
 }

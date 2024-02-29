@@ -10,15 +10,53 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 #[Route('/client')]
 class ClientController extends AbstractController
 {
-    #[Route('/', name: 'app_client_index', methods: ['GET'])]
-    public function index(ClientRepository $clientRepository): Response
+    // #[Route('/', name: 'app_client_index', methods: ['GET'])]
+    // public function index(ClientRepository $clientRepository): Response
+    // {
+    //     return $this->render('client/index.html.twig', [
+    //         'clients' => $clientRepository->findAll(),
+    //     ]);
+    // }
+
+    #[Route('/', name: 'app_client_index', methods: ['GET', 'POST'])]
+    public function index(ClientRepository $clientRepository, Request $request): Response
     {
+        $searchTerm = $request->query->get('search');
+    
+        // Créez un formulaire de recherche
+        $form = $this->createFormBuilder()
+            ->add('search', TextType::class, ['required' => false, 
+            'attr' => [
+                'class' => 'w-full border-none bg-transparent px-4 py-1 text-gray-400 outline-none focus:outline-none',
+                'placeholder' => 'Search...',
+            ],
+            'label' => false
+            ])
+            ->getForm();
+    
+        // Si le formulaire est soumis, traitez-le
+        $form->handleRequest($request);
+    
+        if ($form->isSubmitted() && $form->isValid()) {
+            // Récupérez le terme de recherche depuis le formulaire
+            $searchTerm = $form->get('search')->getData();
+    
+            // Utilisez le terme de recherche pour filtrer les résultats
+            $clients = $clientRepository->findBySearchTerm($searchTerm);
+        } else {
+            // Sinon, récupérez tous les clients
+            $clients = $clientRepository->findAll();
+        }
+    
         return $this->render('client/index.html.twig', [
-            'clients' => $clientRepository->findAll(),
+            'clients' => $clients,
+            'form' => $form->createView(), // Passez le formulaire au template
         ]);
     }
 
