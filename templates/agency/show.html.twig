@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Agency{% endblock %}
+
+{% block body %}
+    <h1>Agency</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ agency.id }}</td>
+            </tr>
+            <tr>
+                <th>Name</th>
+                <td>{{ agency.name }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ agency.description }}</td>
+            </tr>
+            <tr>
+                <th>Address</th>
+                <td>{{ agency.address }}</td>
+            </tr>
+            <tr>
+                <th>City</th>
+                <td>{{ agency.city }}</td>
+            </tr>
+            <tr>
+                <th>Phone</th>
+                <td>{{ agency.phone }}</td>
+            </tr>
+            <tr>
+                <th>Mail</th>
+                <td>{{ agency.mail }}</td>
+            </tr>
+            <tr>
+                <th>Create_date</th>
+                <td>{{ agency.createDate ? agency.createDate|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Update_date</th>
+                <td>{{ agency.updateDate ? agency.updateDate|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Delete_date</th>
+                <td>{{ agency.deleteDate ? agency.deleteDate|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_agency_index') }}">back to list</a>
+
+    <a href="{{ path('app_agency_edit', {'id': agency.id}) }}">edit</a>
+
+    {{ include('agency/_delete_form.html.twig') }}
+{% endblock %}

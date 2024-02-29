@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Invoice index{% endblock %}
+
+{% block body %}
+    <h1>Invoice index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Terms</th>
+                <th>Payment_lastname</th>
+                <th>Payment_firstname</th>
+                <th>Payment_email</th>
+                <th>Payment_phone</th>
+                <th>Payment_address</th>
+                <th>Payment_city</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for invoice in invoices %}
+            <tr>
+                <td>{{ invoice.id }}</td>
+                <td>{{ invoice.terms }}</td>
+                <td>{{ invoice.paymentLastname }}</td>
+                <td>{{ invoice.paymentFirstname }}</td>
+                <td>{{ invoice.paymentEmail }}</td>
+                <td>{{ invoice.paymentPhone }}</td>
+                <td>{{ invoice.paymentAddress }}</td>
+                <td>{{ invoice.paymentCity }}</td>
+                <td>
+                    <a href="{{ path('app_invoice_show', {'id': invoice.id}) }}">show</a>
+                    <a href="{{ path('app_invoice_edit', {'id': invoice.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="9">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_invoice_new') }}">Create new</a>
+{% endblock %}
