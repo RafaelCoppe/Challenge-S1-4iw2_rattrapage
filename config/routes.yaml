@@ -5,3 +5,15 @@ controllers:
 contact:
     path: /contact
     controller: App\Controller\ContactPageController::index
+
+quotation_new:
+    path: /quotation/new
+    controller: App\Controller\QuotationController::new
+
+quotation_index:
+    path: /quotation
+    controller: App\Controller\QuotationController::index
+
+quotation_delete:
+    path: /quotation/delete/{id}
+    controller: App\Controller\QuotationController::delete

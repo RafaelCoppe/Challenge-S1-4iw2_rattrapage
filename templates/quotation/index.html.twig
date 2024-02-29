@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des devis{% endblock %}
+
+{% block body %}
+    <h1>Liste des devis</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Terms</th>
+                <th>Status</th>
+                <th>Actions</th> {# Nouvelle colonne pour les actions #}
+            </tr>
+        </thead>
+        <tbody>
+            {% for quotation in quotations %}
+                <tr>
+                    <td>{{ quotation.id }}</td>
+                    <td>{{ quotation.terms }}</td>
+                    <td>{{ quotation.status }}</td>
+                    <td>
+                        <form action="{{ path('quotation_delete', {'id': quotation.id}) }}" method="post">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ quotation.id) }}">
+                            <button type="submit" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce devis ?')">Supprimer</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
