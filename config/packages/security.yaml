@@ -7,8 +7,8 @@ security:
         # used to reload user from session & other features (e.g. switch_user)
         app_user_provider:
             entity:
-                class: App\Entity\Utilisateur
-                property: username
+                class: App\Entity\Member
+                property: mail
         # used to reload user from session & other features (e.g. switch_user)
     firewalls:
         dev:
@@ -17,7 +17,12 @@ security:
         main:
             lazy: true
             provider: app_user_provider
-            custom_authenticator: App\Security\CompanyAuthenticator
+            # custom_authenticator: App\Security\MemberAuthenticator
+            form_login:
+                # "app_login" is the name of the route created previously
+                login_path: app_login
+                check_path: app_login
+
             logout:
                 path: app_logout
                 # where to redirect after logout
