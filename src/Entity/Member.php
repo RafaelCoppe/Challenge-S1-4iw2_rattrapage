@@ -64,8 +64,8 @@ class Member implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?DateTimeInterface $delete_date = null;
 
-    #[ORM\ManyToMany(targetEntity: Agency::class, inversedBy: 'users')]
-    private Collection $agencies;
+    #[ORM\ManyToOne(inversedBy: 'members')]
+    private ?Agency $agency = null;
 
     public function __construct()
     {
@@ -250,30 +250,6 @@ class Member implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * @return Collection<int, Agency>
-     */
-    public function getAgency(): Collection
-    {
-        return $this->agencies;
-    }
-
-    public function addAgency(Agency $agency): static
-    {
-        if (!$this->agencies->contains($agency)) {
-            $this->agencies->add($agency);
-        }
-
-        return $this;
-    }
-
-    public function removeAgency(Agency $agency): static
-    {
-        $this->agencies->removeElement($agency);
-
-        return $this;
-    }
-
     public function getStatus(): ?string
     {
         return $this->status;
@@ -292,5 +268,17 @@ class Member implements UserInterface, PasswordAuthenticatedUserInterface
     public function setGender(?string $gender): void
     {
         $this->gender = $gender;
+    }
+
+    public function getAgency(): ?Agency
+    {
+        return $this->agency;
+    }
+
+    public function setAgency(?Agency $agency): static
+    {
+        $this->agency = $agency;
+
+        return $this;
     }
 }

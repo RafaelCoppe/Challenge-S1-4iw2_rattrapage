@@ -43,19 +43,7 @@ class MemberFixtures extends Fixture implements DependentFixtureInterface
             $member->setStatus($status[$i%4]);
             $member->setRoles(["ROLE_USER"]);
             $member->setCreateDate(new DateTime('now', new DateTimeZone("Europe/Paris")));
-
-            $nb = rand(0, 5);
-            if($nb!=0){
-                $agences_array = range(1, 5);
-                shuffle($agences_array );
-                $agences_array = array_slice($agences_array ,0,$nb);
-
-                foreach ($agences_array as $uneAgence) {
-                    $uneAgence = $this->getReference('agence_' . $uneAgence);
-
-                    $member->addAgency($uneAgence);
-                }
-            }
+            $member->setAgency($this->getReference('agence_' . rand(1, 5)));
 
             $manager->persist($member);
             $this->addReference("user_" . $i+1, $member);
