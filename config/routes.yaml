@@ -17,3 +17,11 @@ quotation_index:
 quotation_delete:
     path: /quotation/delete/{id}
     controller: App\Controller\QuotationController::delete
+
+quotation_edit:
+    path: /quotation/edit/{id}
+    controller: App\Controller\QuotationController::edit
+
+app_pdf:
+    path: /pdf/{id}/{facture}
+    controller: App\Controller\PdfController::index

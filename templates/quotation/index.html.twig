@@ -21,13 +21,20 @@
                     <td>{{ quotation.terms }}</td>
                     <td>{{ quotation.status }}</td>
                     <td>
+                        <a href="{{ path('quotation_edit', {'id': quotation.id}) }}" class="btn btn-primary">Éditer</a>
                         <form action="{{ path('quotation_delete', {'id': quotation.id}) }}" method="post">
                             <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ quotation.id) }}">
-                            <button type="submit" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce devis ?')">Supprimer</button>
+                            <button type="submit" class="btn btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce devis ?')">Supprimer</button>
                         </form>
+                        <a href="{{ path('app_pdf', {'id': quotation.id, "facture":1}) }}" class="btn btn-primary">Télécharger</a>
                     </td>
                 </tr>
             {% endfor %}
         </tbody>
     </table>
+
+    <form action="{{ path('quotation_new')}}" method="post">
+        <button type="submit">Nouveau devis</button>
+    </form>
+
 {% endblock %}

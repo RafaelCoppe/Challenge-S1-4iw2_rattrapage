@@ -59,4 +59,24 @@ class QuotationController extends AbstractController
 
         return $this->redirectToRoute('quotation_index');
     }
+
+    /**
+     * @Route("/edit/{id}", name="quotation_edit", methods={"GET","POST"})
+     */
+    public function edit(Request $request, Quotation $quotation, ManagerRegistry $doctrine): Response
+    {
+        $form = $this->createForm(QuotationType::class, $quotation);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $doctrine->getManager()->flush();
+
+            return $this->redirectToRoute('quotation_index');
+        }
+
+        return $this->render('quotation/edit.html.twig', [
+            'quotation' => $quotation,
+            'form' => $form->createView(),
+        ]);
+    }
 }

@@ -21,7 +21,7 @@ class QuotationType extends AbstractType
             ->add('start_date')
             ->add('end_date')
             ->add('duration')
-            ->add('ref')
+            //->add('ref')
 //             ->add('invoice', EntityType::class, [
 //                 'class' => Invoice::class,
 // 'choice_label' => 'id',
