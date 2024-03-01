@@ -1,6 +1,1 @@
-# .gitignore
-composer.json
-composer.lock
-config/bundles.php
-docker-compose.yml
-symfony.lock
+
