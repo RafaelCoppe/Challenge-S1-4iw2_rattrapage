@@ -10,10 +10,11 @@ use Doctrine\Persistence\ObjectManager;
 class ProductFixtures extends Fixture implements DependentFixtureInterface
 {
     const PRODUITS = [
-        ["Transport", "reservation"],["Guide", "reservation"],["Restauration", "reservation"],["Autre", "reservation"],
-        ["Transport", "location"],["Matériel sportif", "location"],["Autre", "location"],
-        ["Culture", "sortie"],["Ballade", "sortie"],["Divertissement", "sortie"],["Autre", "sortie"],
-        ["Chambre", "logement"],["Appartement", "logement"],["Mobile_home", "logement"],["Autre", "logement"],
+        ["transport", "Location de voiture", 5],["transport", "Taxi de l'aéroport à l'hôtel", 10],
+        ["activité", "Visite d'un musée", 5],["activité", "Randonnée", 0],["activité", "Visite guidée de la ville", 0],
+        ["logement", "Chambre d'hôtel", 10],["logement", "Location d'un AirBnB", 10],
+        ["restauration", "Réservation d'une table dans un restaurant", 0],["restauration", "Petit-déjeuner à l'hôtel", 0],
+        ["other", "Journée libre", 0]
     ];
 
     public function load(ObjectManager $manager)
@@ -21,7 +22,8 @@ class ProductFixtures extends Fixture implements DependentFixtureInterface
         foreach (self::PRODUITS as $index=>$obj) {
             $produit = new Product();
             $produit->setLabel($obj[0]);
-            $produit->setType($obj[1]);
+            $produit->setCategory($obj[1]);
+            $produit->setTax($obj[2]);
             $produit->setAgency($this->getReference('agence_1'));
 
             $manager->persist($produit);

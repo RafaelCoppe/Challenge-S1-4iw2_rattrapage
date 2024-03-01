@@ -19,7 +19,7 @@ class Product
     private ?string $label = null;
 
     #[ORM\Column]
-    private ?string $type = null;
+    private ?string $category = null;
 
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: Line::class)]
     private Collection $lines;
@@ -27,6 +27,9 @@ class Product
     #[ORM\ManyToOne(inversedBy: 'products')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Agency $agency = null;
+
+    #[ORM\Column]
+    private ?float $tax = null;
 
     public function __construct()
     {
@@ -50,14 +53,14 @@ class Product
         return $this;
     }
 
-    public function getType(): ?string
+    public function getCategory(): ?string
     {
-        return $this->type;
+        return $this->category;
     }
 
-    public function setType(?string $type): static
+    public function setCategory(?string $category): static
     {
-        $this->type = $type;
+        $this->category = $category;
 
         return $this;
     }
@@ -95,6 +98,18 @@ class Product
     public function setAgency(?Agency $agency): static
     {
         $this->agency = $agency;
+
+        return $this;
+    }
+
+    public function getTax(): ?float
+    {
+        return $this->tax;
+    }
+
+    public function setTax(float $tax): static
+    {
+        $this->tax = $tax;
 
         return $this;
     }

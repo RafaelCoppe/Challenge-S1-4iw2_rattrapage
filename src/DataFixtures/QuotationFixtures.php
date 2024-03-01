@@ -20,7 +20,7 @@ class QuotationFixtures extends Fixture
 
         $quote = new Quotation();
         $quote->setTerms("Voyage pour deux personnes dans le sud de la France, avec hébergement à l'hotel");
-        $quote->setStatus("En attente");
+        $quote->setStatus("Brouillon");
         $quote->setDuration(5);
         $quote->setAgency($this->getReference('agence_1'));
         $quote->setStartDate(DateTime::createFromFormat('d/m/Y', '12/02/2024'));
