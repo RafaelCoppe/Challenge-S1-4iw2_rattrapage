@@ -100,12 +100,27 @@ class QuotationController extends AbstractController
      */
     public function validate(Request $request, Quotation $quotation, ManagerRegistry $doctrine): Response
     {
-        if ($quotation->getStatus() !== 'En cours') {
+        if ($quotation->getStatus() !== 'En Cours') {
             throw new \LogicException('Le devis ne peut être validé que s\'il est en cours.');
         }
 
         $quotation->setStatus('Validé');
-        $tdoctrine->getManager()->flush();
+        $doctrine->getManager()->flush();
+
+        return $this->redirectToRoute('quotation_view', ['id' => $quotation->getId()]);
+    }
+
+    /**
+     * @Route("/inProgress/{id}", name="quotation_inProgress", methods={"POST"})
+     */
+    public function inProgress(Request $request, Quotation $quotation, ManagerRegistry $doctrine): Response
+    {
+        if ($quotation->getStatus() !== 'Validé') {
+            throw new \LogicException('Le devis ne peut retourner En cours que s\'il est en validé.');
+        }
+
+        $quotation->setStatus('En Cours');
+        $doctrine->getManager()->flush();
 
         return $this->redirectToRoute('quotation_view', ['id' => $quotation->getId()]);
     }

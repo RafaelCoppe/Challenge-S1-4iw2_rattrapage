@@ -15,7 +15,7 @@ class LineType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('place')
+            //->add('place')
             ->add('unit_price')
             ->add('quantity')
             ->add('additional')

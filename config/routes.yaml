@@ -33,3 +33,12 @@ quotation_view:
 line_create:
     path: '/line/create/{quotation_id}'
     controller: App\Controller\LineController::create
+
+line_delete:
+    path: '/line/delete/{quotation_id}/{line_id}'
+    controller: 'App\Controller\LineController::delete'
+    methods: ['POST']
+
+line_edit:
+    path: '/line/edit/{quotation_id}/{line_id}'
+    controller: 'App\Controller\LineController::edit'
