@@ -29,3 +29,7 @@ app_pdf:
 quotation_view:
     path: /quotation/view/{id}
     controller: App\Controller\QuotationController::view
+
+line_create:
+    path: '/line/create/{quotation_id}'
+    controller: App\Controller\LineController::create

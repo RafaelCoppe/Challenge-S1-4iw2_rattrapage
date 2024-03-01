@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Détails du devis{{ quotation.id }}{% endblock %}
+{% block title %}Détails du devis {{ quotation.id }}{% endblock %}
 
 {% block body %}
     <h1>Détails du devis {{ quotation.id }}</h1>
@@ -19,7 +19,23 @@
         <li>Duration: {{ quotation.duration }}</li>
         <li>Ref: {{ quotation.ref }}</li>
     </ul>
+    <br>
+    {% for line in lines %}
+        <h2>Ligne {{line.place}}</h2>
+        <ul>
+            <li>Ligne ID: {{ line.id }}</li>
+            <li>Product: {{ line.product.label }} {{ line.product.type }}</li>
+            <li>Unit Price: {{ line.UnitPrice }}</li>
+            <li>Quantity: {{ line.quantity }}</li>
+            <li>Additional: {{ line.additional }}</li>
+            <li>Tax: {{ line.tax }}</li>
+        </ul>
+        <br>
+    {% endfor %}
 
+    <h2>Créer une nouvelle ligne</h2>
+    <a href="{{ path('line_create', {'quotation_id': quotation.id}) }}" class="btn btn-primary">Ajouter une ligne</a>
+    <br>
     <a href="{{ path('quotation_edit', {'id': quotation.id}) }}" class="btn btn-primary">Éditer</a>
 
     <form action="{{ path('quotation_delete', {'id': quotation.id}) }}" method="post">
@@ -27,12 +43,21 @@
         <button type="submit" class="btn btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce devis ?')">Supprimer</button>
     </form>
 
-    <a href="{{ path('app_pdf', {'id': quotation.id, "facture":0}) }}" class="btn btn-primary download-pdf-btn" data-status="{{ quotation.status }}">Télécharger</a>
+    <a href="{{ path('app_pdf', {'id': quotation.id, "facture":0}) }}" class="btn btn-primary download-pdf-btn" data-status="{{ quotation.status }}">Télécharger le devis</a>
 
-    {% if quotation.status == 'En cours' %}
+    {% if quotation.status == 'En Cours' %}
         <form action="{{ path('quotation_validate', {'id': quotation.id}) }}" method="post">
             <input type="hidden" name="_token" value="{{ csrf_token('validate' ~ quotation.id) }}">
             <button type="submit" class="btn btn-info">Valider</button>
         </form>
     {% endif %}
+    {% if quotation.status == 'Validé' %} {# Boutton remettre en EN COURS#}
+        <form action="{{ path('quotation_validate', {'id': quotation.id}) }}" method="post">
+            <input type="hidden" name="_token" value="{{ csrf_token('validate' ~ quotation.id) }}">
+            <button type="submit" class="btn btn-info">Valider</button>
+        </form>
+        {# Boutton Imprimer la FACTURE #}
+        <a href="{{ path('app_pdf', {'id': quotation.id, "facture":1}) }}" class="btn btn-primary download-pdf-btn" data-status="{{ quotation.status }}">Télécharger la Facture</a>
+    {% endif %}
+    <br>
 {% endblock %}

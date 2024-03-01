@@ -84,10 +84,14 @@ class QuotationController extends AbstractController
     /**
      * @Route("/view/{id}", name="quotation_view", methods={"GET"})
      */
-    public function view(Quotation $quotation): Response
+    public function view(Quotation $quotation, $id, ManagerRegistry $doctrine): Response
     {
+        $quotation = $doctrine->getRepository(Quotation::class)->find($id);
+        $lines = $quotation->getLines();
+
         return $this->render('quotation/view.html.twig', [
             'quotation' => $quotation,
+            'lines' => $lines,
         ]);
     }
 

@@ -92,6 +92,11 @@ class Line
         $this->unit_price = $unit_price;
     }
 
+    public function __toString(): string
+    {
+        return $this->getUnitPrice();
+    }
+
     public function getAdditional(): ?string
     {
         return $this->additional;
