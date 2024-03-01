@@ -1,4 +1,35 @@
-{{ form_start(form) }}
+{# {{ form_start(form) }}
     {{ form_widget(form) }}
     <button class="btn">{{ button_label|default('Save') }}</button>
-{{ form_end(form) }}
+{{ form_end(form) }} #}
+<div class="w-full">
+    <div class="lg:ml-40 md:grid-cols-2 gap-4 mt-4 p-2 ml-2 ">
+        <div class="container mx-auto mt-8">
+        <h1 class="text-2xl font-semibold mb-4">{{ title }}</h1>
+            {{ form_start(form, {'attr': {'class': 'bg-white shadow-md rounded-md p-6 mb-6'}}) }}
+            <div class="mb-4">
+                {{ form_row(form.lastname)}}
+            </div>
+            <div class="mb-4">
+                {{ form_row(form.firstname) }}
+            </div>
+            <div class="mb-4">
+                {{ form_row(form.email) }}
+            </div>
+            <div class="mb-4">
+                {{ form_row(form.phone) }}
+            </div>
+            <div class="mb-4">
+                {{ form_row(form.address) }}
+            </div>
+            <div class="mb-4">
+                {{ form_row(form.city) }}
+            </div>
+
+            <div class="flex justify-between mt-5">
+                <button class="btn mt-5 flex items-center bg-third text-white font-semibold py-2 px-4 rounded">{{ button_label|default('Enregistrer') }}</button>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+</div>

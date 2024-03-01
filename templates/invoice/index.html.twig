@@ -24,12 +24,12 @@
             <tr>
                 <td>{{ invoice.id }}</td>
                 <td>{{ invoice.terms }}</td>
-                <td>{{ invoice.paymentLastname }}</td>
-                <td>{{ invoice.paymentFirstname }}</td>
-                <td>{{ invoice.paymentEmail }}</td>
-                <td>{{ invoice.paymentPhone }}</td>
-                <td>{{ invoice.paymentAddress }}</td>
-                <td>{{ invoice.paymentCity }}</td>
+                <td>{{ invoice.payment_lastname }}</td>
+                <td>{{ invoice.payment_firstname }}</td>
+                <td>{{ invoice.payment_email }}</td>
+                <td>{{ invoice.payment_phone }}</td>
+                <td>{{ invoice.payment_address }}</td>
+                <td>{{ invoice.payment_city }}</td>
                 <td>
                     <a href="{{ path('app_invoice_show', {'id': invoice.id}) }}">show</a>
                     <a href="{{ path('app_invoice_edit', {'id': invoice.id}) }}">edit</a>
@@ -42,6 +42,24 @@
         {% endfor %}
         </tbody>
     </table>
+
+    "id" => 13
+    "terms" => "Voyage pour deux personnes dans le sud de la France, avec hébergement à l'hotel"
+    "payment_status" => "Non validé"
+    "payment_lastname" => "Coulon"
+    "payment_firstname" => "NoÃ©mi"
+    "payment_email" => "Coulon.NoÃ©mi@mail.com"
+    "payment_phone" => "0169709347"
+    "payment_address" => "14 impasse des acacias"
+    "payment_city" => 60342
+    "status" => "Brouillon"
+    "invoice_id" => 8
+    "agency_id" => 51
+    "client_id" => 12
+    "start_date" => "2024-02-12 10:43:00"
+    "end_date" => "2024-02-16 10:43:00"
+    "duration" => 5
+    "ref" => "2959523776"
 
     <a href="{{ path('app_invoice_new') }}">Create new</a>
 {% endblock %}

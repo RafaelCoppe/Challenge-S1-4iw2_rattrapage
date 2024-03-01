@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 #[Route('/client')]
 class ClientController extends AbstractController
@@ -18,18 +19,29 @@ class ClientController extends AbstractController
     public function index(ClientRepository $clientRepository): Response
     {
         return $this->render('client/index.html.twig', [
-            'clients' => $clientRepository->findAll(),
+            'clients' => $clientRepository->findBy(["agency" => $this->getUser()->getAgency()]),
         ]);
     }
 
     #[Route('/new', name: 'app_client_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, HttpClientInterface $web_client): Response
     {
+        $communes = [];
+        $response = $web_client->request(
+            'GET',
+            'https://geo.api.gouv.fr/departements/60/communes/'
+        );
+        foreach ($response->toArray() as $uneCommune) {
+            $cp = $uneCommune['codesPostaux'][0] ?? "";
+            $communes["$cp {$uneCommune['nom']}"] = $uneCommune['code'];
+        }
+
         $client = new Client();
-        $form = $this->createForm(ClientType::class, $client);
+        $form = $this->createForm(ClientType::class, $client, ["trait_choices" => $communes]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $client->setAgency($this->getUser()->getAgency());
             $entityManager->persist($client);
             $entityManager->flush();
 
@@ -43,17 +55,36 @@ class ClientController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_client_show', methods: ['GET'])]
-    public function show(Client $client): Response
+    public function show(Client $client, HttpClientInterface $web_client): Response
     {
+        $response = $web_client->request(
+            'GET',
+            'https://geo.api.gouv.fr/communes/' . $client->getCity()
+        );
+        $response = $response->toArray();
+        $cp = $response['codesPostaux'][0] ?? "";
+        $city = "$cp {$response['nom']}";
+
         return $this->render('client/show.html.twig', [
             'client' => $client,
+            'city' => $city
         ]);
     }
 
     #[Route('/{id}/edit', name: 'app_client_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Client $client, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, Client $client, EntityManagerInterface $entityManager, HttpClientInterface $web_client): Response
     {
-        $form = $this->createForm(ClientType::class, $client);
+        $communes = [];
+        $response = $web_client->request(
+            'GET',
+            'https://geo.api.gouv.fr/departements/60/communes/'
+        );
+        foreach ($response->toArray() as $uneCommune) {
+            $cp = $uneCommune['codesPostaux'][0] ?? "";
+            $communes["$cp {$uneCommune['nom']}"] = $uneCommune['code'];
+        }
+
+        $form = $this->createForm(ClientType::class, $client, ["trait_choices" => $communes]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

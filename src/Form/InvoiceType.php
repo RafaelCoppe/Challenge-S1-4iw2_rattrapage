@@ -23,7 +23,7 @@ class InvoiceType extends AbstractType
             ->add('payment_city')
             ->add('quote', EntityType::class, [
                 'class' => Quotation::class,
-'choice_label' => 'id',
+            'choice_label' => 'id',
             ])
         ;
     }
