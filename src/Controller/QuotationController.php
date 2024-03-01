@@ -18,6 +18,7 @@ class QuotationController extends AbstractController
     public function new(Request $request, ManagerRegistry $doctrine): Response
     {
         $quotation = new Quotation();
+        $quotation->setStatus('Brouillon');
         $form = $this->createForm(QuotationType::class, $quotation);
         $form->handleRequest($request);
 
@@ -78,5 +79,30 @@ class QuotationController extends AbstractController
             'quotation' => $quotation,
             'form' => $form->createView(),
         ]);
+    }
+
+    /**
+     * @Route("/view/{id}", name="quotation_view", methods={"GET"})
+     */
+    public function view(Quotation $quotation): Response
+    {
+        return $this->render('quotation/view.html.twig', [
+            'quotation' => $quotation,
+        ]);
+    }
+
+    /**
+     * @Route("/validate/{id}", name="quotation_validate", methods={"POST"})
+     */
+    public function validate(Request $request, Quotation $quotation, ManagerRegistry $doctrine): Response
+    {
+        if ($quotation->getStatus() !== 'En cours') {
+            throw new \LogicException('Le devis ne peut être validé que s\'il est en cours.');
+        }
+
+        $quotation->setStatus('Validé');
+        $tdoctrine->getManager()->flush();
+
+        return $this->redirectToRoute('quotation_view', ['id' => $quotation->getId()]);
     }
 }

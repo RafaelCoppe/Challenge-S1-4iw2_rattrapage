@@ -25,3 +25,7 @@ quotation_edit:
 app_pdf:
     path: /pdf/{id}/{facture}
     controller: App\Controller\PdfController::index
+
+quotation_view:
+    path: /quotation/view/{id}
+    controller: App\Controller\QuotationController::view

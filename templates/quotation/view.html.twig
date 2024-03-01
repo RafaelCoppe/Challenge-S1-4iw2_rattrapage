@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détails du devis{{ quotation.id }}{% endblock %}
+
+{% block body %}
+    <h1>Détails du devis {{ quotation.id }}</h1>
+
+    <a href="{{ path('quotation_index') }}" class="btn btn-primary">Retour à la liste</a>
+
+    <ul>
+        <li>ID: {{ quotation.id }}</li>
+        <li>Invoice ID: {{ quotation.invoice_id is defined ? quotation.invoice_id : '' }}</li>
+        <li>Agency ID: {{ quotation.agency.name }}</li>
+        <li>Client ID: {{ quotation.client.lastname }}</li>
+        <li>Terms: {{ quotation.terms is defined ? quotation.terms : '' }}</li>
+        <li>Status: {{ quotation.status }}</li>
+        <li>Start Date: {{ quotation.startDate|date('Y-m-d H:i:s') }}</li>
+        <li>End Date: {{ quotation.endDate|date('Y-m-d H:i:s') }}</li>
+        <li>Duration: {{ quotation.duration }}</li>
+        <li>Ref: {{ quotation.ref }}</li>
+    </ul>
+
+    <a href="{{ path('quotation_edit', {'id': quotation.id}) }}" class="btn btn-primary">Éditer</a>
+
+    <form action="{{ path('quotation_delete', {'id': quotation.id}) }}" method="post">
+        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ quotation.id) }}">
+        <button type="submit" class="btn btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce devis ?')">Supprimer</button>
+    </form>
+
+    <a href="{{ path('app_pdf', {'id': quotation.id, "facture":0}) }}" class="btn btn-primary download-pdf-btn" data-status="{{ quotation.status }}">Télécharger</a>
+
+    {% if quotation.status == 'En cours' %}
+        <form action="{{ path('quotation_validate', {'id': quotation.id}) }}" method="post">
+            <input type="hidden" name="_token" value="{{ csrf_token('validate' ~ quotation.id) }}">
+            <button type="submit" class="btn btn-info">Valider</button>
+        </form>
+    {% endif %}
+{% endblock %}

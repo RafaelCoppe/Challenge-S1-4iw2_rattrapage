@@ -17,22 +17,22 @@ class QuotationType extends AbstractType
     {
         $builder
             ->add('terms')
-            ->add('status')
+            //->add('status')
             ->add('start_date')
             ->add('end_date')
             ->add('duration')
             //->add('ref')
-//             ->add('invoice', EntityType::class, [
-//                 'class' => Invoice::class,
-// 'choice_label' => 'id',
-//             ])
+            //->add('invoice', EntityType::class, [
+            //  'class' => Invoice::class,
+            //  'choice_label' => 'id',
+            //])
             ->add('agency', EntityType::class, [
                 'class' => Agency::class,
-'choice_label' => 'id',
+                'choice_label' => 'name',
             ])
             ->add('client', EntityType::class, [
                 'class' => Client::class,
-'choice_label' => 'id',
+                'choice_label' => 'lastname',
             ])
         ;
     }
