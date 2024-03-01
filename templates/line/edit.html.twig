@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Édition de la ligne {{ line.id }}{% endblock %}
+{% block title %}Édition de la ligne {{ line.place }}{% endblock %}
 
 {% block body %}
-    <h1>Édition de la ligne {{ line.id }}</h1>
+    <h1>Édition de la ligne {{ line.place }}</h1>
 
     {{ form_start(form) }}
     {{ form_widget(form) }}

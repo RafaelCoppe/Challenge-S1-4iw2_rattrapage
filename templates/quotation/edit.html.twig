@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Édition du devis{{ quotation.id }}{% endblock %}
+{% block title %}Édition du devis | {{ quotation.ref }}{% endblock %}
 
 {% block body %}
-    <h1>Édition du devis {{ quotation.id }}</h1>
+    <h1>Édition du devis : {{ quotation.ref }}</h1>
 
     {{ form_start(form) }}
     {{ form_widget(form) }}
