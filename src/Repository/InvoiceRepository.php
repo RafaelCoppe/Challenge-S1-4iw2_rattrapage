@@ -45,4 +45,41 @@ class InvoiceRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+// public function countInvoicesForCurrentMonth(): int
+//     {
+//         $currentMonth = (new \DateTime())->format('m'); // Obtenez le mois en cours au format 'm'
+
+//         $entityManager = $this->getEntityManager();
+//         $connection = $entityManager->getConnection();
+
+//         $sql = 'SELECT COUNT(id) 
+//                 FROM invoice 
+//                 WHERE MONTH(date) = :currentMonth';
+
+//         $statement = $connection->prepare($sql);
+//         $statement->bindValue('currentMonth', $currentMonth);
+//         $statement->execute();
+
+//         return (int)$statement->fetchColumn();
+//     }
+
+        public function findLatestInvoicesWithDetails(): array
+        {
+            return $this->createQueryBuilder('i')
+                ->select('i.id', 'i.terms', 'i.payment_firstname', 'i.payment_lastname') // Ajoutez les champs nécessaires
+                // ->orderBy('i.id', 'DESC')
+                ->setMaxResults(5)
+                ->getQuery()
+                ->getResult();
+        }
+
+
+        public function countAllInvoices(): int
+        {
+            return $this->createQueryBuilder('i')
+                ->select('COUNT(i.id)') 
+                ->getQuery()
+                ->getSingleScalarResult();
+        }
 }

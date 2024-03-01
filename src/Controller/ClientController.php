@@ -12,23 +12,21 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Knp\Component\Pager\PaginatorInterface;
+
 
 #[Route('/client')]
 class ClientController extends AbstractController
 {
-    // #[Route('/', name: 'app_client_index', methods: ['GET'])]
-    // public function index(ClientRepository $clientRepository): Response
-    // {
-    //     return $this->render('client/index.html.twig', [
-    //         'clients' => $clientRepository->findAll(),
-    //     ]);
-    // }
+    
+
 
     #[Route('/', name: 'app_client_index', methods: ['GET', 'POST'])]
-    public function index(ClientRepository $clientRepository, Request $request): Response
-    {
+    public function index(ClientRepository $clientRepository, Request $request, PaginatorInterface $paginator): Response
+    { 
+
         $searchTerm = $request->query->get('search');
-    
+
         // Créez un formulaire de recherche
         $form = $this->createFormBuilder()
             ->add('search', TextType::class, ['required' => false, 
@@ -59,6 +57,7 @@ class ClientController extends AbstractController
             'form' => $form->createView(), // Passez le formulaire au template
         ]);
     }
+
 
     #[Route('/new', name: 'app_client_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response

@@ -56,4 +56,13 @@ class ClientRepository extends ServiceEntityRepository
                 ->getResult();
         }
 
+        public function findAllQuery($searchTerm)
+        {
+            $queryBuilder = $this->createQueryBuilder('c');
+    
+            // Ajoutez ici la logique de votre requête en fonction du terme de recherche
+    
+            return $queryBuilder->getQuery();
+        }
+
 }

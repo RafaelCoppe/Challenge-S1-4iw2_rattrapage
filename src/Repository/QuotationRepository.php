@@ -45,4 +45,25 @@ class QuotationRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+    public function findQuotationsByStatus($status)
+    {
+        return $this->createQueryBuilder('q')
+            ->andWhere('q.status = :status')
+            ->setParameter('status', $status)
+            ->getQuery()
+            ->getResult();
+    }
+
+
+    public function findLatestQuotationsWithClientNames(): array
+    {
+        return $this->createQueryBuilder('q')
+            ->select('q.terms', 'q.status', 'q.ref', 'c.firstname', 'c.lastname') 
+            ->join('q.client', 'c')
+            ->orderBy('q.start_date', 'DESC')
+            ->setMaxResults(5)
+            ->getQuery()
+            ->getResult();
+    }
 }
