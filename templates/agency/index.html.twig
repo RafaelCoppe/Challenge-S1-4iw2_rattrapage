@@ -1,51 +1,30 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Agency index{% endblock %}
+{% block title %}Liste des agences{% endblock %}
 
 {% block body %}
-    <h1>Agency index</h1>
+    <h1>Liste des agences</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Address</th>
-                <th>City</th>
-                <th>Phone</th>
-                <th>Mail</th>
-                <th>Create_date</th>
-                <th>Update_date</th>
-                <th>Delete_date</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
+    <a href="{{ path('agency_new') }}">Création d'une nouvelle agence</a>
+
         {% for agency in agencies %}
-            <tr>
-                <td>{{ agency.id }}</td>
-                <td>{{ agency.name }}</td>
-                <td>{{ agency.description }}</td>
-                <td>{{ agency.address }}</td>
-                <td>{{ agency.city }}</td>
-                <td>{{ agency.phone }}</td>
-                <td>{{ agency.mail }}</td>
-                <td>{{ agency.createDate ? agency.createDate|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ agency.updateDate ? agency.updateDate|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ agency.deleteDate ? agency.deleteDate|date('Y-m-d H:i:s') : '' }}</td>
-                <td>
-                    <a href="{{ path('app_agency_show', {'id': agency.id}) }}">show</a>
-                    <a href="{{ path('app_agency_edit', {'id': agency.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="11">no records found</td>
-            </tr>
+            {% embed '_composants/_card.html.twig' %}
+                {% block title %}
+                    {{ agency.name }}
+                {% endblock %}
+                {% block body %}
+                    <p>{{ agency.description }}</p>
+                    <p>{{ agency.address }}</p>
+                    <p>{{ agency.city }}</p>
+                    <p>{{ agency.phone }}</p>
+                    <p>{{ agency.mail }}</p>
+                    <p>{{ agency.createDate ? agency.createDate|date('Y-m-d H:i:s') : '' }}</p>
+                    <p>{{ agency.updateDate ? agency.updateDate|date('Y-m-d H:i:s') : '' }}</p>
+                    <p>{{ agency.deleteDate ? agency.deleteDate|date('Y-m-d H:i:s') : '' }}</p>
+                    <a href="{{ path('agency_show', {'id': agency.id}) }}">Voir</a>
+                    <a href="{{ path('agency_update', {'id': agency.id}) }}">Modifier</a>
+                    <a href="{{ path('agency_delete', {'id': agency.id, 'token' : csrf_token('delete' ~ agency.id)}) }}" onclick="confirm('Sur ?')">Supprimer</a>
+                {% endblock %}
+            {% endembed %}
         {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('app_agency_new') }}">Create new</a>
 {% endblock %}

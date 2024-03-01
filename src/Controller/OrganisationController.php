@@ -24,20 +24,12 @@ class OrganisationController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'show', requirements: ['id' => '\d{1,3}'], methods: 'get')]
-    public function show(Organisation $organisation): Response
-    {
-        return $this->render('organisation/show.html.twig', [
-            'organisation' => $organisation,
-        ]);
-    }
-
     #[Route('/new', name: 'new', methods: ['get', 'post'])]
     public function new(Request $request, EntityManagerInterface $manager): Response
     {
         $organisation = new Organisation();
-        $form = $this->createForm(OrganisationType::class, $organisation);
 
+        $form = $this->createForm(OrganisationType::class, $organisation);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $manager->persist($organisation);
@@ -54,6 +46,15 @@ class OrganisationController extends AbstractController
             'form' => $form->createView()
         ]);
     }
+
+    #[Route('/{id}', name: 'show', requirements: ['id' => '\d{1,3}'], methods: 'get')]
+    public function show(Organisation $organisation): Response
+    {
+        return $this->render('organisation/show.html.twig', [
+            'organisation' => $organisation,
+        ]);
+    }
+
 
     #[Route('/update/{id}', name: 'update', requirements: ['id' => '\d{1,3}'], methods: ['get', 'post'])]
     public function update(Organisation $organisation, Request $request, EntityManagerInterface $manager): Response

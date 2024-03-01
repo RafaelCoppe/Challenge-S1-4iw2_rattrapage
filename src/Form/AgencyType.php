@@ -21,12 +21,11 @@ class AgencyType extends AbstractType
             ->add('phone')
             ->add('mail')
             ->add('create_date')
-            ->add('update_date')
-            ->add('delete_date')
-            ->add('users', EntityType::class, [
-                'class' => Member::class,
-'choice_label' => 'id',
-'multiple' => true,
+            ->add('update_date', null, [
+                'required' => false,
+            ])
+            ->add('delete_date', null, [
+                'required' => false,
             ])
         ;
     }
