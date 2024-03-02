@@ -22,7 +22,7 @@ class LineType extends AbstractType
             ->add('tax')
             ->add('product', EntityType::class, [
                 'class' => Product::class,
-                'choice_label' => 'id',
+                'choice_label' => 'label',
             ])
             //->add('quote', EntityType::class, [
             //    'class' => Quotation::class,
