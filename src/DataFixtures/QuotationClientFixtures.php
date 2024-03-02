@@ -25,11 +25,22 @@ class QuotationClientFixtures extends Fixture implements DependentFixtureInterfa
         $client->setCity(60342);
         $client->addQuotation($this->getReference('devis_1'));
         $client->setAgency($this->getReference('agence_1'));
-
         $manager->persist($client);
-        $manager->flush();
+        $this->addReference("client_1", $client);
 
-        $this->addReference("client", $client);
+        $client = new Client();
+        $client->setLastName($lastname);
+        $client->setFirstName($firstname);
+        $client->setEmail("$lastname.$firstname@mail.com");
+        $client->setPhone($faker->phoneNumber);
+        $client->setAddress("14 impasse des acacias");
+        $client->setCity(60342);
+        $client->addQuotation($this->getReference('devis_2'));
+        $client->setAgency($this->getReference('agence_1'));
+        $manager->persist($client);
+        $this->addReference("client_2", $client);
+
+        $manager->flush();
     }
 
     public function getDependencies(): array
