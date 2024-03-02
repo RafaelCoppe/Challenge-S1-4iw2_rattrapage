@@ -4,6 +4,7 @@
 
 {% block body %}
     <h1>Nouveau devis</h1>
+    <a href="{{ path('quotation_index') }}" class="btn btn-primary">Retour aux devis</a>
 
     {{ form_start(form) }}
         {{ form_widget(form) }}

@@ -106,18 +106,6 @@ class Line
         return $this;
     }
 
-    public function getTax(): ?float
-    {
-        return $this->tax;
-    }
-
-    public function setTax(float $tax): static
-    {
-        $this->tax = $tax;
-
-        return $this;
-    }
-
     public function getProduct(): Product
     {
         return $this->product;

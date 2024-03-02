@@ -1,46 +1,25 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Détails du devis | {{ quotation.ref }}{% endblock %}
+{% block title %}Détails de la facture | {{ invoice.id }}{% endblock %}
 
 {% block body %}
-    <h1>Détails du devis : {{ quotation.terms }}</h1>
+    <h1>Détails de la facture : {{ invoice.terms }}</h1>
 
-    <a href="{{ path('quotation_index') }}" class="btn btn-primary">Retour aux devis</a>
+    <a href="{{ path('invoice_index') }}" class="btn btn-primary">Retour aux factures</a>
 
     <ul>
-        <li>Identifiant: {{ quotation.id }}</li>
-        <li>Numéro de devis: {{ quotation.ref }}</li>
-        <li>Titre du devis: {{ quotation.terms is defined ? quotation.terms : '' }}</li>
-        <li>Facture liée: {{ quotation.invoice.getId is defined ? quotation.invoice.getId : '' }}</li>
-        <li>Agence: {{ quotation.agency.name }}</li>
-        <li>Client: {{ quotation.client.lastname }}</li>
-        <li>Status: {{ quotation.status }}</li>
-        <li>Date de début: {{ quotation.startDate|date('Y-m-d H:i:s') }}</li>
-        <li>Date de fin: {{ quotation.endDate|date('Y-m-d H:i:s') }}</li>
-        <li>Durée: {{ quotation.duration }}</li>
+        <li>Titre : </li>
+        <li>Prenom payeur : </li>
+        <li>Nom payeur : </li>
+        <li>Email payeur : </li>
+        <li>Tel payeur : </li>
+        <li>TAdresse : </li>
+        <li>Status Facture : </li>
+        <li>Status du paiement : </li>
+        <li>Lien du devis : </li>
     </ul>
     <br>
-    {% for line in lines %}
-        <h2>Ligne n°{{line.place}}</h2>
-        <ul>
-            <li>Produit: {{ line.product.label }}</li>
-            <li>Informations: {{ line.additional }}</li>
-            <li>Prix : {{ line.UnitPrice }}</li>
-            <li>Quantité: {{ line.quantity }}</li>
-            <li>Taxe: {{ line.product.tax }}%</li>
-        </ul>
-        <br>
-        {% if quotation.status != 'Validé' and quotation.status != 'Terminé'%}
-        <a href="{{ path('line_edit', {'quotation_id': quotation.id, 'line_id': line.id}) }}">Editer la ligne</a>
-
-        <form action="{{ path('line_delete', {'quotation_id': quotation.id, 'line_id': line.id}) }}" method="post">
-            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ line.id) }}">
-            <button type="submit" class="btn btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette ligne ?')">Supprimer la ligne</button>
-        </form>
-        <br>
-        {% endif %}
-    {% endfor %}
-
+{#
     {% if quotation.status == 'Brouillon' or quotation.status == 'En Cours' %}
         <a href="{{ path('line_create', {'quotation_id': quotation.id}) }}" class="btn btn-primary">Ajouter une ligne</a>
         <br><br>
@@ -72,5 +51,5 @@
             <button type="submit" class="btn btn-info">Passer le devis En Cours</button>
         </form>
     {% endif %}
-    <br>
+    <br>#}
 {% endblock %}

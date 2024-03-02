@@ -23,15 +23,15 @@ class PdfController extends AbstractController
                 "additional" => $uneLigne->getAdditional(),
                 "unit_price" => $uneLigne->getUnitPrice(),
                 "quantity" => $uneLigne->getQuantity(),
-                "tax" => $uneLigne->getTax(),
+                "tax" => $uneLigne->getProduct()->getTax(),
                 "totalHt" => $uneLigne->getUnitPrice() * $uneLigne->getQuantity(),
-                "totalTax" => ($uneLigne->getUnitPrice() * $uneLigne->getQuantity()) * (100 + $uneLigne->getTax())/100,
+                "totalTax" => ($uneLigne->getUnitPrice() * $uneLigne->getQuantity()) * (100 + $uneLigne->getProduct()->getTax())/100,
                 "product" => $uneLigne->getProduct()
             ];
 
             $total += $uneLigne->getUnitPrice() * $uneLigne->getQuantity();
-            $totalHT += ($uneLigne->getUnitPrice() * $uneLigne->getQuantity()) * (100 + $uneLigne->getTax())/100;
-            $totalTaxe += ($uneLigne->getUnitPrice() * $uneLigne->getQuantity()) * ($uneLigne->getTax())/100;
+            $totalHT += ($uneLigne->getUnitPrice() * $uneLigne->getQuantity()) * (100 + $uneLigne->getProduct()->getTax())/100;
+            $totalTaxe += ($uneLigne->getUnitPrice() * $uneLigne->getQuantity()) * ($uneLigne->getProduct()->getTax())/100;
         };
 
         $response = $client->request(

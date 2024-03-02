@@ -16,14 +16,42 @@ class LineType extends AbstractType
     {
         $builder
             //->add('place')
-            ->add('unit_price')
-            ->add('quantity')
-            ->add('additional')
-            ->add('tax')
-            ->add('product', EntityType::class, [
+
+            /*->add('category', EntityType::class, [
+                'label' => 'Catégorie du produit',
+                'required'=>true,
+                'placeholder' => 'Choisir une catégorie',
                 'class' => Product::class,
-                'choice_label' => 'id',
+            ])*/
+
+            ->add('product', EntityType::class, [
+                'label' => 'Produit : ', 
+                'class' => Product::class,
+                'choice_label' => 'label',
             ])
+            ->add('additional', null, [
+                'label' => 'Informations : ',
+                'required'=>true,
+                'attr' => [
+                    'placeholder' => 'Plus d\'informations...',
+                ],
+            ])
+            ->add('unit_price', null, [
+                'label' => 'Prix : ',
+                'required'=>true,
+                'attr' => [
+                    'placeholder' => '0.00€',
+                ],
+            ])
+            ->add('quantity', null, [
+                'label' => 'Quantité : ',
+                'required'=>true,
+                'attr' => [
+                    'placeholder' => 'Indiquez la quantité',
+                ],
+            ])
+            
+             
             //->add('quote', EntityType::class, [
             //    'class' => Quotation::class,
             //    'choice_label' => 'id',

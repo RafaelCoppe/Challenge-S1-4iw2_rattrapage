@@ -36,6 +36,8 @@ class InvoiceController extends AbstractController
         $invoice->setPaymentEmail($client->getEmail());
         $invoice->setPaymentAddress($client->getAddress());
         $invoice->setPaymentCity($client->getCity());
+        $invoice->setPaymentStatus('Non validé');
+        $invoice->setStatus('En attente');
 
         $terms = $quotation->getTerms();
         $invoice->setTerms($terms);
@@ -47,7 +49,7 @@ class InvoiceController extends AbstractController
         $quotation->setInvoice($invoice);
         $entityManager->flush();
 
-        return $this->redirectToRoute('quotation_index');
+        return $this->redirectToRoute('invoice_index');
     }
 
     /**
@@ -63,10 +65,16 @@ class InvoiceController extends AbstractController
             'quotation'  => $quotation,
         ]);
     }
+
+    /**
+     * @Route("/view/{id}", name="invoice_view", methods={"GET"})
+     */
+    public function view(Invoice $invoice, $id, ManagerRegistry $doctrine): Response
+    {
+        $invoice = $doctrine->getRepository(Invoice::class)->find($id);
+
+        return $this->render('invoice/view.html.twig', [
+            'invoice' => $invoice,
+        ]);
+    }
 }
-
-
-//Create avec ttes les données
-//Récupérer les terms du devis
-//Récupérer l'id du client, pour afficher les données players
-//En plus faire le lien entre la facture et le devis pour afficher l'id de la facture dans le devis

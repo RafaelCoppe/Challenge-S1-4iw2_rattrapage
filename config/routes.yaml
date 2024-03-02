@@ -50,3 +50,7 @@ create_invoice:
 invoice_index:
     path: /invoices
     controller: 'App\Controller\InvoiceController::index'
+
+invoice_view:
+    path: /invoice/view/{id}
+    controller: App\Controller\InvoiceController::view

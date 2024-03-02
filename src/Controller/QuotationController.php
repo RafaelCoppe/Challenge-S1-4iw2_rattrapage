@@ -19,6 +19,7 @@ class QuotationController extends AbstractController
     {
         $quotation = new Quotation();
         $quotation->setStatus('Brouillon');
+        //$quotation->setAgency($this->getUser()->getAgency());
         $form = $this->createForm(QuotationType::class, $quotation);
         $form->handleRequest($request);
 
