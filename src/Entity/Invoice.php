@@ -19,7 +19,7 @@ class Invoice
     #[ORM\Column(length: 255)]
     private ?string $terms = null;
 
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\Column(length: 255)]
     private ?string $payment_status = null;
 
     #[ORM\OneToOne(mappedBy: 'invoice', cascade: ['persist', 'remove'])]
@@ -45,6 +45,9 @@ class Invoice
 
     #[ORM\OneToMany(mappedBy: 'invoice', targetEntity: Travelers::class, orphanRemoval: true)]
     private Collection $travelers;
+
+    #[ORM\Column(length: 255)]
+    private ?string $status = null;
 
     public function __construct()
     {
@@ -188,6 +191,18 @@ class Invoice
                 $traveler->setInvoice(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(string $status): static
+    {
+        $this->status = $status;
 
         return $this;
     }

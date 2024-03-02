@@ -34,9 +34,6 @@ class Line
     #[ORM\Column(length: 255)]
     private ?string $additional = null;
 
-    #[ORM\Column]
-    private ?float $tax = null;
-
     public function __construct()
     {
     }
