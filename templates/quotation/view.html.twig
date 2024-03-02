@@ -65,7 +65,7 @@
     {% endif %}
     {% if quotation.status == 'Validé' %}
         <br>
-        <a href="{{ path('app_pdf', {'id': quotation.id, "facture":1}) }}" class="btn btn-primary download-pdf-btn" data-status="{{ quotation.status }}">Télécharger la Facture (TRANSFORMER)</a>
+        <a href="{{ path('create_invoice', {'quotationId': quotation.id}) }}">Transformer en facture</a>
         <br><br>
         <form action="{{ path('quotation_inProgress', {'id': quotation.id}) }}" method="post">
             <input type="hidden" name="_token" value="{{ csrf_token('validate' ~ quotation.id) }}">
