@@ -54,6 +54,13 @@ class QuotationController extends AbstractController
     {
         if ($this->isCsrfTokenValid('delete'.$quotation->getId(), $request->request->get('_token'))) {
             $entityManager = $doctrine->getManager();
+
+            // Remove all associated lines first
+            foreach ($quotation->getLines() as $line) {
+                $entityManager->remove($line);
+            }
+
+            // Now remove the quotation
             $entityManager->remove($quotation);
             $entityManager->flush();
         }
