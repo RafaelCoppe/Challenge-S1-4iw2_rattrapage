@@ -36,6 +36,17 @@ class QuotationFixtures extends Fixture
             $this->addReference("devis_" . $index+1, $quote);
         }
 
+        $quote = new Quotation();
+        $quote->setTerms("Voyage pour deux personnes dans le sud de la France, avec hébergement à l'hotel - remise de 10%");
+        $quote->setStatus("Brouillon");
+        $quote->setDuration(5);
+        $quote->setAgency($this->getReference('agence_1'));
+        $quote->setStartDate(DateTime::createFromFormat('d/m/Y', '12/02/2024'));
+        $quote->setEndDate(DateTime::createFromFormat('d/m/Y', '16/02/2024'));
+
+        $manager->persist($quote);
+        $this->addReference("devis_" . 2, $quote);
+
         $manager->flush();
     }
 }

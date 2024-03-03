@@ -13,14 +13,13 @@ class QuotationClientFixtures extends Fixture implements DependentFixtureInterfa
     public function load(ObjectManager $manager)
     {
         $faker = Faker\Factory::create('fr_FR');
-
         for($i=1; $i<4; $i++){
             $lastname = utf8_encode($faker->lastName);
             $firstname = utf8_encode($faker->firstName);
             $client = new Client();
             $client->setLastName($lastname);
             $client->setFirstName($firstname);
-            $client->setEmail("$lastname.$firstname@mail.com");
+            $client->setEmail("$lastname.$firstname@gmail.com");
             $client->setPhone($faker->phoneNumber);
             $client->setAddress("14 impasse des acacias");
             $client->setCity(60342);
@@ -30,9 +29,6 @@ class QuotationClientFixtures extends Fixture implements DependentFixtureInterfa
             $manager->persist($client);
             $this->addReference("client_" . $i, $client);
         }
-
-        $manager->flush();
-
     }
 
     public function getDependencies(): array

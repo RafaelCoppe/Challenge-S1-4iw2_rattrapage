@@ -24,26 +24,46 @@ class PdfController extends AbstractController
         $quote = $this->quotationRepository->find($id);
         $lines = [];
         $total = $totalHT = $totalTaxe = 0;
+        $total_remise = 0;
         foreach (($quote->getLines())->toArray() as $uneLigne) {
-            $unitPrice = $uneLigne->getUnitPrice();
-            $quantity = $uneLigne->getQuantity();
-            $tax = $uneLigne->getProduct()->getTax();
+            if($uneLigne->getProduct()->getCategory() == "remise"){
+                $lines[] = [
+                    "place" => $uneLigne->getPlace(),
+                    "additional" => $uneLigne->getAdditional(),
+                    "unit_price" => "",
+                    "quantity" => "",
+                    "tax" => "",
+                    "totalHt" => "",
+                    "totalTax" => "",
+                    "product" => $uneLigne->getProduct()
+                ];
 
-            $lines[] = [
-                "place" => $uneLigne->getPlace(),
-                "additional" => $uneLigne->getAdditional(),
-                "unit_price" => $unitPrice,
-                "quantity" => $quantity,
-                "tax" => $tax,
-                "totalHt" => $unitPrice * $quantity,
-                "totalTax" => ($unitPrice * $quantity) * (100 + $tax)/100,
-                "product" => $uneLigne->getProduct()
-            ];
+                $total_remise += $uneLigne->getUnitPrice();
+            }else{
+                $unitPrice = $uneLigne->getUnitPrice();
+                $quantity = $uneLigne->getQuantity();
+                $tax = $uneLigne->getProduct()->getTax();
 
-            $total += $unitPrice * $quantity;
-            $totalHT += ($unitPrice * $quantity) * (100 + $tax)/100;
-            $totalTaxe += ($unitPrice * $quantity) * ($tax)/100;
+                $lines[] = [
+                    "place" => $uneLigne->getPlace(),
+                    "additional" => $uneLigne->getAdditional(),
+                    "unit_price" => $unitPrice,
+                    "quantity" => $quantity,
+                    "tax" => $tax,
+                    "totalHt" => $unitPrice * $quantity,
+                    "totalTax" => ($unitPrice * $quantity) * (100 + $tax)/100,
+                    "product" => $uneLigne->getProduct()
+                ];
+
+                $totalHT += $unitPrice * $quantity;
+                $totalTaxe += ($unitPrice * $quantity) * ($tax)/100;
+                $total += ($unitPrice * $quantity) * (100 + $tax)/100;
+            }
         };
+
+        if($total_remise > 0){
+            $total_with_remise = ($total - $total_remise);
+        }
 
         $response = $this->client->request(
             'GET',
@@ -86,6 +106,10 @@ class PdfController extends AbstractController
             'planeImage'     => $this->imageToBase64('images/plane.png'),
             'dev'            => getenv('APP_ENV') == 'dev'
         ];
+
+        if(isset($total_with_remise)){
+            $data['total_with_remise'] = round($total_with_remise, 2);
+        }
 
         if($isFacture){
             $invoice = $quote->getInvoice();

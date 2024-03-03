@@ -308,16 +308,22 @@
         <table class="productsTotalTable">
             <tr>
                 <td>Total HT</td>
-                <td>{{ total }} €</td>
+                <td>{{ totalHT }} €</td>
             </tr>
             <tr>
                 <td>Total Taxes</td>
                 <td>{{ totalTaxe }} €</td>
             </tr>
             <tr>
-                <td>Total</td>
-                <td>{{ totalHT }} €</td>
+                <td>Total{% if total_with_remise is defined %} (sans remise){% endif %}</td>
+                <td>{{ total }} €</td>
             </tr>
+            {% if total_with_remise is defined %}
+            <tr>
+                <td>Total (avec remise)</td>
+                <td>{{ total_with_remise }}</td>
+            </tr>
+            {% endif %}
         </table>
     </div>
 
