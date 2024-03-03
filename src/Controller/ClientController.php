@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\Client;
-use App\Entity\Agency;
 use App\Form\ClientType;
 use App\Repository\ClientRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -48,10 +47,11 @@ class ClientController extends AbstractController
             $searchTerm = $form->get('search')->getData();
 
             // Utilisez le terme de recherche pour filtrer les résultats
-            $clients = $clientRepository->findBySearchTerm($searchTerm);
+
+            $clients = $clientRepository->search($searchTerm, $this->getUser()->getAgency());
+            
         } else {
             // Sinon, récupérez tous les clients qui ont le meme id que le member
-
 
             $clients = $clientRepository->findBy(['agency' => $this->getUser()->getAgency()]);
 
