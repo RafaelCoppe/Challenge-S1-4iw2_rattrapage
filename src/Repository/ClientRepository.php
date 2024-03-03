@@ -20,6 +20,7 @@ class ClientRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Client::class);
     }
+}
 
 //    /**
 //     * @return Product[] Returns an array of Product objects
@@ -45,4 +46,3 @@ class ClientRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
-}
