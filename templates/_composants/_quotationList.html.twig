@@ -1,0 +1,81 @@
+<div class="w-full">
+    <div class="lg:ml-40 md:grid-cols-2 gap-4 mt-4 p-2 ml-2 ">  
+        <h1 class="text-3xl">Liste des devis</h1>
+        <div class="bg-white p-4 rounded-md">
+            <div class="flex justify-between items-center">
+                <h2 class="text-gray-500 text-lg font-semibold pb-4">Devis</h2>
+                    <a href="{{ path('quotation_new') }}" class="justify-end w-1/8 flex items-center bg-primary text-white font-semibold py-1 px-4 rounded">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                        </svg>
+                        Ajouter
+                    </a>
+            </div>
+            <div class="my-1"></div> 
+            <div class="bg-primary h-px mb-6"></div> 
+                <table class="w-full table-auto text-sm">
+                    <thead>
+                        <tr class="text-sm leading-normal">
+                            <th class="py-2 px-4 bg-grey-lightest font-bold uppercase text-sm text-grey-light border-b border-grey-light text-left">Numéro de devis</th>
+                            <th class="py-2 px-4 bg-grey-lightest font-bold uppercase text-sm text-grey-light border-b border-grey-light text-left">Informations</th>
+                            <th class="py-2 px-4 bg-grey-lightest font-bold uppercase text-sm text-grey-light border-b border-grey-light text-right">Status</th>
+                            <th class="py-2 px-4 bg-grey-lightest font-bold uppercase text-sm text-grey-light border-b border-grey-light text-right">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for quotation in quotations %}
+                            <tr class="hover:bg-grey-lighter">
+                                <td class="py-2 px-4 border-b border-grey-light">{{ quotation.ref }}</td>
+                                <td class="py-2 px-4 border-b border-grey-light">{{ quotation.terms }}</td>
+                                <td class="py-2 px-4 border-b border-grey-light text-right">{{ quotation.status }}</td>
+                                <td class="py-2 px-4 border-b border-grey-light justify-end flex gap-4">
+                                    {% set quotationAction = path('quotation_view', {'id': quotation.id}) %}
+                                    {% set specialButtonClass = specialButtonClass|default('bg-primary') %}
+
+                                    {% include '_composants/_specialButton.html.twig' with {'specialButtonAction': quotationAction, 'specialButtonText': 'Voir', 'specialButtonClass': specialButtonClass} %}
+
+                                    {% set quotationAction = path('quotation_edit', {'id': quotation.id}) %}
+                                    {% set specialButtonClass = specialButtonClass|default('bg-primary') %}
+
+                                    {% include '_composants/_specialButton.html.twig' with {'specialButtonAction': quotationAction, 'specialButtonText': 'Éditer', 'specialButtonClass': specialButtonClass} %}
+
+                                    <form action="{{ path('quotation_delete', {'id': quotation.id}) }}" method="post">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ quotation.id) }}">
+
+                                        {% set quotationAction = path('quotation_delete', {'id': quotation.id}) %}
+                                        {% set specialButtonClass = specialButtonClass|default('bg-secondary') %}
+
+                                        {% include '_composants/_specialButtonDanger.html.twig' with {'specialButtonAction': quotationAction, 'specialButtonText': 'Supprimer', 'specialButtonClass': specialButtonClass} %}
+                                    </form>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="8">Aucun résultat trouvé</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>  
+    </div>
+</div>
+    
+
+    {% block javascripts %}
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                var buttons = document.querySelectorAll('.download-pdf-btn');
+                buttons.forEach(function(button) {
+                    var status = button.getAttribute('data-status');
+                    if (status === 'Brouillon') {
+                        button.addEventListener('click', function(event) {
+                            event.preventDefault();
+                            alert('Impossible de télécharger le PDF pour un devis en état Brouillon.');
+                        });
+                    }
+                });
+            });
+        </script>
+    {% endblock %}
+
