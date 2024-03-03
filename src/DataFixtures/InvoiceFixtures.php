@@ -15,7 +15,7 @@ class InvoiceFixtures extends Fixture implements DependentFixtureInterface
     {
         $faker = Faker\Factory::create('fr_FR');
 
-        $client = $this->getReference('client');
+        $client = $this->getReference('client_1');
 
         $invoice = new Invoice();
         $invoice->setQuote($this->getReference('devis_1'));
