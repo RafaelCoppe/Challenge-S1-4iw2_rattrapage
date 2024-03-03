@@ -4,16 +4,28 @@
         <h1 class="text-2xl font-semibold mb-4">{{ title }}</h1>
                 {{ form_start(form, {'attr': {'class':'bg-white border border-gray-300 text-md rounded-md p-6 mb-6'}})}}
                         {% include '_composants/_specialFormField.html.twig' with {
-                                'form': form.label,
-                                'label': 'Label'
+                                'form': form.terms,
+                                'label': 'Terms'
                         } %}
                         {% include '_composants/_specialFormField.html.twig' with {
-                                'form': form.category,
-                                'label': 'Category'
+                                'form': form.start_date,
+                                'label': 'Date début'
                         } %}
                         {% include '_composants/_specialFormField.html.twig' with {
-                                'form': form.tax,
-                                'label': 'Tax'
+                                'form': form.end_date,
+                                'label': 'Date fin'
+                        } %}
+                        {% include '_composants/_specialFormField.html.twig' with {
+                                'form': form.duration,
+                                'label': 'Durée'
+                        } %}
+                        {% include '_composants/_specialFormField.html.twig' with {
+                                'form': form.agency,
+                                'label': 'Agence lié'
+                        } %}
+                        {% include '_composants/_specialFormField.html.twig' with {
+                                'form': form.client,
+                                'label': 'Client'
                         } %}
 
                         <div class="flex justify-between mt-5">
