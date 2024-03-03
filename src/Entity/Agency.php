@@ -58,8 +58,8 @@ class Agency
     #[ORM\OneToMany(mappedBy: 'agency', targetEntity: Product::class, orphanRemoval: true)]
     private Collection $products;
 
-    #[ORM\OneToMany(mappedBy: 'agency', targetEntity: Client::class, orphanRemoval: true)]
-    private Collection $clients;
+    #[ORM\OneToMany(mappedBy: 'agency', targetEntity: Member::class)]
+    private Collection $members;
 
     public function __construct()
     {
@@ -67,6 +67,7 @@ class Agency
         $this->quotations = new ArrayCollection();
         $this->products = new ArrayCollection();
         $this->clients = new ArrayCollection();
+        $this->members = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -212,33 +213,6 @@ class Agency
     }
 
     /**
-     * @return Collection<int, Member>
-     */
-    public function getUsers(): Collection
-    {
-        return $this->users;
-    }
-
-    public function addUser(Member $user): static
-    {
-        if (!$this->users->contains($user)) {
-            $this->users->add($user);
-            $user->addAgency($this);
-        }
-
-        return $this;
-    }
-
-    public function removeUser(Member $user): static
-    {
-        if ($this->users->removeElement($user)) {
-            $user->removeAgency($this);
-        }
-
-        return $this;
-    }
-
-    /**
      * @return Collection<int, Quotation>
      */
     public function getQuotations(): Collection
@@ -322,6 +296,36 @@ class Agency
             // set the owning side to null (unless already changed)
             if ($client->getAgency() === $this) {
                 $client->setAgency(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Member>
+     */
+    public function getMembers(): Collection
+    {
+        return $this->members;
+    }
+
+    public function addMember(Member $member): static
+    {
+        if (!$this->members->contains($member)) {
+            $this->members->add($member);
+            $member->setAgency($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMember(Member $member): static
+    {
+        if ($this->members->removeElement($member)) {
+            // set the owning side to null (unless already changed)
+            if ($member->getAgency() === $this) {
+                $member->setAgency(null);
             }
         }
 

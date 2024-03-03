@@ -20,7 +20,8 @@ class InvoiceFixtures extends Fixture implements DependentFixtureInterface
         $invoice = new Invoice();
         $invoice->setQuote($this->getReference('devis_1'));
         $invoice->setTerms("Paiement attendu de la part de la personne suivante : ");
-        $invoice->setPaymentStatus(1);
+        $invoice->setStatus("En attente");
+        $invoice->setPaymentStatus("Non validé");
         $invoice->setPaymentLastname($client->getLastName());
         $invoice->setPaymentFirstname($client->getFirstName());
         $invoice->setPaymentEmail($client->getEmail());

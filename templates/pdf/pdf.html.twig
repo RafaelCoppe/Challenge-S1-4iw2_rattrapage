@@ -186,7 +186,7 @@
     }
 
     .facture_only {
-        margin-bottom: 100mm;
+        margin-bottom: 90mm;
         break-inside: avoid;
     }
 
@@ -243,7 +243,7 @@
 
 <main>
     <div class="quoteNumber">
-        <h1>DEVIS</h1>
+        <h1>{% if isFacture %}FACTURE{% else %}DEVIS{% endif %}</h1>
         <h2>No. #{{ quote.ref }}</h2>
     </div>
 
@@ -290,7 +290,7 @@
                 <tr>
                     <td class="empty">#{{ line.place }}</td>
                     <td>
-                        {{ line.product.label }} - {{ line.product.type }}<br>
+                        {{ line.product.label }} - {{ line.product.category }}<br>
                         {{ line.additional }}
                     </td>
                     <td>{{ line.quantity }}</td>
