@@ -46,6 +46,12 @@ class Product
         return $this->label;
     }
 
+    public function __toString(): string
+    {
+        return $this->getLabel();
+        return $this->getType();
+    }
+
     public function setLabel(string $label): static
     {
         $this->label = $label;

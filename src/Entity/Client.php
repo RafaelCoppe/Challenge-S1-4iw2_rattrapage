@@ -54,6 +54,11 @@ class Client
         return $this->lastname;
     }
 
+    public function __toString(): string
+    {
+        return $this->getLastName();
+    }
+
     public function setLastName(?string $lastname): void
     {
         $this->lastname = $lastname;
