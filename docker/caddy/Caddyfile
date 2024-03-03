@@ -3,7 +3,9 @@
     {$DEBUG}
 }
 
-{$SERVER_NAME}
+devisio.site
+
+tls bilelsaigh94@gmail.com
 
 log
 
