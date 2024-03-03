@@ -5,3 +5,40 @@ controllers:
 contact:
     path: /contact
     controller: App\Controller\ContactPageController::index
+
+quotation_new:
+    path: /quotation/new
+    controller: App\Controller\QuotationController::new
+
+quotation_index:
+    path: /quotation
+    controller: App\Controller\QuotationController::index
+
+quotation_delete:
+    path: /quotation/delete/{id}
+    controller: App\Controller\QuotationController::delete
+
+quotation_edit:
+    path: /quotation/edit/{id}
+    controller: App\Controller\QuotationController::edit
+
+app_pdf:
+    path: /pdf/{id}/{facture}
+    controller: App\Controller\PdfController::index
+
+quotation_view:
+    path: /quotation/view/{id}
+    controller: App\Controller\QuotationController::view
+
+line_create:
+    path: '/line/create/{quotation_id}'
+    controller: App\Controller\LineController::create
+
+line_delete:
+    path: '/line/delete/{quotation_id}/{line_id}'
+    controller: 'App\Controller\LineController::delete'
+    methods: ['POST']
+
+line_edit:
+    path: '/line/edit/{quotation_id}/{line_id}'
+    controller: 'App\Controller\LineController::edit'
