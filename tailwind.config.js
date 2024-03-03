@@ -19,6 +19,9 @@ module.exports = {
         cream: {
           DEFAULT: '#F3F7F0',
         },
+        menthe: {
+          DEFAULT: '#F0F7F2',
+        }
       },
       width: {
         'custom-20': '20rem',

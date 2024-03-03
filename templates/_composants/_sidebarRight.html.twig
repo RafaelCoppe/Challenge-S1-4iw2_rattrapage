@@ -1,4 +1,6 @@
-<div id="sidebarRigth" class="hidden flex flex-col rounded-2xl bg-white p-4 mt-6 w-96">
+{% set specialSideBarRightClass = specialSideBarRightClass|default('h-full fixed hidden') %}
+
+<div id="sidebarRigth" class="{{ specialSideBarRightClass }} flex flex-col rounded-2xl bg-white p-4 mt-6 w-96">
     <div class="rounded-2xl bg-menthe p-6">
         <h3 class="font-semibold text-primary">Actions rapides</h3>
         <ul class="flex flex-col text-primary">

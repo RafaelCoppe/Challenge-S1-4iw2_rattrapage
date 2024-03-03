@@ -1,4 +1,6 @@
-    <div class="fixed bg-white text-white shadow w-full p-4 flex items-center justify-between">
+{% set specialTopBarClass = specialTopBarClass|default('w-full fixed') %}
+
+    <div class="{{ specialTopBarClass }} bg-white text-white shadow p-4 flex items-center justify-between">
         <div class="flex items-center">
             <div class="hidden md:flex items-center"> 
                 <img src="{{ asset('images/logoDevisio.png') }}" alt="logo" class="w-40">

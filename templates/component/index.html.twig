@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ComponentController!{% endblock %}
+
+{% block body %}
+    <div class="grid grid-cols-2 gap-4">
+        <div>
+            {% include '_composants/_specialLabel.html.twig' with {'id': 'topBar', 'text': 'Top Bar'} %}
+            {% include '_composants/_topBar.html.twig' with {'specialTopBarClass': 'w-1/2'}%}
+        </div>
+        <div>
+            {% include '_composants/_specialLabel.html.twig' with {'id': 'sideBar', 'text': 'Side Bar'} %}
+            {% include '_composants/_sideBar.html.twig' with {'specialSideBarClass': 'w-1/3'}%}
+        </div>
+        <div>
+            {% include '_composants/_specialLabel.html.twig' with {'id': 'sidebarRight', 'text': 'Sidebar Right'} %}
+            {% include '_composants/_sidebarRight.html.twig' with {'specialSideBarRightClass': 'w-1/3'}%}
+        </div>
+        <div>
+            {% include '_composants/_specialLabel.html.twig' with {'id': 'submitButton', 'text': 'Submit Button'} %}
+            {% include '_composants/_specialSubmitButton.html.twig' with {'buttonText': 'Submit', 'buttonClass': 'btn bg-secondary'} %}
+        </div>
+        <div>
+            {% include '_composants/_specialLabel.html.twig' with {'id': 'specialButton', 'text': 'Special Button '} %}
+            {% include '_composants/_specialButton.html.twig' with {'buttonText': 'Button', 'buttonClass': 'btn bg-secondary'} %}
+        </div>
+        <div>
+            {% include '_composants/_specialLabel.html.twig' with {'id': 'specialButtonSVG', 'text': 'Special Button SVG'} %}
+            {% include '_composants/_specialButtonSVG.html.twig' with {'buttonClass': 'btn bg-secondary'} %}
+        </div>
+    </div>
+
+
+
+{% endblock %}
