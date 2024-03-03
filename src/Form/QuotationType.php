@@ -26,10 +26,6 @@ class QuotationType extends AbstractType
             //  'class' => Invoice::class,
             //  'choice_label' => 'id',
             //])
-            ->add('agency', EntityType::class, [
-                'class' => Agency::class,
-                'choice_label' => 'name',
-            ])
             ->add('client', EntityType::class, [
                 'class' => Client::class,
                 'choice_label' => 'lastname',

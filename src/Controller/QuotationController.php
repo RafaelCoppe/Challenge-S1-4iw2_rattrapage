@@ -23,6 +23,7 @@ class QuotationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $quotation->setAgency($this->getUser()->getAgency());
             $entityManager = $doctrine->getManager();
             $entityManager->persist($quotation);
             $entityManager->flush();
@@ -94,7 +95,11 @@ class QuotationController extends AbstractController
     public function view(Quotation $quotation, $id, ManagerRegistry $doctrine): Response
     {
         $quotation = $doctrine->getRepository(Quotation::class)->find($id);
-        $lines = $quotation->getLines();
+        $lines = $quotation->getLines()->toArray();
+
+        usort($lines, function ($a, $b) {
+            return $a->getPlace() > $b->getPlace();
+        });
 
         return $this->render('quotation/view.html.twig', [
             'quotation' => $quotation,

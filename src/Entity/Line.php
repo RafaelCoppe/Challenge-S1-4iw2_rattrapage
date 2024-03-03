@@ -106,8 +106,6 @@ class Line
         return $this;
     }
 
-
-
     public function getProduct(): Product
     {
         return $this->product;
