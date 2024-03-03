@@ -14,7 +14,6 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Knp\Component\Pager\PaginatorInterface;
 use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 
 #[Route('/client')]
@@ -64,26 +63,14 @@ class ClientController extends AbstractController
         ]);
     }
 
-
     #[Route('/new', name: 'app_client_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager, HttpClientInterface $web_client): Response
+    public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
-        $communes = [];
-        $response = $web_client->request(
-            'GET',
-            'https://geo.api.gouv.fr/departements/60/communes/'
-        );
-        foreach ($response->toArray() as $uneCommune) {
-            $cp = $uneCommune['codesPostaux'][0] ?? "";
-            $communes["$cp {$uneCommune['nom']}"] = $uneCommune['code'];
-        }
-
         $client = new Client();
-        $form = $this->createForm(ClientType::class, $client, ["trait_choices" => $communes]);
+        $form = $this->createForm(ClientType::class, $client);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $client->setAgency($this->getUser()->getAgency());
             $entityManager->persist($client);
             $entityManager->flush();
 
@@ -97,36 +84,17 @@ class ClientController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_client_show', methods: ['GET'])]
-    public function show(Client $client, HttpClientInterface $web_client): Response
+    public function show(Client $client): Response
     {
-        $response = $web_client->request(
-            'GET',
-            'https://geo.api.gouv.fr/communes/' . $client->getCity()
-        );
-        $response = $response->toArray();
-        $cp = $response['codesPostaux'][0] ?? "";
-        $city = "$cp {$response['nom']}";
-
         return $this->render('client/show.html.twig', [
             'client' => $client,
-            'city' => $city
         ]);
     }
 
     #[Route('/{id}/edit', name: 'app_client_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Client $client, EntityManagerInterface $entityManager, HttpClientInterface $web_client): Response
+    public function edit(Request $request, Client $client, EntityManagerInterface $entityManager): Response
     {
-        $communes = [];
-        $response = $web_client->request(
-            'GET',
-            'https://geo.api.gouv.fr/departements/60/communes/'
-        );
-        foreach ($response->toArray() as $uneCommune) {
-            $cp = $uneCommune['codesPostaux'][0] ?? "";
-            $communes["$cp {$uneCommune['nom']}"] = $uneCommune['code'];
-        }
-
-        $form = $this->createForm(ClientType::class, $client, ["trait_choices" => $communes]);
+        $form = $this->createForm(ClientType::class, $client);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -142,13 +110,24 @@ class ClientController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_client_delete', methods: ['POST'])]
-    public function delete(Request $request, Client $client, EntityManagerInterface $entityManager): Response
+    public function delete(Request $request, Client $client, ManagerRegistry $doctrine): Response
     {
         if ($this->isCsrfTokenValid('delete'.$client->getId(), $request->request->get('_token'))) {
+            $entityManager = $doctrine->getManager();
+
+            // Supprimez d'abord toutes les quotations associées
+            foreach ($client->getQuotation() as $quotation) {
+                // Supprimez toutes les lignes associées à chaque quotation
+                foreach ($quotation->getLines() as $line) {
+                    $entityManager->remove($line);
+                }
+                $entityManager->remove($quotation);
+            }
+            // Maintenant, supprimez le client
             $entityManager->remove($client);
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_client_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_client_index');
     }
 }
