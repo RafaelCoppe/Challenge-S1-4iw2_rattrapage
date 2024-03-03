@@ -1,8 +1,10 @@
 <div class="fixed bg-white text-white shadow w-full p-4 flex items-center justify-between">
     <div class="flex items-center">
         <div class="hidden md:flex items-center">
-            <img src="{{ asset('images/logoDevisio.png') }}" alt="logo" class="w-40">
-            <h2 class="font-bold text-xl text-black ml-4">Bonjour Admin 👋</h2>
+            <a href="{{ path('default') }}">
+                <img src="{{ asset('images/logoDevisio.png') }}" alt="logo" class="w-40">
+            </a>
+            <h2 class="font-bold text-xl text-black ml-4">Bonjour {{ app.user.firstName }} 👋</h2>
         </div>
         <div class="md:hidden flex items-center">
             <button id="menuBtn">
