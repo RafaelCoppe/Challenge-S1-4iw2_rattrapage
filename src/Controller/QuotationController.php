@@ -23,6 +23,7 @@ class QuotationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $quotation->setAgency($this->getUser()->getAgency());
             $entityManager = $doctrine->getManager();
             $entityManager->persist($quotation);
             $entityManager->flush();
