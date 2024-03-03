@@ -52,7 +52,7 @@ class InvoiceRepository extends ServiceEntityRepository
         $conn = $this->getEntityManager()->getConnection();
 
         $sql = '
-            select * from invoice
+            select invoice.* from invoice
             join quotation on invoice.id = quotation.invoice_id
             where agency_id = :id_agency
             ';

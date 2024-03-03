@@ -9,13 +9,13 @@
         <thead>
             <tr>
                 <th>Id</th>
-                <th>Terms</th>
-                <th>Payment_lastname</th>
-                <th>Payment_firstname</th>
-                <th>Payment_email</th>
-                <th>Payment_phone</th>
-                <th>Payment_address</th>
-                <th>Payment_city</th>
+                <th>Termes</th>
+                <th>Nom</th>
+                <th>Prenom</th>
+                <th>Mail</th>
+                <th>Tel</th>
+                <th>Adresse</th>
+                <th>Ville</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -42,24 +42,6 @@
         {% endfor %}
         </tbody>
     </table>
-
-    "id" => 13
-    "terms" => "Voyage pour deux personnes dans le sud de la France, avec hébergement à l'hotel"
-    "payment_status" => "Non validé"
-    "payment_lastname" => "Coulon"
-    "payment_firstname" => "NoÃ©mi"
-    "payment_email" => "Coulon.NoÃ©mi@mail.com"
-    "payment_phone" => "0169709347"
-    "payment_address" => "14 impasse des acacias"
-    "payment_city" => 60342
-    "status" => "Brouillon"
-    "invoice_id" => 8
-    "agency_id" => 51
-    "client_id" => 12
-    "start_date" => "2024-02-12 10:43:00"
-    "end_date" => "2024-02-16 10:43:00"
-    "duration" => 5
-    "ref" => "2959523776"
 
     <a href="{{ path('app_invoice_new') }}">Create new</a>
 {% endblock %}

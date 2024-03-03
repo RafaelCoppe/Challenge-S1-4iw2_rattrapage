@@ -47,6 +47,21 @@ class QuotationRepository extends ServiceEntityRepository
 //        ;
 //    }
 
+    public function findQuotesByAgencyAndNoInvoice($agency_id)
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = '
+            select * from quotation q                               
+            where agency_id = :id_agency and invoice_id is null;
+            ';
+
+        $resultSet = $conn->executeQuery($sql, ['id_agency' => $agency_id]);
+
+        // returns an array of arrays (i.e. a raw data set)
+        return $resultSet->fetchAllAssociative();
+    }
+
     public function findLatestQuotationsWithClientNames($agency_id)
     {
         $conn = $this->getEntityManager()->getConnection();
@@ -62,11 +77,4 @@ class QuotationRepository extends ServiceEntityRepository
         // returns an array of arrays (i.e. a raw data set)
         return $resultSet->fetchAllAssociative();
     }
-
-    /*
-     ref
-    firstname
-    lastname
-    status
-     */
 }
