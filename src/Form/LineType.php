@@ -19,7 +19,6 @@ class LineType extends AbstractType
             ->add('unit_price')
             ->add('quantity')
             ->add('additional')
-            ->add('tax')
             ->add('product', EntityType::class, [
                 'class' => Product::class,
                 'choice_label' => 'label',
