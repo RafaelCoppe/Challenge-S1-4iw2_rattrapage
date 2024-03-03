@@ -39,16 +39,6 @@ class QuotationType extends AbstractType
                     'placeholder' => 'Insérez la durée',
                 ],
             ])
-            //->add('ref')
-            //->add('invoice', EntityType::class, [
-            //  'class' => Invoice::class,
-            //  'choice_label' => 'id',
-            //])
-            //->add('agency', EntityType::class, [ //A retirer quand on aura le login fonctionnel
-            //    'label' => 'Agence : ',
-            //    'class' => Agency::class,
-            //    'choice_label' => 'name',
-            //])
             ->add('client', EntityType::class, [
                 'label' => 'Client : ',
                 'class' => Client::class,

@@ -21,28 +21,53 @@ class InvoiceRepository extends ServiceEntityRepository
         parent::__construct($registry, Invoice::class);
     }
 
-//    /**
-//     * @return Invoice[] Returns an array of Invoice objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('f')
-//            ->andWhere('f.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('f.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    public function findByAgency($agency_id)
+    {
+        $conn = $this->getEntityManager()->getConnection();
 
-//    public function findOneBySomeField($value): ?Invoice
-//    {
-//        return $this->createQueryBuilder('f')
-//            ->andWhere('f.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        $sql = '
+            select invoice.* from invoice
+            join quotation on invoice.id = quotation.invoice_id
+            where agency_id = :id_agency
+            ';
+
+        $resultSet = $conn->executeQuery($sql, ['id_agency' => $agency_id]);
+
+        // returns an array of arrays (i.e. a raw data set)
+        return $resultSet->fetchAllAssociative();
+    }
+
+    public function findLatestInvoicesWithDetails($agency_id)
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = '
+            select i.id, payment_firstname, payment_lastname, q.terms from invoice i
+            join quotation q on i.id = q.invoice_id
+            where agency_id = :id_agency
+            ORDER BY id DESC
+            LIMIT 5
+            ';
+
+        $resultSet = $conn->executeQuery($sql, ['id_agency' => $agency_id]);
+
+        // returns an array of arrays (i.e. a raw data set)
+        return $resultSet->fetchAllAssociative();
+    }
+
+    public function countAllInvoices($agency_id): array|bool
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = '
+            select count(*) from invoice i
+            join quotation q on i.id = q.invoice_id
+            where agency_id = :id_agency
+            ';
+
+        $resultSet = $conn->executeQuery($sql, ['id_agency' => $agency_id]);
+
+        // returns an array of arrays (i.e. a raw data set)
+        return $resultSet->fetchAllAssociative();
+    }
 }

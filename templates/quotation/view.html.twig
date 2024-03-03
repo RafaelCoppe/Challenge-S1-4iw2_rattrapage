@@ -23,14 +23,14 @@
     {% for line in lines %}
         <h2>Ligne n°{{line.place}}</h2>
         <ul>
-            <li>Produit: {{ line.product.label }}</li>
+            <li>Produit {{ line.product.label }} - {{ line.product.category }}</li>
             <li>Informations: {{ line.additional }}</li>
             <li>Prix : {{ line.UnitPrice }}</li>
             <li>Quantité: {{ line.quantity }}</li>
-            <li>Taxe: {{ line.product.tax }}%</li>
+            <li>Taxe: {{ line.product.tax }}</li>
         </ul>
         <br>
-        {% if quotation.status != 'Validé' and quotation.status != 'Terminé'%}
+        {% if quotation.status != 'Terminé'%}
         <a href="{{ path('line_edit', {'quotation_id': quotation.id, 'line_id': line.id}) }}">Editer la ligne</a>
 
         <form action="{{ path('line_delete', {'quotation_id': quotation.id, 'line_id': line.id}) }}" method="post">
@@ -51,7 +51,6 @@
             <button type="submit" class="btn btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce devis ?')">Supprimer le devis</button>
         </form>
     {% endif %}
-
     {% if quotation.status == 'Validé' %}
         <a href="{{ path('app_pdf', {'id': quotation.id, "facture":0}) }}" class="btn btn-primary download-pdf-btn" data-status="{{ quotation.status }}">Télécharger le devis</a>
     {% endif %}

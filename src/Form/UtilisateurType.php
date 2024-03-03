@@ -1,0 +1,40 @@
+<?php
+
+namespace App\Form;
+
+use App\Entity\Utilisateur;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+
+class UtilisateurType extends AbstractType
+{
+    public function buildForm(FormBuilderInterface $builder, array $options): void
+    {
+        $builder
+            ->add('username')
+            ->add('roles')
+            ->add('password')
+            ->add('nom')
+            ->add('prenom')
+            ->add('mail')
+            ->add('tel')
+            ->add('adresse')
+            ->add('city')
+            ->add('create_date')
+            ->add('update_date')
+            ->add('delete_date')
+            ->add('genre')
+            ->add('status')
+            ->add('role')
+            ->add('Agence')
+        ;
+    }
+
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        $resolver->setDefaults([
+            'data_class' => Utilisateur::class,
+        ]);
+    }
+}

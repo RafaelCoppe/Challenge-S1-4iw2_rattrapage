@@ -5,18 +5,26 @@ namespace App\Controller;
 use App\Repository\QuotationRepository;
 use Dompdf\Dompdf;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class PdfController extends AbstractController
 {
-    #[Route('/pdf/{id}/{facture}', name: 'app_pdf')]
-    public function index(QuotationRepository $quotationRepository, HttpClientInterface $client, int $id, int $facture): void
+    public function __construct(
+        private HttpClientInterface $client,
+        private QuotationRepository $quotationRepository,
+    ) {
+    }
+
+    #[Route('/pdf/{id}/{facture}/{return_titre}', name: 'app_pdf')]
+    public function index(int $id, int $facture, int $return_titre = 0): JsonResponse
     {
         $isFacture = ($facture == 1);
-        $quote = $quotationRepository->find($id);
+        $quote = $this->quotationRepository->find($id);
         $lines = [];
         $total = $totalHT = $totalTaxe = 0;
+        $total_remise = 0;
         foreach (($quote->getLines())->toArray() as $uneLigne) {
             $lines[] = [
                 "place" => $uneLigne->getPlace(),
@@ -32,9 +40,46 @@ class PdfController extends AbstractController
             $total += $uneLigne->getUnitPrice() * $uneLigne->getQuantity();
             $totalHT += ($uneLigne->getUnitPrice() * $uneLigne->getQuantity()) * (100 + $uneLigne->getProduct()->getTax())/100;
             $totalTaxe += ($uneLigne->getUnitPrice() * $uneLigne->getQuantity()) * ($uneLigne->getProduct()->getTax())/100;
+            if($uneLigne->getProduct()->getCategory() == "remise"){
+                $lines[] = [
+                    "place" => $uneLigne->getPlace(),
+                    "additional" => $uneLigne->getAdditional(),
+                    "unit_price" => "",
+                    "quantity" => "",
+                    "tax" => "",
+                    "totalHt" => "",
+                    "totalTax" => "",
+                    "product" => $uneLigne->getProduct()
+                ];
+
+                $total_remise += $uneLigne->getUnitPrice();
+            }else{
+                $unitPrice = $uneLigne->getUnitPrice();
+                $quantity = $uneLigne->getQuantity();
+                $tax = $uneLigne->getProduct()->getTax();
+
+                $lines[] = [
+                    "place" => $uneLigne->getPlace(),
+                    "additional" => $uneLigne->getAdditional(),
+                    "unit_price" => $unitPrice,
+                    "quantity" => $quantity,
+                    "tax" => $tax,
+                    "totalHt" => $unitPrice * $quantity,
+                    "totalTax" => ($unitPrice * $quantity) * (100 + $tax)/100,
+                    "product" => $uneLigne->getProduct()
+                ];
+
+                $totalHT += $unitPrice * $quantity;
+                $totalTaxe += ($unitPrice * $quantity) * ($tax)/100;
+                $total += ($unitPrice * $quantity) * (100 + $tax)/100;
+            }
         };
 
-        $response = $client->request(
+        if($total_remise > 0){
+            $total_with_remise = ($total - $total_remise);
+        }
+
+        $response = $this->client->request(
             'GET',
             'https://geo.api.gouv.fr/communes/' . $quote->getClient()->getCity()
         );
@@ -48,7 +93,7 @@ class PdfController extends AbstractController
             "address" => $quote->getClient()->getAddress() . " " . $clientCity,
         ];
 
-        $response = $client->request(
+        $response = $this->client->request(
             'GET',
             'https://geo.api.gouv.fr/communes/' . $quote->getAgency()->getCity()
         );
@@ -63,7 +108,7 @@ class PdfController extends AbstractController
         ];
 
         $data = [
-            'logoDevisio'   => $this->imageToBase64($this->getParameter('kernel.project_dir') . '/public/images/logoDevisio.png'),
+            'logoDevisio'   => $this->imageToBase64('images/logoDevisio.png'),
             'quote'          => $quote,
             'lines'          => $lines,
             'total'          => $total,
@@ -72,14 +117,18 @@ class PdfController extends AbstractController
             'client'         => $quoteClient,
             'agency'         => $quoteAgency,
             'isFacture'      => $isFacture,
-            'planeImage'     => $this->imageToBase64($this->getParameter('kernel.project_dir') . '/public/images/plane.png'),
+            'planeImage'     => $this->imageToBase64('images/plane.png'),
             'dev'            => getenv('APP_ENV') == 'dev'
         ];
+
+        if(isset($total_with_remise)){
+            $data['total_with_remise'] = round($total_with_remise, 2);
+        }
 
         if($isFacture){
             $invoice = $quote->getInvoice();
 
-            $response = $client->request(
+            $response = $this->client->request(
                 'GET',
                 'https://geo.api.gouv.fr/communes/' . $invoice->getPaymentCity()
             );
@@ -114,10 +163,14 @@ class PdfController extends AbstractController
         $titre = ($isFacture ? 'facture_' : 'devis_') . $quote->getRef() . '.pdf';
         file_put_contents($titre, $dompdf->output());
 
-        header("Content-type:application/pdf");
-        header("Content-Disposition:attachment;filename=\"$titre\"");
-        readfile($titre);
-        unlink($titre);
+        if($return_titre){
+            return new JsonResponse($titre);
+        }else{
+            header("Content-type:application/pdf");
+            header("Content-Disposition:attachment;filename=\"$titre\"");
+            readfile($titre);
+            unlink($titre);
+        }
     }
 
     private function imageToBase64($path): string

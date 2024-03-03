@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Invoice{% endblock %}
+
+{% block body %}
+    <h1>Invoice</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ invoice.id }}</td>
+            </tr>
+            <tr>
+                <th>Terms</th>
+                <td>{{ invoice.terms }}</td>
+            </tr>
+            <tr>
+                <th>Payment_lastname</th>
+                <td>{{ invoice.paymentLastname }}</td>
+            </tr>
+            <tr>
+                <th>Payment_firstname</th>
+                <td>{{ invoice.paymentFirstname }}</td>
+            </tr>
+            <tr>
+                <th>Payment_email</th>
+                <td>{{ invoice.paymentEmail }}</td>
+            </tr>
+            <tr>
+                <th>Payment_phone</th>
+                <td>{{ invoice.paymentPhone }}</td>
+            </tr>
+            <tr>
+                <th>Payment_address</th>
+                <td>{{ invoice.paymentAddress }}</td>
+            </tr>
+            <tr>
+                <th>Payment_city</th>
+                <td>{{ invoice.paymentCity }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_invoice_index') }}">back to list</a>
+
+    <a href="{{ path('app_invoice_edit', {'id': invoice.id}) }}">edit</a>
+
+    {{ include('invoice/_delete_form.html.twig') }}
+{% endblock %}

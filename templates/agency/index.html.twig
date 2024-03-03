@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des agences{% endblock %}
+
+{% block body %}
+    <h1>Liste des agences</h1>
+
+    <a href="{{ path('agency_new') }}">Création d'une nouvelle agence</a>
+
+        {% for agency in agencies %}
+            {% embed '_composants/_card.html.twig' %}
+                {% block title %}
+                    {{ agency.name }}
+                {% endblock %}
+                {% block body %}
+                    <p>{{ agency.description }}</p>
+                    <p>{{ agency.address }}</p>
+                    <p>{{ agency.city }}</p>
+                    <p>{{ agency.phone }}</p>
+                    <p>{{ agency.mail }}</p>
+                    <p>{{ agency.createDate ? agency.createDate|date('Y-m-d H:i:s') : '' }}</p>
+                    <p>{{ agency.updateDate ? agency.updateDate|date('Y-m-d H:i:s') : '' }}</p>
+                    <p>{{ agency.deleteDate ? agency.deleteDate|date('Y-m-d H:i:s') : '' }}</p>
+                    <a href="{{ path('agency_show', {'id': agency.id}) }}">Voir</a>
+                    <a href="{{ path('agency_update', {'id': agency.id}) }}">Modifier</a>
+                    <a href="{{ path('agency_delete', {'id': agency.id, 'token' : csrf_token('delete' ~ agency.id)}) }}" onclick="confirm('Sur ?')">Supprimer</a>
+                {% endblock %}
+            {% endembed %}
+        {% endfor %}
+{% endblock %}
