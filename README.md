@@ -1,3 +1,30 @@
+## Développeurs : 
+- SAIGH Bilel (BilelSaigh): 
+  * Mise en place de la majorité cruds
+  * Login
+  * Droits utilisateurs
+  
+- ANDRE Hugo (HugoAndre15): 
+  * Page contact
+  * CRUD Quotation / Invoice
+  * Génération de pdf pour devis et facture
+  
+- HALIMI Kylian (TyTanKil): 
+  * Front page login
+  * Front crud produits
+  * 
+  
+- BEGUERISSE Jean-Pierre (JPBeguerisse): 
+  * Dashboard
+  * 
+  * 
+  
+- COPPE Rafael (RafaelCoppe): 
+  * Entités / Fixtures
+  * Back produits
+  * Service et controller Mailer
+  * Template pdf et controlleur
+  
 # Symfony Docker (PHP8 / Caddy / Postgresql)
 
 A [Docker](https://www.docker.com/)-based installer and runtime for the [Symfony](https://symfony.com) web framework, with full [HTTP/2](https://symfony.com/doc/current/weblink.html), HTTP/3 and HTTPS support.
