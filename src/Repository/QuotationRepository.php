@@ -67,7 +67,7 @@ class QuotationRepository extends ServiceEntityRepository
         $conn = $this->getEntityManager()->getConnection();
 
         $sql = '
-            select q.ref, c.firstname, c.lastname, q.status from quotation q 
+            select q.id, q.ref, c.firstname, c.lastname, q.status from quotation q 
             join client c on c.id = q.client_id                                 
             where q.agency_id = :id_agency;
             ';

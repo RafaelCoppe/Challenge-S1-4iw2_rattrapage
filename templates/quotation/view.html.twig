@@ -23,11 +23,11 @@
     {% for line in lines %}
         <h2>Ligne n°{{line.place}}</h2>
         <ul>
-            <li>Produit {{ line.product.label }} {{ product.category }}</li>
+            <li>Produit {{ line.product.label }} {{ line.product.category }}</li>
             <li>Informations: {{ line.additional }}</li>
             <li>Prix : {{ line.UnitPrice }}</li>
             <li>Quantité: {{ line.quantity }}</li>
-            <li>Taxe: {{ product.tax }}</li>
+            <li>Taxe: {{ line.product.tax }}</li>
         </ul>
         <br>
         {% if quotation.status != 'Terminé'%}
