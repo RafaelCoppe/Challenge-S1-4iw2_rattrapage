@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Travelers{% endblock %}
+
+{% block body %}
+    <h1>Edit Travelers</h1>
+
+    {{ include('travelers/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_travelers_index', {'invoice': invoice_id}) }}">back to list</a>
+
+    {{ include('travelers/_delete_form.html.twig') }}
+{% endblock %}
