@@ -19,7 +19,7 @@ class QuotationController extends AbstractController
     {
         $quotation = new Quotation();
         $quotation->setStatus('Brouillon');
-        //$quotation->setAgency($this->getUser()->getAgency());
+        $quotation->setAgency($this->getUser()->getAgency());
         $form = $this->createForm(QuotationType::class, $quotation);
         $form->handleRequest($request);
 
@@ -41,7 +41,8 @@ class QuotationController extends AbstractController
      */
     public function index(ManagerRegistry $doctrine): Response
     {
-        $quotations = $doctrine->getRepository(Quotation::class)->findAll();
+        $user = $this->getUser();
+        $quotations = $doctrine->getRepository(Quotation::class)->findBy(['agency' => $user->getAgency()]);
 
         return $this->render('quotation/index.html.twig', [
             'quotations' => $quotations,

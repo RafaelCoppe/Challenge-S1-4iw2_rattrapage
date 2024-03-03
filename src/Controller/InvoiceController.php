@@ -59,8 +59,10 @@ class InvoiceController extends AbstractController
     {
         $invoices = $doctrine->getRepository(Invoice::class)->findAll();
         $quotation = $doctrine->getRepository(Quotation::class)->findAll();
+        $user = $this->getUser();
 
         return $this->render('invoice/index.html.twig', [
+            'user' => $user,
             'invoices' => $invoices,
             'quotation'  => $quotation,
         ]);

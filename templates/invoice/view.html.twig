@@ -8,15 +8,16 @@
     <a href="{{ path('invoice_index') }}" class="btn btn-primary">Retour aux factures</a>
 
     <ul>
-        <li>Titre : </li>
-        <li>Prenom payeur : </li>
-        <li>Nom payeur : </li>
-        <li>Email payeur : </li>
-        <li>Tel payeur : </li>
-        <li>TAdresse : </li>
-        <li>Status Facture : </li>
-        <li>Status du paiement : </li>
-        <li>Lien du devis : </li>
+        <li>Titre : {{ invoice.terms }}</li>
+        <li>Prenom payeur : {{ invoice.getPaymentFirstname }}</li>
+        <li>Nom payeur : {{ invoice.getPaymentLastname }}</li>
+        <li>Email payeur : {{ invoice.getPaymentEmail }}</li>
+        <li>Tel payeur : {{ invoice.getPaymentPhone }}</li>
+        <li>Adresse : {{ invoice.getPaymentAddress }}</li>
+        <li>Status Facture : {{ invoice.getStatus }}</li>
+        <li>Status du paiement : {{ invoice.getPaymentStatus }}</li>
+        <br>
+        <li>Lien du devis : <a href="{{ path('quotation_view', {'id': invoice.getQuote().id}) }}" class="btn btn-primary">Voir</a><br></li>
     </ul>
     <br>
 {#

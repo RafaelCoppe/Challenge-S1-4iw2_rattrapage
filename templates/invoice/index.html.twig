@@ -34,12 +34,6 @@
                         <a href="{{ path('app_pdf', {'id': invoice.getQuote().id, "facture":1}) }}" class="btn btn-primary download-pdf-btn" data-status="{{ invoice.getQuote().status }}">Télécharger la Facture</a>
                         {% endif %}
                     </td>
-                    {#  
-                    <td>
-                        <a href="{{ path('invoice_show', {'id': invoice.id}) }}">Voir</a>
-                        <a href="{{ path('invoice_edit', {'id': invoice.id}) }}">Modifier</a>
-                    </td>
-                     #}
                 </tr>
             {% endfor %}
         </tbody>
