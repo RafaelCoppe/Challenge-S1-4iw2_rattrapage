@@ -20,6 +20,13 @@ module.exports = {
           DEFAULT: '#F3F7F0',
         },
       },
+      width: {
+        'custom-20': '20rem',
+        'custom-26': '26rem',
+      },
+      spacing: {
+        'input-width': '300px',
+      }
     },
   },
   plugins: [],
