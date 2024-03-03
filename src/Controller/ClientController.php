@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Client;
+use App\Entity\Agency;
 use App\Form\ClientType;
 use App\Repository\ClientRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -14,6 +15,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Knp\Component\Pager\PaginatorInterface;
 use Doctrine\Persistence\ManagerRegistry;
+
 
 
 #[Route('/client')]
@@ -49,7 +51,7 @@ class ClientController extends AbstractController
             // Utilisez le terme de recherche pour filtrer les résultats
 
             $clients = $clientRepository->search($searchTerm, $this->getUser()->getAgency());
-            
+
         } else {
             // Sinon, récupérez tous les clients qui ont le meme id que le member
 
