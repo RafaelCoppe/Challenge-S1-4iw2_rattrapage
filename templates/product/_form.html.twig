@@ -1,4 +1,16 @@
-{{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+{{ form_start(form, {'attr': {'class':'bg-white border border-gray-300 text-md rounded-md w-1/3 p-2'}})}}
+    {% include '_composants/_specialFormField.html.twig' with {
+            'form': form.label,
+            'label': 'Label'
+    } %}
+    {% include '_composants/_specialFormField.html.twig' with {
+            'form': form.category,
+            'label': 'Category'
+    } %}
+    {% include '_composants/_specialFormField.html.twig' with {
+            'form': form.tax,
+            'label': 'Tax'
+    } %}
+    {% include '_composants/_specialSubmitButton.html.twig' with {'buttonText': 'Save', 'buttonClass': 'btn bg-[#64c8ff] mt-2'} %}
+
 {{ form_end(form) }}
