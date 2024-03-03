@@ -3,16 +3,62 @@
 {% block title %}Liste des devis{% endblock %}
 
 {% block body %}
+    <h1>Liste des devis</h1>
 
-    <div class="h-screen flex">
-            {% include '_composants/_topBar.html.twig' %}
-        <div class="flex-1 flex mt-14">
-            {% include '_composants/_sideBar.html.twig' %}
-            {% include '_composants/_quotationList.html.twig' %}
-            {% include '_composants/_sidebarRight.html.twig' %}
-        </div>
-    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Numéro de devis</th>
+                <th>Informations</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for quotation in quotations %}
+                <tr>
+                    <td>{{ quotation.ref }}</td>
+                    <td>{{ quotation.terms }}</td>
+                    <td>{{ quotation.status }}</td>
+                    <td>
+                        <a href="{{ path('quotation_view', {'id': quotation.id}) }}" class="btn btn-primary">Voir</a><br>
+                        {% if quotation.status == 'Brouillon' or quotation.status == 'En Cours' %}
+                            <a href="{{ path('quotation_edit', {'id': quotation.id}) }}" class="btn btn-primary">Éditer</a>
+                        {% endif %}
+                        <form action="{{ path('quotation_delete', {'id': quotation.id}) }}" method="post">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ quotation.id) }}">
+                            <button type="submit" class="btn btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce devis ?')">Supprimer</button>
+                        </form>
+                        {% if quotation.status == 'Validé' %}
+                            <a href="{{ path('app_pdf', {'id': quotation.id, "facture":0}) }}" class="btn btn-primary download-pdf-btn" data-status="{{ quotation.status }}">Télécharger le devis</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 
+    <form action="{{ path('quotation_new')}}" method="post">
+        <button type="submit">Nouveau devis</button>
+    </form>
+    
 
+    {% block javascripts %}
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                var buttons = document.querySelectorAll('.download-pdf-btn');
+                buttons.forEach(function(button) {
+                    var status = button.getAttribute('data-status');
+                    if (status === 'Brouillon') {
+                        button.addEventListener('click', function(event) {
+                            event.preventDefault();
+                            alert('Impossible de télécharger le PDF pour un devis en état Brouillon.');
+                        });
+                    }
+                });
+            });
+        </script>
+    {% endblock %}
 
 {% endblock %}
+

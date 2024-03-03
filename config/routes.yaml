@@ -6,6 +6,7 @@ contact:
     path: /contact
     controller: App\Controller\ContactPageController::index
 
+
 product_show:
     path: /product/{id}
     controller: App\Controller\ProductController::show
@@ -59,3 +60,16 @@ line_delete:
 line_edit:
     path: '/line/edit/{quotation_id}/{line_id}'
     controller: 'App\Controller\LineController::edit'
+
+create_invoice:
+    path: '/quotation/{quotationId}/create_invoice'
+    controller: 'App\Controller\InvoiceController::createInvoice'
+
+invoice_index:
+    path: /invoices
+    controller: 'App\Controller\InvoiceController::index'
+
+invoice_view:
+    path: /invoice/view/{id}
+    controller: 'App\Controller\InvoiceController::view'
+

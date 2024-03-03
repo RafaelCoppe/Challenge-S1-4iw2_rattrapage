@@ -1,47 +1,41 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Invoice index{% endblock %}
+{% block title %}Liste des factures{% endblock %}
 
 {% block body %}
-    <h1>Invoice index</h1>
+    <h1>Liste des factures</h1>
 
-    <table class="table">
+    <table>
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Termes</th>
-                <th>Nom</th>
-                <th>Prenom</th>
-                <th>Mail</th>
-                <th>Tel</th>
-                <th>Adresse</th>
-                <th>Ville</th>
-                <th>actions</th>
+                <th>ID</th>
+                <th>Informations</th>
+                <th>Client</th>
+                <th>Status</th>
+                <th>Paiement</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
-        {% for invoice in invoices %}
-            <tr>
-                <td>{{ invoice.id }}</td>
-                <td>{{ invoice.terms }}</td>
-                <td>{{ invoice.payment_lastname }}</td>
-                <td>{{ invoice.payment_firstname }}</td>
-                <td>{{ invoice.payment_email }}</td>
-                <td>{{ invoice.payment_phone }}</td>
-                <td>{{ invoice.payment_address }}</td>
-                <td>{{ invoice.payment_city }}</td>
-                <td>
-                    <a href="{{ path('app_invoice_show', {'id': invoice.id}) }}">show</a>
-                    <a href="{{ path('app_invoice_edit', {'id': invoice.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="9">no records found</td>
-            </tr>
-        {% endfor %}
+            {% for invoice in invoices %}
+                <tr>
+                    <td>{{ invoice.id }}</td>
+                    <td>{{ invoice.terms }}</td>
+                    <td>{{ invoice.getPaymentLastname }} {{ invoice.getPaymentFirstname }}</td>
+                    <td>{{ invoice.Status }}</td>
+                    <td>{{ invoice.PaymentStatus }}</td>
+                    <td>
+                        <a href="{{ path('invoice_view', {'id': invoice.id}) }}" class="btn btn-primary">Voir</a><br>
+                        {#<form action="{{ path('invoice_delete', {'id': quotation.id}) }}" method="post">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ quotation.id) }}">
+                            <button type="submit" class="btn btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce devis ?')">Supprimer</button>
+                        </form>#}
+                        {% if invoice.getQuote() is not null %}
+                        <a href="{{ path('app_pdf', {'id': invoice.getQuote().id, "facture":1}) }}" class="btn btn-primary download-pdf-btn" data-status="{{ invoice.getQuote().status }}">Télécharger la Facture</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
         </tbody>
     </table>
-
-    <a href="{{ path('app_invoice_new') }}">Create new</a>
 {% endblock %}
