@@ -55,6 +55,7 @@ class ClientController extends AbstractController
         } else {
             // Sinon, récupérez tous les clients qui ont le meme id que le member
 
+
             $clients = $clientRepository->findBy(['agency' => $this->getUser()->getAgency()]);
 
         }
@@ -64,6 +65,7 @@ class ClientController extends AbstractController
             'form' => $form->createView(), // Passez le formulaire au template
         ]);
     }
+
 
     #[Route('/new', name: 'app_client_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
