@@ -4,7 +4,7 @@
         <div class="bg-white p-4 rounded-md">
             <div class="flex justify-between items-center">
                 <h2 class="text-gray-500 text-lg font-semibold pb-4">Produits</h2>
-                    <a href="{{ path('app_product_new') }}" class="justify-end w-1/8 flex items-center bg-primary text-white font-semibold py-1 px-4 rounded">
+                    <a href="{{ path('product_new') }}" class="justify-end w-1/8 flex items-center bg-primary text-white font-semibold py-1 px-4 rounded">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                         </svg>
@@ -29,8 +29,8 @@
                                 <td class="py-2 px-4 border-b border-grey-light">{{ product.category }}</td>
                                 <td class="py-2 px-4 border-b border-grey-light text-right">{{ product.tax }}</td>
                                 <td class="py-2 px-4 border-b border-grey-light justify-end flex gap-4">
-                                    {% set product_show = path('app_product_show', {'id': product.id}) %}
-                                    {% set product_edit = path('app_product_edit', {'id': product.id}) %}
+                                    {% set product_show = path('product_show', {'id': product.id}) %}
+                                    {% set product_edit = path('app_product_index', {'id': product.id}) %}
                                     {% include '_composants/_specialButton.html.twig' with {'specialButtonAction':product_show,'specialButtonText': 'Voir'} %}
                                     {% include '_composants/_specialButton.html.twig' with {'specialButtonAction':product_edit,'specialButtonText': 'Modifier'} %}
                                 </td>
