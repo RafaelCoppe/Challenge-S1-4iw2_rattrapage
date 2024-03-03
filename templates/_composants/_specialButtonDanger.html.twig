@@ -1,0 +1,6 @@
+{% set specialButtonText = specialButtonText|default('Default') %}
+{% set specialButtonAction = specialButtonAction|default('Default') %}
+
+<button formaction="{{ specialButtonAction }}" class="{{ specialButtonClass }} flex justify-center w-40 py-1 rounded-md text-white font-semibold" type="submit">
+  {{ specialButtonText }}
+</button>

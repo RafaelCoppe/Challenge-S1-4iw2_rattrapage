@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des utilisateurs{% endblock %}
+
+{% block body %}
+    <h1>Liste des utilisateurs</h1>
+
+    <a href="{{ path('member_new') }}">Création un nouveau utilisateur</a>
+
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Username</th>
+                <th>Password</th>
+                <th>Status</th>
+                <th>Gender</th>
+                <th>Lastname</th>
+                <th>Firstname</th>
+                <th>Mail</th>
+                <th>Phone</th>
+                <th>Address</th>
+                <th>City</th>
+                <th>Roles</th>
+                <th>Create_date</th>
+                <th>Update_date</th>
+                <th>Delete_date</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for member in members %}
+            <tr>
+                <td>{{ member.id }}</td>
+                <td>{{ member.username }}</td>
+                <td>{{ member.password }}</td>
+                <td>{{ member.status }}</td>
+                <td>{{ member.gender }}</td>
+                <td>{{ member.lastname }}</td>
+                <td>{{ member.firstname }}</td>
+                <td>{{ member.mail }}</td>
+                <td>{{ member.phone }}</td>
+                <td>{{ member.address }}</td>
+                <td>{{ member.city }}</td>
+                <td>{{ member.roles ? member.roles|json_encode : '' }}</td>
+                <td>{{ member.createDate ? member.createDate|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ member.updateDate ? member.updateDate|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ member.deleteDate ? member.deleteDate|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('member_show', {'id': member.id}) }}">show</a>
+                    <a href="{{ path('member_update', {'id': member.id}) }}">edit</a>
+                    <a href="{{ path('member_delete', {'id': member.id, 'token': csrf_token('delete' ~ member.id)}) }}" onclick="confirm('Sur ?')">Supprimer</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="16">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

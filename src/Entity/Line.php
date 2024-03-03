@@ -89,6 +89,11 @@ class Line
         $this->unit_price = $unit_price;
     }
 
+    public function __toString(): string
+    {
+        return $this->getUnitPrice();
+    }
+
     public function getAdditional(): ?string
     {
         return $this->additional;
@@ -97,18 +102,6 @@ class Line
     public function setAdditional(string $additional): static
     {
         $this->additional = $additional;
-
-        return $this;
-    }
-
-    public function getTax(): ?float
-    {
-        return $this->tax;
-    }
-
-    public function setTax(float $tax): static
-    {
-        $this->tax = $tax;
 
         return $this;
     }

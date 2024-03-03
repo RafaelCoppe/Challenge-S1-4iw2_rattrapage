@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouveau devis{% endblock %}
+
+{% block body %}
+    <h1>Nouveau devis</h1>
+
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <button type="submit" class="btn btn-primary">Créer le devis</button>
+    {{ form_end(form) }}
+{% endblock %}

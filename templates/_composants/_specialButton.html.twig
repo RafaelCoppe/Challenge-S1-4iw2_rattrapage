@@ -1,6 +1,9 @@
 {% set specialButtonText = specialButtonText|default('Default') %}
-{% set specialButtonClass = specialButtonClass|default('bg-[#64c8ff]') %}
 
-<a href="{{ specialButtonAction }}" class="{{ specialButtonClass }} flex justify-center w-40 py-1 rounded-md text-white font-semibold"> 
+{% set specialButtonClass = specialButtonClass|default('primary') %}
+{% set specialButtonAction = specialButtonAction|default('Default') %}
+
+<a href="{{ specialButtonAction }}" class="{{ specialButtonClass }} flex justify-center w-40 py-1 rounded-md text-white font-semibold">
   {{ specialButtonText }}
-</a> 
+</a>
+
