@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Doctrine\Persistence\ManagerRegistry;
 
 #[Route('/client')]
 class ClientController extends AbstractController
@@ -69,13 +70,24 @@ class ClientController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_client_delete', methods: ['POST'])]
-    public function delete(Request $request, Client $client, EntityManagerInterface $entityManager): Response
+    public function delete(Request $request, Client $client, ManagerRegistry $doctrine): Response
     {
         if ($this->isCsrfTokenValid('delete'.$client->getId(), $request->request->get('_token'))) {
+            $entityManager = $doctrine->getManager();
+
+            // Supprimez d'abord toutes les quotations associées
+            foreach ($client->getQuotation() as $quotation) {
+                // Supprimez toutes les lignes associées à chaque quotation
+                foreach ($quotation->getLines() as $line) {
+                    $entityManager->remove($line);
+                }
+                $entityManager->remove($quotation);
+            }
+            // Maintenant, supprimez le client
             $entityManager->remove($client);
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_client_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_client_index');
     }
 }
