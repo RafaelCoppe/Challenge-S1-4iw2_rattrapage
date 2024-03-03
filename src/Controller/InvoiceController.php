@@ -6,6 +6,7 @@ use App\Entity\Invoice;
 use App\Form\InvoiceType;
 use App\Repository\InvoiceRepository;
 use App\Repository\QuotationRepository;
+use App\Repository\TravelersRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -63,10 +64,12 @@ class InvoiceController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_invoice_show', methods: ['GET'])]
-    public function show(Invoice $invoice): Response
+    public function show(TravelersRepository $travelersRepository, Invoice $invoice): Response
     {
+        $travelers = $travelersRepository->findBy(["invoice" => $invoice]);
         return $this->render('invoice/show.html.twig', [
             'invoice' => $invoice,
+            'travelers' => $travelers,
         ]);
     }
 
