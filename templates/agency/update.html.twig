@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Agency{% endblock %}
+
+{% block body %}
+    <h1>Modification de l'agence</h1>
+
+    {{ form_start(form)}}
+    {{ form_rest(form) }}
+    <button type="submit">Envoyer</button>
+    {{ form_end(form) }}
+{% endblock %}

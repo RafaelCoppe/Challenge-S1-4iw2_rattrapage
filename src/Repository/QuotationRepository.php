@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Invoice;
 use App\Entity\Quotation;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -22,27 +23,58 @@ class QuotationRepository extends ServiceEntityRepository
     }
 
 //    /**
-//     * @return Quotation[] Returns an array of Quotation objects
+//     * @return Product[] Returns an array of Product objects
 //     */
 //    public function findByExampleField($value): array
 //    {
-//        return $this->createQueryBuilder('d')
-//            ->andWhere('d.exampleField = :val')
+//        return $this->createQueryBuilder('p')
+//            ->andWhere('p.exampleField = :val')
 //            ->setParameter('val', $value)
-//            ->orderBy('d.id', 'ASC')
+//            ->orderBy('p.id', 'ASC')
 //            ->setMaxResults(10)
 //            ->getQuery()
 //            ->getResult()
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?Quotation
+//    public function findOneBySomeField($value): ?Product
 //    {
-//        return $this->createQueryBuilder('d')
-//            ->andWhere('d.exampleField = :val')
+//        return $this->createQueryBuilder('p')
+//            ->andWhere('p.exampleField = :val')
 //            ->setParameter('val', $value)
 //            ->getQuery()
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+    public function findQuotesByAgencyAndNoInvoice($agency_id)
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = '
+            select * from quotation q                               
+            where agency_id = :id_agency and invoice_id is null;
+            ';
+
+        $resultSet = $conn->executeQuery($sql, ['id_agency' => $agency_id]);
+
+        // returns an array of arrays (i.e. a raw data set)
+        return $resultSet->fetchAllAssociative();
+    }
+
+    public function findLatestQuotationsWithClientNames($agency_id)
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = '
+            select q.ref, c.firstname, c.lastname, q.status from quotation q 
+            join client c on c.id = q.client_id                                 
+            where q.agency_id = :id_agency;
+            ';
+
+        $resultSet = $conn->executeQuery($sql, ['id_agency' => $agency_id]);
+
+        // returns an array of arrays (i.e. a raw data set)
+        return $resultSet->fetchAllAssociative();
+    }
 }

@@ -16,7 +16,7 @@
                 {{ organisation.description }}
                 {{ organisation.createdAt|date }}
                 <a href="{{ path('organisation_show', {'id': organisation.id}) }}">Voir</a>
-                <a href="{{ path('organisation_update', {'id': organisation.id}) }}">Editer</a>
+                <a href="{{ path('organisation_update', {'id': organisation.id}) }}">Modifier</a>
                 <a href="{{ path('organisation_delete', {'id': organisation.id, 'token': csrf_token('delete' ~ organisation.id)}) }}" onclick="confirm('Sur ?')">Supprimer</a>
             {% endblock %}
         {% endembed %}
