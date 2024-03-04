@@ -1,23 +1,27 @@
 ## Développeurs : 
 - SAIGH Bilel (BilelSaigh): 
   * Mise en place de la majorité cruds
-  * Login
+  * Authentification
   * Droits utilisateurs
+  * Mise en place du serveur et du déploiement
+  * Gestion des permissions sur les routes
+  * Charte graphique
   
 - ANDRE Hugo (HugoAndre15): 
   * Page contact
   * CRUD Quotation / Invoice
   * Génération de pdf pour devis et facture
+  * Etat des factures & devis
   
 - HALIMI Kylian (TyTanKil): 
-  * Front page login
-  * Front crud produits
-  * 
+  * Front de la majorité des CRUD
+  * Création de composants Tailwind
   
 - BEGUERISSE Jean-Pierre (JPBeguerisse): 
   * Dashboard
-  * 
-  * 
+  * Front pages erreurs
+  * Front CRUD Membre
+  * Création de composant Tailwind
   
 - COPPE Rafael (RafaelCoppe): 
   * Entités / Fixtures
