@@ -1,0 +1,41 @@
+{# {{ form_start(form) }}
+    {{ form_widget(form) }}
+    <button class="btn">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }} #}
+<div class="w-full">
+    <div class="lg:ml-40 md:grid-cols-2 gap-4 mt-4 p-2 ml-2 ">
+        <div class="container mx-auto mt-8">
+        <h1 class="text-2xl font-semibold mb-4">{{ title }}</h1>
+            {{ form_start(form, {'attr': {'class':'bg-white border border-gray-300 text-md rounded-md p-6 mb-6'}})}}
+                        {% include '_composants/_specialFormField.html.twig' with {
+                                'form': form.lastname,
+                                'label': 'Nom de Famille'
+                        } %}
+                        {% include '_composants/_specialFormField.html.twig' with {
+                                'form': form.firstname,
+                                'label': 'Prénom'
+                        } %}
+                        {% include '_composants/_specialFormField.html.twig' with {
+                                'form': form.email,
+                                'label': 'Email'
+                        } %}
+                        {% include '_composants/_specialFormField.html.twig' with {
+                                'form': form.phone,
+                                'label': 'Téléphone'
+                        } %}
+                        {% include '_composants/_specialFormField.html.twig' with {
+                                'form': form.address,
+                                'label': 'Adresse'
+                        } %}
+                        {% include '_composants/_specialFormField.html.twig' with {
+                                'form': form.city,
+                                'label': 'Ville'
+                        } %}
+
+            <div class="flex justify-between mt-5">
+                                {% include '_composants/_specialSubmitButton.html.twig' with {'buttonText': 'Save', 'buttonClass': 'btn bg-[#64c8ff] mt-2'} %}
+                        </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+</div>

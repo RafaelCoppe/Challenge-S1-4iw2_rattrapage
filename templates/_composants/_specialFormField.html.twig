@@ -1,0 +1,6 @@
+{% block field %}
+    <div class="form-group">
+        <label class="block text-gray-700 text-sm font-bold mb-2">{{ label }}</label>
+        {{ form_widget(form, {'attr': {'class': 'bg-cream border border-gray-300 text-gray-900 text-sm rounded-md w-full p-2'}}) }}
+    </div>
+{% endblock %}

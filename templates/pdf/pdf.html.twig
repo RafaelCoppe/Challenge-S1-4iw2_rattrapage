@@ -1,0 +1,383 @@
+<html>
+<head>
+
+</head>
+
+<style>
+    @page {
+        margin: 0;
+        font-family: 'Helvetica', serif;
+        font-size: 9pt;
+    }
+
+    #watermark {
+        position: absolute;
+        top: 50%;
+        left: -1em;
+        transform: rotate(-45deg);
+        white-space: nowrap;
+        font-size: 36pt;
+        font-weight: bold;
+        color: #ffc0cb;
+        border: thin solid #ffc0cb;
+        opacity: 0.5;
+    }
+
+    footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 20mm;
+    }
+
+    footer div {
+        margin: 0 10mm;
+        padding-top: 2mm;
+        text-align: center;
+        border-top: thin solid grey;
+    }
+
+    body {
+        margin: 5em 2em 5em 2em;
+    }
+
+    .quoteNumber {
+        margin-bottom: 3em;
+    }
+
+    .quoteNumber > * {
+        margin: 5px 0;
+    }
+
+    .quoteNumber h1 {
+        color: #004283;
+    }
+
+    .quoteNumber h2 {
+        color: #3886CE;
+    }
+
+    .logoDevisio {
+        position: fixed;
+        width: 25%;
+        top: 7em;
+        right: 2em;
+    }
+
+    .agency_client {
+        height: 15em;
+    }
+
+    .agency_client div {
+        width: 40%;
+        background-color: lightgrey;
+        padding: 1rem;
+        border-radius: 25px;
+        line-height: 75%;
+        border: thin solid #3886CE;
+    }
+
+    .agency_client div:nth-child(1) {
+        float: left;
+        margin-left: 1em;
+    }
+
+    .agency_client div:nth-child(2) {
+        float: right;
+        margin-right: 1em;
+    }
+
+    .agency_client .label {
+        font-size: smaller;
+        margin-bottom: 2em;
+        font-weight: bold;
+    }
+
+    .mainTable {
+        width: 90%;
+        margin: 0 auto;
+    }
+
+    .productsTable {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: smaller;
+    }
+
+    .productsTable th,
+    .productsTable td {
+        padding: 6px;
+        text-align: left;
+        border-bottom: thin solid #3886CE;
+    }
+
+    .productsTable th {
+        color: #004283;
+    }
+
+    .empty {
+        width: 5%;
+        border-bottom: thin solid transparent !important;
+    }
+
+    .productsTable th:nth-child(2),
+    .productsTable td:nth-child(2) {
+        width: 50%;
+    }
+
+    .productsTable th:nth-child(3),
+    .productsTable td:nth-child(3) {
+        width: 5%;
+    }
+
+    .productsTable th:nth-child(4),
+    .productsTable td:nth-child(4),
+    .productsTable th:nth-child(5),
+    .productsTable td:nth-child(5),
+    .productsTable th:nth-child(6),
+    .productsTable td:nth-child(6),
+    .productsTable th:nth-child(7),
+    .productsTable td:nth-child(7) {
+        width: 7.5%;
+    }
+
+    .productsTable td:nth-child(1) {
+        vertical-align: top;
+    }
+
+    .productsTotalTable {
+        width: 30%;
+        margin: 0 0 auto auto;
+        border-collapse: collapse;
+        color: #004283;
+    }
+
+    .productsTotalTable th,
+    .productsTotalTable td {
+        padding: 3px;
+        text-align: left;
+    }
+
+    .productsTotalTable tbody tr:nth-child(1) {
+        width: 15%;
+    }
+
+    .productsTotalTable tbody tr:nth-child(2) {
+        width: 15%;
+    }
+
+    .productsTotalTable tbody tr td:nth-child(1) {
+        font-size: larger;
+        font-weight: bold;
+    }
+
+    .description {
+        line-height: 75%;
+        margin-left: 1em;
+    }
+
+    .description .label {
+        color: #004283;
+    }
+
+    .description .content {
+        color: #3886CE;
+    }
+
+    .facture_only {
+        margin-bottom: 90mm;
+        break-inside: avoid;
+    }
+
+    .travelers,
+    .payment {
+        margin-left: 1em;
+    }
+
+    .travelers_table {
+        width: 35%;
+        border-collapse: collapse;
+        font-size: smaller;
+    }
+
+    .travelers_table th {
+        color: #004283;
+    }
+
+    .travelers_table th,
+    .travelers_table td {
+        padding: 6px;
+        text-align: left;
+        border-bottom: thin solid #3886CE;
+    }
+
+    .travelers_table tbody tr:nth-child(3) {
+        width: 5%;
+    }
+
+    .payment_infos {
+        margin-left: 1em;
+    }
+    .payment_infos tr td:nth-child(2) {
+        padding-left: 1em;
+    }
+
+    .bottom_plane{
+        position: fixed;
+        bottom: 40mm;
+        right: 6em;
+        width: 20%
+    }
+</style>
+
+
+<body>
+{% if dev %}
+    <div id="watermark">ENVIRONNEMENT DE DEVELOPPEMENT</div>
+{% endif %}
+
+<footer>
+    {% include 'pdf/footer.html.twig' %}
+</footer>
+
+<main>
+    <div class="quoteNumber">
+        <h1>{% if isFacture %}FACTURE{% else %}DEVIS{% endif %}</h1>
+        <h2>No. #{{ quote.ref }}</h2>
+    </div>
+
+    <img class="logoDevisio" src="{{ logoDevisio }}" alt="Logo de Devisio">
+
+    <div class="agency_client">
+        <div class="agency">
+            <p class="label">Agence : </p>
+            <p class="name">{{ agency.name }}</p>
+            <p class="phone">{{ agency.phone }}</p>
+            <p class="mail">{{ agency.mail }}</p>
+            <p class="address">{{ agency.address }}</p>
+        </div>
+
+        <div class="client">
+            <p class="label">Client : </p>
+            <p class="name">{{ client.name }}</p>
+            <p class="phone">{{ client.phone }}</p>
+            <p class="mail">{{ client.mail }}</p>
+            <p class="address">{{ client.address }}</p>
+        </div>
+    </div>
+
+    <div class="description">
+        <p class="label">Description : </p>
+        <p class="content">{{ quote.terms }}</p>
+    </div>
+
+    <div class="mainTable">
+        <table class="productsTable">
+            <thead>
+            <tr>
+                <th class="empty"></th>
+                <th>Description</th>
+                <th>Qté</th>
+                <th>P.U.</th>
+                <th>Total HT</th>
+                <th>Taxe %</th>
+                <th>Total</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for line in lines %}
+                <tr>
+                    <td class="empty">#{{ line.place }}</td>
+                    <td>
+                        {{ line.product.label }} - {{ line.product.category }}<br>
+                        {{ line.additional }}
+                    </td>
+                    <td>{{ line.quantity }}</td>
+                    <td>{{ line.unit_price }}</td>
+                    <td>{{ line.totalHt }}</td>
+                    <td>{{ line.tax }}</td>
+                    <td>{{ line.totalTax }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <br>
+
+        <table class="productsTotalTable">
+            <tr>
+                <td>Total HT</td>
+                <td>{{ totalHT }} €</td>
+            </tr>
+            <tr>
+                <td>Total Taxes</td>
+                <td>{{ totalTaxe }} €</td>
+            </tr>
+            <tr>
+                <td>Total{% if total_with_remise is defined %} (sans remise){% endif %}</td>
+                <td>{{ total }} €</td>
+            </tr>
+            {% if total_with_remise is defined %}
+            <tr>
+                <td>Total (avec remise)</td>
+                <td>{{ total_with_remise }}</td>
+            </tr>
+            {% endif %}
+        </table>
+    </div>
+
+    {% if isFacture %}
+        <div class="facture_only">
+            <div class="travelers">
+                <p>Voyageurs : </p>
+                <table class="travelers_table">
+                    <thead>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Prénom</th>
+                        <th>Age</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for traveler in travelers %}
+                        <tr>
+                            <td>{{ traveler.lastname }}</td>
+                            <td>{{ traveler.firstname }}</td>
+                            <td>{{ traveler.age }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <br>
+
+            <div class="payment">
+                <p>Informations de paiement : </p>
+                <table class="payment_infos">
+                    <tr>
+                        <td>Nom :</td>
+                        <td>{{ payment.lastname }} {{ payment.firstname }}</td>
+                    </tr>
+                    <tr>
+                        <td>Mail :</td>
+                        <td>{{ payment.mail }}</td>
+                    </tr>
+                    <tr>
+                        <td>Telephone :</td>
+                        <td>{{ payment.phone }}</td>
+                    </tr>
+                    <tr>
+                        <td>Adresse :</td>
+                        <td>{{ payment.address }}</td>
+                    </tr>
+                </table>
+            </div>
+
+            <img class="bottom_plane" src="{{ planeImage }}" alt="Avion en vol">
+        </div>
+    {% endif %}
+</main>
+</body>
+</html>

@@ -1,0 +1,7 @@
+{% set specialButtonText = specialButtonText|default('Default') %}
+{% set specialButtonClass = specialButtonClass|default('text-white') %}
+{% set specialButtonAction = specialButtonAction|default('Default') %}
+
+<a href="{{ specialButtonAction }}" class="{{ specialButtonClass }} flex items-center bg-secondary text-white font-semibold py-2 px-4 rounded-md">
+  {{ specialButtonText }}
+</a>
