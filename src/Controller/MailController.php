@@ -19,17 +19,19 @@ class MailController extends AbstractController
 {
     CONST footer = "<br><br>Pour toute réclamation, merci d'envoyer un mail à 'contact@devisio.site'";
     #[Route('/contact', name: 'mail_contact')]
-    public function mail_contact(MailerInterface $mailer, $contact_address, $contact_name, $message): Response
+    public function mail_contact(MailerInterface $mailer): Response
     {
+        $contact_name = $_POST['name'] . ' ' . $_POST['firstname'];
+
         $email = (new Email())
-            ->from(new Address($contact_address, "Rafael COPPE"))
+            ->from(new Address($_POST['email'], "Rafael COPPE"))
             ->to(new Address('contact@devisio.site'))
-            ->subject('Nouveau mail de contact de : ' . $contact_name . ' (' . $contact_address . ')')
-            ->html('Nouveau mail de contact de : ' . $contact_name . ' (' . $contact_address . ')<br><br>' . $message . '<br><br>Envoyé via le formulaire de contact');
+            ->subject('Nouveau mail de contact de : ' . $_POST['civilite'] . ' ' . $contact_name . ' (' . $_POST["email"] . ' / ' . $_POST["phone"] . ')')
+            ->html('Nouveau mail de contact de : ' . $_POST['civilite'] . ' ' . $contact_name . ' (' . $_POST["email"] . ' / ' . $_POST["phone"] . ')<br><br>' . $_POST["message"] . '<br><br>Envoyé via le formulaire de contact');
 
         $mailer->send($email);
 
-        return $this->render('default/index.html.twig', ['controller_name' => "mailController"]);
+        return $this->render('_composants/contact.html.twig');
     }
 
     #[Route('/devis', name: 'mail_valid_devis')]
