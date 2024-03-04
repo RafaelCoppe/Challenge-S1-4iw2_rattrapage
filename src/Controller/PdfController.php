@@ -26,6 +26,20 @@ class PdfController extends AbstractController
         $total = $totalHT = $totalTaxe = 0;
         $total_remise = 0;
         foreach (($quote->getLines())->toArray() as $uneLigne) {
+            $lines[] = [
+                "place" => $uneLigne->getPlace(),
+                "additional" => $uneLigne->getAdditional(),
+                "unit_price" => $uneLigne->getUnitPrice(),
+                "quantity" => $uneLigne->getQuantity(),
+                "tax" => $uneLigne->getProduct()->getTax(),
+                "totalHt" => $uneLigne->getUnitPrice() * $uneLigne->getQuantity(),
+                "totalTax" => ($uneLigne->getUnitPrice() * $uneLigne->getQuantity()) * (100 + $uneLigne->getProduct()->getTax())/100,
+                "product" => $uneLigne->getProduct()
+            ];
+
+            $total += $uneLigne->getUnitPrice() * $uneLigne->getQuantity();
+            $totalHT += ($uneLigne->getUnitPrice() * $uneLigne->getQuantity()) * (100 + $uneLigne->getProduct()->getTax())/100;
+            $totalTaxe += ($uneLigne->getUnitPrice() * $uneLigne->getQuantity()) * ($uneLigne->getProduct()->getTax())/100;
             if($uneLigne->getProduct()->getCategory() == "remise"){
                 $lines[] = [
                     "place" => $uneLigne->getPlace(),

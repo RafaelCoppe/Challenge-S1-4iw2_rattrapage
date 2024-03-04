@@ -35,12 +35,12 @@ class MemberFixtures extends Fixture implements DependentFixtureInterface
             $member->setPassword("12345");
             $member->setFirstName($firstname);
             $member->setLastName($lastname);
-            $member->setMail("$firstname.$lastname@mail.com");
-            $member->setPhone($faker->phoneNumber);
+            $member->setMail(Encoding::fixUTF8("$firstname.$lastname@mail.com"));
+            $member->setPhone(Encoding::fixUTF8($faker->phoneNumber));
             $member->setAddress(Encoding::fixUTF8($faker->streetAddress));
             $member->setCity($villes[$i]);
             $member->setGender($gender == 'male' ? 'homme' : 'femme');
-            $member->setStatus($status[$i%4]);
+            $member->setStatus($status[0]);
             $member->setRoles(["ROLE_USER"]);
             $member->setCreateDate(new DateTime('now', new DateTimeZone("Europe/Paris")));
             $member->setAgency($this->getReference('agence_' . rand(1, 5)));

@@ -59,7 +59,7 @@ class AgencyFixtures extends Fixture
             $agence->setCity($thisAgence['city']);
             $agence->setPhone($faker->phoneNumber);
             $agence->setMail($thisAgence['mail']);
-            $agence->setStatus($allStatus[$index%3]);
+            $agence->setStatus($allStatus[0]);
             $agence->setDomain($thisAgence['domain']);
             $agence->setCreateDate(new DateTime('now', new DateTimeZone("Europe/Paris")));
 

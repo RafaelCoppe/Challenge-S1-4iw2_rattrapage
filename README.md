@@ -1,3 +1,34 @@
+## Développeurs : 
+- SAIGH Bilel (BilelSaigh): 
+  * Mise en place de la majorité cruds
+  * Authentification
+  * Droits utilisateurs
+  * Mise en place du serveur et du déploiement
+  * Gestion des permissions sur les routes
+  * Charte graphique
+  
+- ANDRE Hugo (HugoAndre15): 
+  * Page contact
+  * CRUD Quotation / Invoice
+  * Génération de pdf pour devis et facture
+  * Etat des factures & devis
+  
+- HALIMI Kylian (TyTanKil): 
+  * Front de la majorité des CRUD
+  * Création de composants Tailwind
+  
+- BEGUERISSE Jean-Pierre (JPBeguerisse): 
+  * Dashboard
+  * Front pages erreurs
+  * Front CRUD Membre
+  * Création de composant Tailwind
+  
+- COPPE Rafael (RafaelCoppe): 
+  * Entités / Fixtures
+  * Back produits
+  * Service et controller Mailer
+  * Template pdf et controlleur
+  
 # Symfony Docker (PHP8 / Caddy / Postgresql)
 
 A [Docker](https://www.docker.com/)-based installer and runtime for the [Symfony](https://symfony.com) web framework, with full [HTTP/2](https://symfony.com/doc/current/weblink.html), HTTP/3 and HTTPS support.

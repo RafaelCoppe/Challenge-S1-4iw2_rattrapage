@@ -16,17 +16,31 @@ class QuotationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('terms')
+            ->add('terms',null, [
+                'label' => 'Nom : ',
+                'required'=>true,
+                'attr' => [
+                    'placeholder' => 'Nom du devis',
+                ],
+            ])
             //->add('status')
-            ->add('start_date')
-            ->add('end_date')
-            ->add('duration')
-            //->add('ref')
-            //->add('invoice', EntityType::class, [
-            //  'class' => Invoice::class,
-            //  'choice_label' => 'id',
-            //])
+            ->add('start_date', null, [
+                'label' => 'Date de début : ',
+                'required'=>true,
+            ])
+            ->add('end_date', null, [
+                'label' => 'Date de fin : ',
+                'required'=>true,
+            ])
+            ->add('duration', null, [
+                'label' => 'Durée du voyage : ',
+                'required'=>true,
+                'attr' => [
+                    'placeholder' => 'Insérez la durée',
+                ],
+            ])
             ->add('client', EntityType::class, [
+                'label' => 'Client : ',
                 'class' => Client::class,
                 'choice_label' => 'lastname',
             ])
