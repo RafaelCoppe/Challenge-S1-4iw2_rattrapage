@@ -1,47 +1,16 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Invoice index{% endblock %}
+{% block title %}Product index{% endblock %}
 
 {% block body %}
-    <h1>Invoice index</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Termes</th>
-                <th>Nom</th>
-                <th>Prenom</th>
-                <th>Mail</th>
-                <th>Tel</th>
-                <th>Adresse</th>
-                <th>Ville</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for invoice in invoices %}
-            <tr>
-                <td>{{ invoice.id }}</td>
-                <td>{{ invoice.terms }}</td>
-                <td>{{ invoice.payment_lastname }}</td>
-                <td>{{ invoice.payment_firstname }}</td>
-                <td>{{ invoice.payment_email }}</td>
-                <td>{{ invoice.payment_phone }}</td>
-                <td>{{ invoice.payment_address }}</td>
-                <td>{{ invoice.payment_city }}</td>
-                <td>
-                    <a href="{{ path('app_invoice_show', {'id': invoice.id}) }}">show</a>
-                    <a href="{{ path('app_invoice_edit', {'id': invoice.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="9">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('app_invoice_new') }}">Create new</a>
+    <div class="h-screen flex">
+            {% include '_composants/_topBar.html.twig' %}
+        <div class="flex-1 flex mt-14">
+            {% include '_composants/_sideBar.html.twig' %}
+            {# templates/client/index.html.twig #}
+            {% include '_composants/_invoiceList.html.twig' %}
+            {% include '_composants/_sidebarRight.html.twig' %}
+        </div>
+    </div>
 {% endblock %}
