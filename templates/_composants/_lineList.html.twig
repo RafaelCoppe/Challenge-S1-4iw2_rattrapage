@@ -1,0 +1,63 @@
+<div class="w-full">
+    <div class="w-full gap-4 mt-4 flex">  
+        <div class="bg-white p-4 rounded-md">
+            <div class="flex justify-between items-center">
+                <h2 class="text-gray-500 text-lg font-semibold pb-4">Informations</h2>
+            </div>
+            <div class="my-1"></div>
+            <div class="bg-primary h-px mb-6"></div>
+            <ul class="mr-8">
+                <li>Numéro de devis: {{ quotation.ref }}</li>
+                <li>Titre du devis: {{ quotation.terms is defined ? quotation.terms : '' }}</li>
+                <li>Facture liée: {{ quotation.invoice_id is defined ? quotation.invoice_id : '' }}</li>
+                <li>Agence: {{ quotation.agency.name }}</li>
+                <li>Client: {{ quotation.client.lastname }}</li>
+                <li>Status: {{ quotation.status }}</li>
+                <li>Date de début: {{ quotation.startDate|date('Y-m-d') }}</li>
+                <li>Date de fin: {{ quotation.endDate|date('Y-m-d') }}</li>
+                <li>Durée: {{ quotation.duration }} jours</li>
+            </ul>
+            </div>
+            <div class="bg-white p-4 rounded-md">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-gray-500 text-lg font-semibold pb-4">Lignes</h2>
+                </div>
+                <div class="my-1"></div>
+                <div class="bg-primary h-px mb-6"></div>
+                <table class="w-full table-auto text-sm">
+                    <thead>
+                        <tr class="text-sm leading-normal">
+                            <th class="py-2 px-4 bg-grey-lightest font-bold uppercase text-sm text-grey-light border-b border-grey-light text-left">Produit</th>
+                            <th class="py-2 px-4 bg-grey-lightest font-bold uppercase text-sm text-grey-light border-b border-grey-light text-left">Informations</th>
+                            <th class="py-2 px-4 bg-grey-lightest font-bold uppercase text-sm text-grey-light border-b border-grey-light text-right">Prix</th>
+                            <th class="py-2 px-4 bg-grey-lightest font-bold uppercase text-sm text-grey-light border-b border-grey-light text-right">Quantité</th>
+                            <th class="py-2 px-4 bg-grey-lightest font-bold uppercase text-sm text-grey-light border-b border-grey-light text-right">Taxe</th>
+                            <th class="py-2 px-4 bg-grey-lightest font-bold uppercase text-sm text-grey-light border-b border-grey-light text-right">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for line in lines %}
+                            <tr class="hover:bg-grey-lighter">
+                                <td class="py-2 px-4 border-b border-grey-light">{{ line.product.label }} {{ line.product.category }}</td>
+                                <td class="py-2 px-4 border-b border-grey-light">{{ line.additional }}</td>
+                                <td class="py-2 px-4 border-b border-grey-light">{{ line.UnitPrice }}</td>
+                                <td class="py-2 px-4 border-b border-grey-light">{{ line.quantity }}</td>
+                                <td class="py-2 px-4 border-b border-grey-light">{{ line.product.tax }}</td>
+                                <td class="py-2 px-4 border-b border-grey-light justify-end flex gap-4">
+                                    {% if quotation.status != 'Terminé'%}
+                                        {% set line_edit = path('line_edit', {'quotation_id': quotation.id, 'line_id': line.id}) %}
+                                        {% include '_composants/_specialButton.html.twig' with {'specialButtonAction':line_edit,'specialButtonText': 'Editer la ligne'} %}
+                                        <form action="{{ path('line_delete', {'quotation_id': quotation.id, 'line_id': line.id}) }}" method="post" class="inline">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ line.id) }}">
+                                        <button type="submit" class="flex items-center bg-red-500 text-white font-semibold py-2 px-4 rounded-md">Supprimer la ligne</button>
+                                    </form>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>  
+    </div>
+</div>

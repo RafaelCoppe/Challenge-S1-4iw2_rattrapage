@@ -1,50 +1,71 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Invoice{% endblock %}
+{% block title %}Product{% endblock %}
 
 {% block body %}
-    <h1>Invoice</h1>
+<div class="h-screen flex">
+        {% include '_composants/_topBar.html.twig' %}
+    <div class="flex-1 flex mt-14">
+        {% include '_composants/_sideBar.html.twig' %}
+        <div class="w-full">
+    <div class="lg:ml-40 md:grid-cols-2 gap-4 mt-4 p-2 ml-2 ">   
+    <div class="container mx-auto mt-8">
+        <h1 class="text-3xl font-semibold mb-4">Détails de la facture</h1>
+        <form action="{{ path('app_invoice_edit', {'id': invoice.id}) }}" method="post" class="bg-white shadow-md rounded-md p-6 mb-6">
+            <div class="mb-4">
+                <label for="Label" class="block text-xl mb-3 font-medium text-gray-700">Id</label>
+                <input readonly type="text" value="{{ invoice.id }}" class="mt-1 bg-transparent border-2 p-2  rounded-md w-full">
+            </div>
+            <div class="mb-4">
+                <label for="Category" class="block text-xl mb-3 font-medium text-gray-700">Termes</label>
+                <input readonly type="text" id="Category" name="Category" value="{{ invoice.terms }}" class="mt-1 p-2 bg-transparent border-2 rounded-md w-full">
+            </div>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ invoice.id }}</td>
-            </tr>
-            <tr>
-                <th>Terms</th>
-                <td>{{ invoice.terms }}</td>
-            </tr>
-            <tr>
-                <th>Payment_lastname</th>
-                <td>{{ invoice.paymentLastname }}</td>
-            </tr>
-            <tr>
-                <th>Payment_firstname</th>
-                <td>{{ invoice.paymentFirstname }}</td>
-            </tr>
-            <tr>
-                <th>Payment_email</th>
-                <td>{{ invoice.paymentEmail }}</td>
-            </tr>
-            <tr>
-                <th>Payment_phone</th>
-                <td>{{ invoice.paymentPhone }}</td>
-            </tr>
-            <tr>
-                <th>Payment_address</th>
-                <td>{{ invoice.paymentAddress }}</td>
-            </tr>
-            <tr>
-                <th>Payment_city</th>
-                <td>{{ invoice.paymentCity }}</td>
-            </tr>
-        </tbody>
-    </table>
+            <div class="mb-4">
+                <label for="Tax" class="block text-xl mb-3 font-medium text-gray-700">Nom</label>
+                <input readonly type="text" id="Tax" name="Tax" value="{{ invoice.paymentLastname }}" class="mt-1 p-2 bg-transparent border-2 rounded-md w-full">
+            </div>
+            <div class="mb-4">
+                <label for="Label" class="block text-xl mb-3 font-medium text-gray-700">Prénom</label>
+                <input readonly type="text" value="{{ invoice.paymentFirstname }}" class="mt-1 bg-transparent border-2 p-2  rounded-md w-full">
+            </div>
+            <div class="mb-4">
+                <label for="Label" class="block text-xl mb-3 font-medium text-gray-700">Email</label>
+                <input readonly type="text" value="{{ invoice.paymentEmail }}" class="mt-1 bg-transparent border-2 p-2  rounded-md w-full">
+            </div>
+            <div class="mb-4">
+                <label for="Label" class="block text-xl mb-3 font-medium text-gray-700">Téléphone</label>
+                <input readonly type="text" value="{{ invoice.paymentPhone }}" class="mt-1 bg-transparent border-2 p-2  rounded-md w-full">
+            </div>
+            <div class="mb-4">
+                <label for="Label" class="block text-xl mb-3 font-medium text-gray-700">Adresse</label>
+                <input readonly type="text" value="{{ invoice.paymentAddress }}" class="mt-1 bg-transparent border-2 p-2  rounded-md w-full">
+            </div>
+            <div class="mb-4">
+                <label for="Label" class="block text-xl mb-3 font-medium text-gray-700">Ville</label>
+                <input readonly type="text" value="{{ invoice.paymentCity }}" class="mt-1 bg-transparent border-2 p-2  rounded-md w-full">
+            </div>
 
-    <a href="{{ path('app_invoice_index') }}">back to list</a>
-
-    <a href="{{ path('app_invoice_edit', {'id': invoice.id}) }}">edit</a>
-
-    {{ include('invoice/_delete_form.html.twig') }}
+            <div class="flex justify-between">
+                <a href="{{ path('app_product_index') }}" class=" flex items-center bg-primary text-white font-semibold py-2 px-4 rounded-md">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+                    </svg>
+                    Retour à la liste
+                </a>
+                <div class="flex gap-4">
+                    <a href="{{ path('app_invoice_edit', {'id': invoice.id}) }}" class=" flex items-center bg-third text-white font-semibold py-2 px-4 rounded-md">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+                        </svg>
+                        Edit
+                    </a>
+                </div>
+            </div>
+        </form>
+    </div>
+    </div>
+</div>
+        {% include '_composants/_sidebarRight.html.twig' %}
+    </div>
 {% endblock %}
