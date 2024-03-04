@@ -118,6 +118,19 @@ class Member implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function getRole(): string
+    {
+        return $this->roles[0] ?? '';
+    }
+
+    public function setRole(string $role): self
+    {
+        $this->roles = [$role];
+
+        return $this;
+    }
+
+
     /**
      * @see PasswordAuthenticatedUserInterface
      */
