@@ -42,7 +42,7 @@ class MemberFixtures extends Fixture implements DependentFixtureInterface
             $member->setGender($gender == 'male' ? 'homme' : 'femme');
             $member->setStatus($status[0]);
             $member->setRoles(["ROLE_USER"]);
-            $member->setCreateDate(new DateTime('now', new DateTimeZone("Europe/Paris")));
+            $member->setCreatedDate(new DateTime('now', new DateTimeZone("Europe/Paris")));
             $member->setAgency($this->getReference('agence_' . rand(1, 5)));
 
             $manager->persist($member);

@@ -57,7 +57,7 @@
             </tr>
             <tr>
                 <th>Create_date</th>
-                <td>{{ member.createDate ? member.createDate|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ member.createdDate ? member.createdDate|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
             <tr>
                 <th>Update_date</th>
@@ -70,9 +70,9 @@
         </tbody>
     </table>
 
-    <a href="{{ path('member_index') }}">back to list</a>
+    <a href="{{ path('app_member_index') }}">back to list</a>
 
-    <a href="{{ path('member_update', {'id': member.id}) }}">edit</a>
+    <a href="{{ path('app_member_edit', {'id': member.id}) }}">edit</a>
 
-    {{ include('member/update.html.twig') }}
+    {{ include('member/edit.html.twig') }}
 {% endblock %}

@@ -118,6 +118,19 @@ class Member implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function getRole(): string
+    {
+        return $this->roles[0] ?? '';
+    }
+
+    public function setRole(string $role): self
+    {
+        $this->roles = [$role];
+
+        return $this;
+    }
+
+
     /**
      * @see PasswordAuthenticatedUserInterface
      */
@@ -214,12 +227,12 @@ class Member implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getCreateDate(): ?DateTimeInterface
+    public function getCreatedDate(): ?\DateTimeInterface
     {
         return $this->create_date;
     }
 
-    public function setCreateDate(DateTimeInterface $create_date): static
+    public function setCreatedDate(\DateTimeInterface $create_date): self
     {
         $this->create_date = $create_date;
 
