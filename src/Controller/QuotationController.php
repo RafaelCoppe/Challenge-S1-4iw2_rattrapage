@@ -19,11 +19,12 @@ class QuotationController extends AbstractController
     {
         $quotation = new Quotation();
         $quotation->setStatus('Brouillon');
+        $quotation->setAgency($this->getUser()->getAgency());
         $form = $this->createForm(QuotationType::class, $quotation);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $quotation->setAgency($this->getUser()->getAgency());
+          
             $entityManager = $doctrine->getManager();
             $entityManager->persist($quotation);
             $entityManager->flush();
@@ -41,8 +42,9 @@ class QuotationController extends AbstractController
      */
     public function index(ManagerRegistry $doctrine): Response
     {
-        $quotations = $doctrine->getRepository(Quotation::class)->findAll();
 
+        $user = $this->getUser();
+        $quotations = $doctrine->getRepository(Quotation::class)->findBy(['agency' => $user->getAgency()]);
         return $this->render('quotation/index.html.twig', [
             'quotations' => $quotations,
         ]);
@@ -55,13 +57,13 @@ class QuotationController extends AbstractController
     {
         if ($this->isCsrfTokenValid('delete'.$quotation->getId(), $request->request->get('_token'))) {
             $entityManager = $doctrine->getManager();
-
             // Remove all associated lines first
             foreach ($quotation->getLines() as $line) {
                 $entityManager->remove($line);
             }
 
             // Now remove the quotation
+
             $entityManager->remove($quotation);
             $entityManager->flush();
         }
@@ -95,11 +97,13 @@ class QuotationController extends AbstractController
     public function view(Quotation $quotation, $id, ManagerRegistry $doctrine): Response
     {
         $quotation = $doctrine->getRepository(Quotation::class)->find($id);
+
         $lines = $quotation->getLines()->toArray();
 
         usort($lines, function ($a, $b) {
             return $a->getPlace() > $b->getPlace();
         });
+
 
         return $this->render('quotation/view.html.twig', [
             'quotation' => $quotation,

@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détails de la facture | {{ invoice.id }}{% endblock %}
+
+{% block body %}
+    <h1>Détails de la facture : {{ invoice.terms }}</h1>
+
+    <a href="{{ path('invoice_index') }}" class="btn btn-primary">Retour aux factures</a>
+
+    <ul>
+        <li>Titre : {{ invoice.terms }}</li>
+        <li>Prenom payeur : {{ invoice.getPaymentFirstname }}</li>
+        <li>Nom payeur : {{ invoice.getPaymentLastname }}</li>
+        <li>Email payeur : {{ invoice.getPaymentEmail }}</li>
+        <li>Tel payeur : {{ invoice.getPaymentPhone }}</li>
+        <li>Adresse : {{ invoice.getPaymentAddress }}</li>
+        <li>Status Facture : {{ invoice.getStatus }}</li>
+        <li>Status du paiement : {{ invoice.getPaymentStatus }}</li>
+        <br>
+        <li>Lien du devis : <a href="{{ path('quotation_view', {'id': invoice.getQuote().id}) }}" class="btn btn-primary">Voir</a><br></li>
+    </ul>
+    <br>
+{#
+    {% if quotation.status == 'Brouillon' or quotation.status == 'En Cours' %}
+        <a href="{{ path('line_create', {'quotation_id': quotation.id}) }}" class="btn btn-primary">Ajouter une ligne</a>
+        <br><br>
+        <a href="{{ path('quotation_edit', {'id': quotation.id}) }}" class="btn btn-primary">Éditer le devis</a>
+
+        <form action="{{ path('quotation_delete', {'id': quotation.id}) }}" method="post">
+            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ quotation.id) }}">
+            <button type="submit" class="btn btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce devis ?')">Supprimer le devis</button>
+        </form>
+    {% endif %}
+
+    {% if quotation.status == 'Validé' %}
+        <a href="{{ path('app_pdf', {'id': quotation.id, "facture":0}) }}" class="btn btn-primary download-pdf-btn" data-status="{{ quotation.status }}">Télécharger le devis</a>
+    {% endif %}
+
+    {% if quotation.status == 'En Cours' %}
+        <br><br>
+        <form action="{{ path('quotation_validate', {'id': quotation.id}) }}" method="post">
+            <input type="hidden" name="_token" value="{{ csrf_token('validate' ~ quotation.id) }}">
+            <button type="submit" class="btn btn-info">Valider le devis</button>
+        </form>
+    {% endif %}
+    {% if quotation.status == 'Validé' %}
+        <br>
+        <a href="{{ path('create_invoice', {'quotationId': quotation.id}) }}">Transformer en facture</a>
+        <br><br>
+        <form action="{{ path('quotation_inProgress', {'id': quotation.id}) }}" method="post">
+            <input type="hidden" name="_token" value="{{ csrf_token('validate' ~ quotation.id) }}">
+            <button type="submit" class="btn btn-info">Passer le devis En Cours</button>
+        </form>
+    {% endif %}
+    <br>#}
+{% endblock %}
