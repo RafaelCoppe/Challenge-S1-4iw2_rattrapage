@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5b3b2633c76e29a6e23f18dc5b8bc1ce",
+    "content-hash": "ffcd02d0c6841b0cbbe87628ff836e9a",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -2831,11 +2831,8 @@
             "time": "2024-01-23T14:51:35+00:00"
         },
         {
-            "name": "symfony/cache",
-            "version": "v6.4.4",
             "name": "symfony/brevo-mailer",
             "version": "v6.4.3",
-
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/brevo-mailer.git",

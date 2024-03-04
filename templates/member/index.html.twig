@@ -5,7 +5,7 @@
 {% block body %}
     <h1>Liste des utilisateurs</h1>
 
-    <a href="{{ path('member_new') }}">Création un nouveau utilisateur</a>
+    {# <a href="{{ path('member_new') }}">Création un nouveau utilisateur</a>
 
 
     <table class="table">
@@ -59,6 +59,15 @@
             </tr>
         {% endfor %}
         </tbody>
-    </table>
+    </table> #}
+    <div class="h-screen flex">
+            {% include '_composants/_topBar.html.twig' %}
+        <div class="flex-1 flex mt-14">
+            {% include '_composants/_sideBar.html.twig' %}
+            {# templates/client/index.html.twig #}
+            {% include '_composants/_memberList.html.twig' %}
+            {% include '_composants/_sidebarRight.html.twig' %}
+        </div>
+    </div>
 
 {% endblock %}
