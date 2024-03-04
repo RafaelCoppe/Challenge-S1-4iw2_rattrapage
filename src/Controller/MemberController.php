@@ -38,7 +38,7 @@ class MemberController extends AbstractController
 
         return $this->render('member/new.html.twig', [
             'member' => $member,
-            'form' => $form,
+            'form' => $form->createView(),
         ]);
     }
 

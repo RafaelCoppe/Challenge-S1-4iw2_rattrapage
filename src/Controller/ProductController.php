@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Member;
 use App\Entity\Product;
+use App\Form\MemberType;
 use App\Form\ProductType;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -22,30 +24,28 @@ class ProductController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'app_product_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
-        $product = new Product();
-        $form = $this->createForm(ProductType::class, $product);
+        $member = new Member();
+        $form = $this->createForm(MemberType::class, $member);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $product->setAgency($this->getUser()->getAgency());
-            $entityManager->persist($product);
+            $entityManager->persist($member);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_product_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_member_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('product/new.html.twig', [
-            'product' => $product,
-            'form' => $form,
+        return $this->render('member/new.html.twig', [
+            'form' => $form->createView(),
         ]);
     }
 
     #[Route('/{id}', name: 'app_product_show', methods: ['GET'])]
     public function show(Product $product): Response
     {
+
         return $this->render('product/show.html.twig', [
             'product' => $product,
         ]);

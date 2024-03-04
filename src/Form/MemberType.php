@@ -7,6 +7,7 @@ use App\Entity\Member;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -25,6 +26,9 @@ class MemberType extends AbstractType
             ->add('phone')
             ->add('address')
             ->add('city')
+            ->add('createdDate', DateType::class, [
+                'widget' => 'single_text', // Ceci rendra le champ comme un simple champ de texte
+            ])
             ->add('roles', ChoiceType::class, [
                 'choices' => [
                     'Salarié' => "ROLE_USER",
