@@ -3,73 +3,68 @@
 {% block title %}Détails du devis | {{ quotation.ref }}{% endblock %}
 
 {% block body %}
-    <h1>Détails du devis : {{ quotation.terms }}</h1>
+    <div class="h-screen flex">
+        {% include '_composants/_topBar.html.twig' %}
+        <div class="flex-1 flex mt-14">
+            {% include '_composants/_sideBar.html.twig' %}
+                <div class="w-full">
+                    <div class="lg:ml-40 md:grid-cols-2 gap-4 mt-4 p-2 ml-2 ">   
+                        <div class="container mt-8">
+                            <h1 class="text-3xl font-semibold mb-4">Détails du devis : {{ quotation.terms }}</h1>
 
-    <a href="{{ path('quotation_index') }}" class="btn btn-primary">Retour aux devis</a>
+                            <div class="mb-8">
+                                {% include '_composants/_lineList.html.twig' %}
+                            </div>
+                            
+            
+                            {% if quotation.status == 'Brouillon' or quotation.status == 'En Cours' %}
+                                {% set line_new = path('line_create', {'quotation_id': quotation.id}) %}
+                                {% include '_composants/_specialButton.html.twig' with {'specialButtonAction':line_new,'specialButtonClass':'inline-flex m-2', 'specialButtonText': 'Ajouter une ligne'} %}
 
-    <ul>
-        <li>Identifiant: {{ quotation.id }}</li>
-        <li>Numéro de devis: {{ quotation.ref }}</li>
-        <li>Titre du devis: {{ quotation.terms is defined ? quotation.terms : '' }}</li>
-        <li>Facture liée: {{ quotation.invoice.getId is defined ? quotation.invoice.getId : '' }}</li>
-        <li>Agence: {{ quotation.agency.name }}</li>
-        <li>Client: {{ quotation.client.lastname }}</li>
-        <li>Status: {{ quotation.status }}</li>
-        <li>Date de début: {{ quotation.startDate|date('Y-m-d H:i:s') }}</li>
-        <li>Date de fin: {{ quotation.endDate|date('Y-m-d H:i:s') }}</li>
-        <li>Durée: {{ quotation.duration }}</li>
-    </ul>
-    <br>
-    {% for line in lines %}
-        <h2>Ligne n°{{line.place}}</h2>
-        <ul>
-            <li>Produit {{ line.product.label }} - {{ line.product.category }}</li>
-            <li>Informations: {{ line.additional }}</li>
-            <li>Prix : {{ line.UnitPrice }}</li>
-            <li>Quantité: {{ line.quantity }}</li>
-            <li>Taxe: {{ line.product.tax }}</li>
-        </ul>
-        <br>
-        {% if quotation.status != 'Terminé'%}
-        <a href="{{ path('line_edit', {'quotation_id': quotation.id, 'line_id': line.id}) }}">Editer la ligne</a>
+                                {% set quotation_edit = path('quotation_edit', {'id': quotation.id}) %}
+                                {% include '_composants/_specialButton.html.twig' with {'specialButtonAction':quotation_edit,'specialButtonClass':'inline-flex m-2' ,'specialButtonText': 'Éditer le devis'} %}
 
-        <form action="{{ path('line_delete', {'quotation_id': quotation.id, 'line_id': line.id}) }}" method="post">
-            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ line.id) }}">
-            <button type="submit" class="btn btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette ligne ?')">Supprimer la ligne</button>
-        </form>
-        <br>
-        {% endif %}
-    {% endfor %}
+                                <form action="{{ path('quotation_delete', {'id': quotation.id}) }}" method="post">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ quotation.id) }}">
+                                    <button type="submit" class="flex items-center bg-red-500 text-white font-semibold py-2 px-4 rounded-md" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce devis ?')">Supprimer le devis</button>
+                                </form>
+                            {% endif %}
 
-    {% if quotation.status == 'Brouillon' or quotation.status == 'En Cours' %}
-        <a href="{{ path('line_create', {'quotation_id': quotation.id}) }}" class="btn btn-primary">Ajouter une ligne</a>
-        <br><br>
-        <a href="{{ path('quotation_edit', {'id': quotation.id}) }}" class="btn btn-primary">Éditer le devis</a>
+                            {% if quotation.status != 'Terminé' %}
+                                    {% set quotation_download = path('app_pdf', {'id': quotation.id, "facture":0}) %}
+                                    {% include '_composants/_specialButton.html.twig' with {'specialButtonAction':quotation_download, 'specialButtonClass':'inline-flex m-2','specialButtonText': 'Télécharger le devis'} %}
+                            {% endif %}
 
-        <form action="{{ path('quotation_delete', {'id': quotation.id}) }}" method="post">
-            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ quotation.id) }}">
-            <button type="submit" class="btn btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce devis ?')">Supprimer le devis</button>
-        </form>
-    {% endif %}
-    {% if quotation.status == 'Validé' %}
-        <a href="{{ path('app_pdf', {'id': quotation.id, "facture":0}) }}" class="btn btn-primary download-pdf-btn" data-status="{{ quotation.status }}">Télécharger le devis</a>
-    {% endif %}
+                            {% if quotation.status == 'En Cours' %}
+                                <br><br>
+                                <form action="{{ path('quotation_validate', {'id': quotation.id}) }}" method="post">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('validate' ~ quotation.id) }}">
+                                    <button type="submit" class="flex items-center bg-red-500 text-white font-semibold py-2 px-4 rounded-md">Valider le devis</button>
+                                </form>
+                            {% endif %}
 
-    {% if quotation.status == 'En Cours' %}
-        <br><br>
-        <form action="{{ path('quotation_validate', {'id': quotation.id}) }}" method="post">
-            <input type="hidden" name="_token" value="{{ csrf_token('validate' ~ quotation.id) }}">
-            <button type="submit" class="btn btn-info">Valider le devis</button>
-        </form>
-    {% endif %}
-    {% if quotation.status == 'Validé' %}
-        <br>
-        <a href="{{ path('create_invoice', {'quotationId': quotation.id}) }}">Transformer en facture</a>
-        <br><br>
-        <form action="{{ path('quotation_inProgress', {'id': quotation.id}) }}" method="post">
-            <input type="hidden" name="_token" value="{{ csrf_token('validate' ~ quotation.id) }}">
-            <button type="submit" class="btn btn-info">Passer le devis En Cours</button>
-        </form>
-    {% endif %}
-    <br>
+                            {% if quotation.status == 'Validé' %}
+                                {% set invoice_download = path('app_pdf', {'id': quotation.id, "facture":1}) %}
+                                {% include '_composants/_specialButton.html.twig' with {'specialButtonAction':invoice_download,'specialButtonClass':'inline-flex m-2','specialButtonText': 'Télécharger la Facture'} %}
+
+                                <form action="{{ path('quotation_inProgress', {'id': quotation.id}) }}" method="post">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('validate' ~ quotation.id) }}">
+                                    <button type="submit" class="flex items-center bg-red-500 text-white font-semibold py-2 px-4 rounded-md m-2">Passer le devis en cours</button>
+                                </form>
+                            {% endif %}
+                            <br>
+                            <div class="flex justify-between">
+                                <a href="{{ path('quotation_index') }}" class=" flex items-center bg-primary text-white font-semibold py-2 px-4 rounded-md">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+                                    </svg>
+                                    Retour à la liste
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% include '_composants/_sidebarRight.html.twig' %}
+        </div>
+    </div>
 {% endblock %}

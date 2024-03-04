@@ -1,41 +1,16 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Liste des factures{% endblock %}
+{% block title %}Liste des factures {% endblock %}
 
 {% block body %}
-    <h1>Liste des factures</h1>
 
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Informations</th>
-                <th>Client</th>
-                <th>Status</th>
-                <th>Paiement</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for invoice in invoices %}
-                <tr>
-                    <td>{{ invoice.id }}</td>
-                    <td>{{ invoice.terms }}</td>
-                    <td>{{ invoice.getPaymentLastname }} {{ invoice.getPaymentFirstname }}</td>
-                    <td>{{ invoice.Status }}</td>
-                    <td>{{ invoice.PaymentStatus }}</td>
-                    <td>
-                        <a href="{{ path('invoice_view', {'id': invoice.id}) }}" class="btn btn-primary">Voir</a><br>
-                        {#<form action="{{ path('invoice_delete', {'id': quotation.id}) }}" method="post">
-                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ quotation.id) }}">
-                            <button type="submit" class="btn btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce devis ?')">Supprimer</button>
-                        </form>#}
-                        {% if invoice.getQuote() is not null %}
-                        <a href="{{ path('app_pdf', {'id': invoice.getQuote().id, "facture":1}) }}" class="btn btn-primary download-pdf-btn" data-status="{{ invoice.getQuote().status }}">Télécharger la Facture</a>
-                        {% endif %}
-                    </td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <div class="h-screen flex">
+            {% include '_composants/_topBar.html.twig' %}
+        <div class="flex-1 flex mt-14">
+            {% include '_composants/_sideBar.html.twig' %}
+            {# templates/client/index.html.twig #}
+            {% include '_composants/_invoiceList.html.twig' %}
+            {% include '_composants/_sidebarRight.html.twig' %}
+        </div>
+    </div>
 {% endblock %}

@@ -3,80 +3,120 @@
 namespace App\Controller;
 
 use App\Entity\Invoice;
-use App\Entity\Quotation;
+use App\Form\InvoiceType;
+use App\Repository\InvoiceRepository;
+use App\Repository\QuotationRepository;
+use App\Repository\TravelersRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
-use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
+#[Route('/invoice')]
 class InvoiceController extends AbstractController
 {
-    /*
-    *[Route('/invoice', name: 'app_invoice')]
-    */
-    public function createInvoice(int $quotationId, ManagerRegistry $doctrine): Response
+    #[Route('/', name: 'app_invoice_index', methods: ['GET'])]
+    public function index(InvoiceRepository $invoiceRepository): Response
     {
-        // Récupérer le devis
-        $quotation = $doctrine->getRepository(Quotation::class)->find($quotationId);
+        return $this->render('invoice/index.html.twig', [
+            'invoices' => $invoiceRepository->findByAgency($this->getUser()->getAgency()->getId()),
+        ]);
+    }
 
-        if (!$quotation) {
-            throw $this->createNotFoundException('Le devis avec l\'ID ' . $quotationId . ' n\'existe pas.');
+    #[Route('/new', name: 'app_invoice_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, EntityManagerInterface $entityManager, HttpClientInterface $web_client, QuotationRepository $quotation_repository): Response
+    {
+        $communes = [];
+        $response = $web_client->request(
+            'GET',
+            'https://geo.api.gouv.fr/departements/60/communes/'
+        );
+        foreach ($response->toArray() as $uneCommune) {
+            $cp = $uneCommune['codesPostaux'][0] ?? "";
+            $communes["$cp {$uneCommune['nom']}"] = $uneCommune['code'];
         }
 
-        $client = $quotation->getClient();
-
-        $terms = $quotation->getTerms();
+        $fullQuotes = $quotation_repository->findQuotesByAgencyAndNoInvoice($this->getUser()->getAgency()->getId());
+        $quotes = [];
+        foreach ($fullQuotes as $oneQuote) {
+            $quotes["{$oneQuote['ref']} - {$oneQuote['terms']}"] = $quotation_repository->find($oneQuote['id']);
+        }
 
         $invoice = new Invoice();
+        $form = $this->createForm(InvoiceType::class, $invoice, ["city_choices" => $communes, "quotes_choices" => $quotes]);
+        $form->handleRequest($request);
 
-        $invoice->setPaymentLastname($client->getLastName());
-        $invoice->setPaymentFirstname($client->getFirstName());
-        $invoice->setPaymentPhone($client->getPhone());
-        $invoice->setPaymentEmail($client->getEmail());
-        $invoice->setPaymentAddress($client->getAddress());
-        $invoice->setPaymentCity($client->getCity());
-        $invoice->setPaymentStatus('Non validé');
-        $invoice->setStatus('En attente');
+        if ($form->isSubmitted() && $form->isValid()) {
+            $invoice->setPaymentStatus("Non validé");
+            $invoice->setStatus("En attente");
+            $entityManager->persist($invoice);
+            $entityManager->flush();
 
-        $terms = $quotation->getTerms();
-        $invoice->setTerms($terms);
+            return $this->redirectToRoute('app_invoice_index', [], Response::HTTP_SEE_OTHER);
+        }
 
-        $entityManager = $doctrine->getManager();
-        $entityManager->persist($invoice);
-        $entityManager->flush();
-
-        $quotation->setInvoice($invoice);
-        $entityManager->flush();
-
-        return $this->redirectToRoute('invoice_index');
-    }
-
-    /**
-     * @Route("/invoices", name="invoice_index")
-     */
-    public function index(ManagerRegistry $doctrine): Response
-    {
-        $invoices = $doctrine->getRepository(Invoice::class)->findAll();
-        $quotation = $doctrine->getRepository(Quotation::class)->findAll();
-        $user = $this->getUser();
-
-        return $this->render('invoice/index.html.twig', [
-            'user' => $user,
-            'invoices' => $invoices,
-            'quotation'  => $quotation,
-        ]);
-    }
-
-    /**
-     * @Route("/view/{id}", name="invoice_view", methods={"GET"})
-     */
-    public function view(Invoice $invoice, $id, ManagerRegistry $doctrine): Response
-    {
-        $invoice = $doctrine->getRepository(Invoice::class)->find($id);
-
-        return $this->render('invoice/view.html.twig', [
+        return $this->render('invoice/new.html.twig', [
             'invoice' => $invoice,
+            'form' => $form,
         ]);
+    }
+
+    #[Route('/{id}', name: 'app_invoice_show', methods: ['GET'])]
+    public function show(TravelersRepository $travelersRepository, Invoice $invoice): Response
+    {
+        $travelers = $travelersRepository->findBy(["invoice" => $invoice]);
+        return $this->render('invoice/show.html.twig', [
+            'invoice' => $invoice,
+            'travelers' => $travelers,
+        ]);
+    }
+
+    #[Route('/{id}/edit', name: 'app_invoice_edit', methods: ['GET', 'POST'])]
+    public function edit(Request $request, Invoice $invoice, EntityManagerInterface $entityManager, HttpClientInterface $web_client, QuotationRepository $quotation_repository): Response
+    {
+        $communes = [];
+        $response = $web_client->request(
+            'GET',
+            'https://geo.api.gouv.fr/departements/60/communes/'
+        );
+        foreach ($response->toArray() as $uneCommune) {
+            $cp = $uneCommune['codesPostaux'][0] ?? "";
+            $communes["$cp {$uneCommune['nom']}"] = $uneCommune['code'];
+        }
+
+        $fullQuotes = $quotation_repository->findBy(['agency' => $this->getUser()->getAgency()]);
+        $quotes = [];
+        foreach ($fullQuotes as $oneQuote) {
+            $quotes["{$oneQuote->getRef()} - {$oneQuote->getTerms()}"] = $quotation_repository->find($oneQuote->getId());
+        }
+
+        $form = $this->createForm(InvoiceType::class, $invoice, ["city_choices" => $communes, "quotes_choices" => $quotes]);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $invoice->setPaymentStatus("Non validé");
+            $invoice->setStatus("En attente");
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_invoice_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->render('invoice/edit.html.twig', [
+            'invoice' => $invoice,
+            'form' => $form,
+        ]);
+    }
+
+    #[Route('/{id}', name: 'app_invoice_delete', methods: ['POST'])]
+    public function delete(Request $request, Invoice $invoice, EntityManagerInterface $entityManager): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$invoice->getId(), $request->request->get('_token'))) {
+            $entityManager->remove($invoice);
+            $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('app_invoice_index', [], Response::HTTP_SEE_OTHER);
     }
 }

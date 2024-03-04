@@ -6,6 +6,8 @@ use App\Entity\Agency;
 use App\Entity\Member;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -24,17 +26,23 @@ class MemberType extends AbstractType
             ->add('phone')
             ->add('address')
             ->add('city')
-            ->add('roles')
-            ->add('create_date')
-            ->add('update_date')
-            ->add('delete_date')
-            ->add('agencies', EntityType::class, [
-                'class' => Agency::class,
-'choice_label' => 'id',
-'multiple' => true,
+            ->add('createdDate', DateType::class, [
+                'widget' => 'single_text', // Ceci rendra le champ comme un simple champ de texte
+            ])
+            ->add('roles', ChoiceType::class, [
+                'choices' => [
+                    'Salarié' => "ROLE_USER",
+                    'Comptable' => 'ROLE_ACCOUNTANT',
+                    'Directeur' => "ROLE_AGENCY_BOSS",
+                    'Administrateur' => "ROLE_ADMIN",
+                    // Add more roles as needed
+                ],
+                'multiple' => false,
+                'property_path' => 'role',
             ])
         ;
     }
+
 
     public function configureOptions(OptionsResolver $resolver): void
     {

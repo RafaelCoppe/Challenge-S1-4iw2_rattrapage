@@ -5,7 +5,8 @@
 {% block body %}
     <h1>Liste des utilisateurs</h1>
 
-    <a href="{{ path('member_new') }}">Création un nouveau utilisateur</a>
+
+    <a href="{{ path('app_member_new') }}">Création un nouveau utilisateur</a>
 
 
     <table class="table">
@@ -44,13 +45,13 @@
                 <td>{{ member.address }}</td>
                 <td>{{ member.city }}</td>
                 <td>{{ member.roles ? member.roles|json_encode : '' }}</td>
-                <td>{{ member.createDate ? member.createDate|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ member.createdDate ? member.createdDate|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ member.updateDate ? member.updateDate|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ member.deleteDate ? member.deleteDate|date('Y-m-d H:i:s') : '' }}</td>
                 <td>
-                    <a href="{{ path('member_show', {'id': member.id}) }}">show</a>
-                    <a href="{{ path('member_update', {'id': member.id}) }}">edit</a>
-                    <a href="{{ path('member_delete', {'id': member.id, 'token': csrf_token('delete' ~ member.id)}) }}" onclick="confirm('Sur ?')">Supprimer</a>
+                    <a href="{{ path('app_member_show', {'id': member.id}) }}">show</a>
+                    <a href="{{ path('app_member_edit', {'id': member.id}) }}">edit</a>
+                    <a href="{{ path('app_member_delete', {'id': member.id, 'token': csrf_token('delete' ~ member.id)}) }}" onclick="confirm('Sur ?')">Supprimer</a>
                 </td>
             </tr>
         {% else %}
@@ -60,5 +61,4 @@
         {% endfor %}
         </tbody>
     </table>
-
 {% endblock %}
