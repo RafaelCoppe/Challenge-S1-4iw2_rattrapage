@@ -30,7 +30,7 @@
                                 <td class="py-2 px-4 border-b border-grey-light text-right">{{ product.tax }}</td>
                                 <td class="py-2 px-4 border-b border-grey-light justify-end flex gap-4">
                                     {% set product_show = path('product_show', {'id': product.id}) %}
-                                    {% set product_edit = path('app_product_index', {'id': product.id}) %}
+                                    {% set product_edit = path('product_edit', {'id': product.id}) %}
                                     {% include '_composants/_specialButton.html.twig' with {'specialButtonAction':product_show,'specialButtonText': 'Voir'} %}
                                     {% include '_composants/_specialButton.html.twig' with {'specialButtonAction':product_edit,'specialButtonText': 'Modifier'} %}
                                 </td>
