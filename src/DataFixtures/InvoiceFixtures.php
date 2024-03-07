@@ -4,6 +4,7 @@ namespace App\DataFixtures;
 
 use App\Entity\Invoice;
 use App\Entity\Travelers;
+use App\Entity\Client;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;

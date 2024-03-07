@@ -1,55 +1,55 @@
 <div class="w-full">
     <div class="lg:ml-40 md:grid-cols-2 gap-4 mt-4 p-2 ml-2 ">
         <div class="container mx-auto mt-8">
-            <h1 class="text-2xl font-semibold mb-4">Titre</h1>
+            <h1 class="text-2xl font-semibold mb-4">{{title}}</h1>
             {{ form_start(form, {'attr': {'class':'bg-white border border-gray-300 text-md rounded-md p-6 mb-6'}})}}
                 {% include '_composants/_specialFormField.html.twig' with {
                     'form': form.username,
-                    'label': 'Username'
+                    'label': 'Pseudo'
                 } %}
                 {% include '_composants/_specialFormField.html.twig' with {
                     'form': form.lastname,
-                    'label': 'Lastname'
+                    'label': 'Nom de famille'
                 } %}
                 {% include '_composants/_specialFormField.html.twig' with {
                         'form': form.firstname,
-                        'label': 'Lastname'
+                        'label': 'Prenom'
                     } %}
                 {% include '_composants/_specialFormField.html.twig' with {
                     'form': form.password,
-                    'label': 'Lastname'
+                    'label': 'Mot de passe'
                 } %}
                 {% include '_composants/_specialFormField.html.twig' with {
                     'form': form.gender,
-                    'label': 'Taxe'
+                    'label': 'Genre'
                     } %}
                 {% include '_composants/_specialFormField.html.twig' with {
                         'form': form.status,
-                        'label': 'Taxe'
+                        'label': 'Status'
                     } %}
                 {% include '_composants/_specialFormField.html.twig' with {
                         'form': form.mail,
-                        'label': 'Taxe'
+                        'label': 'Email'
                     } %}
                 {% include '_composants/_specialFormField.html.twig' with {
                         'form': form.phone,
-                        'label': 'Taxe'
+                        'label': 'Numero de telephone'
                     } %}
                 {% include '_composants/_specialFormField.html.twig' with {
                         'form': form.address,
-                        'label': 'Taxe'
+                        'label': 'Adresse'
                     } %}
                 {% include '_composants/_specialFormField.html.twig' with {
                         'form': form.city,
-                        'label': 'Taxe'
+                        'label': 'Code postal'
                     } %}
                 {% include '_composants/_specialFormField.html.twig' with {
                         'form': form.roles,
-                        'label': 'Taxe'
+                        'label': 'Roles'
                     } %}
                 {% include '_composants/_specialFormField.html.twig' with {
                         'form': form.createdDate,
-                        'label': 'Taxe'
+                        'label': 'Date de creation'
                     } %}
 
             <div class="flex justify-between mt-5">

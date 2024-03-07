@@ -118,7 +118,7 @@ class PdfController extends AbstractController
             'agency'         => $quoteAgency,
             'isFacture'      => $isFacture,
             'planeImage'     => $this->imageToBase64('images/plane.png'),
-            'dev'            => getenv('APP_ENV') == 'dev'
+            'dev'            => false
         ];
 
         if(isset($total_with_remise)){

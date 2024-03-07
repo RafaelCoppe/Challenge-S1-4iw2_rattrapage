@@ -22,12 +22,14 @@
     </div>
     <div class="grid grid-cols-2 gap-6 items-center">
         <div class="grid grid-rows-3 row-span-full gap-3">
+<a href="https://pbs.twimg.com/profile_images/773188736628711425/In1S7nmg_400x400.jpg">
             <span class="text-md sm:text-xs xs:text-xs ml-2 block hover:text-blue-500 cursor-pointer duration-500 transition-all">Mot de passe oublié ?</span>
-            <label class="text-xs mt-2 ml-2 block hover:text-blue-500 cursor-pointer duration-500 transition-all">
+</a>            
+<label class="text-xs mt-2 ml-2 block hover:text-blue-500 cursor-pointer duration-500 transition-all">
                 <input type="checkbox" name="_remember_me">
                 Rester connecté ?
             </label>
-            <a href="path('contact')"class="text-md sm:text-xs xs:text-xs ml-2 block hover:text-blue-500 cursor-pointer duration-500 transition-all">Pas encore de compte ?</a>
+            <a href="{{ path('contact') }}" class="text-md sm:text-xs xs:text-xs ml-2 block hover:text-blue-500 cursor-pointer duration-500 transition-all">Pas encore de compte ?</a>
         </div>
         <div class="row-span-full">
             <button type="submit" class="w-40 bg-[#64c8ff] py-1 rounded-full hover:bg-[#004283] transition-all duration-500 text-white font-semibold">Se Connecter</button>
