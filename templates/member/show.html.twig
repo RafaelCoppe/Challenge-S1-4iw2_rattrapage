@@ -1,78 +1,67 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Member{% endblock %}
+{% block title %}Product{% endblock %}
 
 {% block body %}
-    <h1>Member</h1>
+<div class="h-screen flex">
+        {% include '_composants/_topBar.html.twig' %}
+    <div class="flex-1 flex mt-14">
+        {% include '_composants/_sideBar.html.twig' %}
+        <div class="w-full">
+    <div class="lg:ml-40 md:grid-cols-2 gap-4 mt-4 p-2 ml-2 ">   
+    <div class="container mx-auto mt-8">
+        <h1 class="text-3xl font-semibold mb-4">Détails du membre</h1>
+        <form action="{{ path('app_member_edit', {'id': member.id}) }}" method="post" class="bg-white shadow-md rounded-md p-6 mb-6">
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ member.id }}</td>
-            </tr>
-            <tr>
-                <th>Username</th>
-                <td>{{ member.username }}</td>
-            </tr>
-            <tr>
-                <th>Password</th>
-                <td>{{ member.password }}</td>
-            </tr>
-            <tr>
-                <th>Status</th>
-                <td>{{ member.status }}</td>
-            </tr>
-            <tr>
-                <th>Gender</th>
-                <td>{{ member.gender }}</td>
-            </tr>
-            <tr>
-                <th>Lastname</th>
-                <td>{{ member.lastname }}</td>
-            </tr>
-            <tr>
-                <th>Firstname</th>
-                <td>{{ member.firstname }}</td>
-            </tr>
-            <tr>
-                <th>Mail</th>
-                <td>{{ member.mail }}</td>
-            </tr>
-            <tr>
-                <th>Phone</th>
-                <td>{{ member.phone }}</td>
-            </tr>
-            <tr>
-                <th>Address</th>
-                <td>{{ member.address }}</td>
-            </tr>
-            <tr>
-                <th>City</th>
-                <td>{{ member.city }}</td>
-            </tr>
-            <tr>
-                <th>Roles</th>
-                <td>{{ member.roles ? member.roles|json_encode : '' }}</td>
-            </tr>
-            <tr>
-                <th>Create_date</th>
-                <td>{{ member.createdDate ? member.createdDate|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Update_date</th>
-                <td>{{ member.updateDate ? member.updateDate|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Delete_date</th>
-                <td>{{ member.deleteDate ? member.deleteDate|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-        </tbody>
-    </table>
+            <div class="mb-4">
+                <label for="Label" class="block text-xl mb-3 font-medium text-gray-700">Pseudo</label>
+                <input readonly type="text" value="{{ member.username }}" class="mt-1 bg-transparent border-2 p-2  rounded-md w-full">
+            </div>
 
-    <a href="{{ path('app_member_index') }}">back to list</a>
-
-    <a href="{{ path('app_member_edit', {'id': member.id}) }}">edit</a>
-
-    {{ include('member/edit.html.twig') }}
+            <div class="mb-4">
+                <label for="Tax" class="block text-xl mb-3 font-medium text-gray-700">Nom</label>
+                <input readonly type="text" id="Tax" name="Tax" value="{{ member.lastname }}" class="mt-1 p-2 bg-transparent border-2 rounded-md w-full">
+            </div>
+            <div class="mb-4">
+                <label for="Tax" class="block text-xl mb-3 font-medium text-gray-700">Prénom</label>
+                <input readonly type="text" id="Tax" name="Tax" value="{{ member.firstname }}" class="mt-1 p-2 bg-transparent border-2 rounded-md w-full">
+            </div>
+            <div class="mb-4">
+                <label for="Tax" class="block text-xl mb-3 font-medium text-gray-700">Email</label>
+                <input readonly type="text" id="Tax" name="Tax" value="{{ member.mail }}" class="mt-1 p-2 bg-transparent border-2 rounded-md w-full">
+            </div>
+            <div class="mb-4">
+                <label for="Tax" class="block text-xl mb-3 font-medium text-gray-700">Téléphone</label>
+                <input readonly type="text" id="Tax" name="Tax" value="{{ member.phone }}" class="mt-1 p-2 bg-transparent border-2 rounded-md w-full">
+            </div>
+            <div class="mb-4">
+                <label for="Tax" class="block text-xl mb-3 font-medium text-gray-700">Adresse</label>
+                <input readonly type="text" id="Tax" name="Tax" value="{{ member.address }}" class="mt-1 p-2 bg-transparent border-2 rounded-md w-full">
+            </div>
+            <div class="mb-4">
+                <label for="Tax" class="block text-xl mb-3 font-medium text-gray-700">Ville</label>
+                <input readonly type="text" id="Tax" name="Tax" value="{{ member.city }}" class="mt-1 p-2 bg-transparent border-2 rounded-md w-full">
+            </div>
+            <div class="flex justify-between">
+                <a href="{{ path('app_member_index') }}" class=" flex items-center bg-primary text-white font-semibold py-2 px-4 rounded-md">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+                    </svg>
+                    Retour à la liste
+                </a>
+                <div class="flex gap-4">
+                    <a href="{{ path('app_member_edit', {'id': member.id}) }}" class=" flex items-center bg-third text-white font-semibold py-2 px-4 rounded-md">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+                        </svg>
+                        Edit
+                    </a>
+                </div>
+            </div>
+        </form>
+    </div>
+    </div>
+</div>
+        {% include '_composants/_sidebarRight.html.twig' %}
+    </div>
 {% endblock %}

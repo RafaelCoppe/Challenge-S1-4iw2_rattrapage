@@ -29,6 +29,7 @@ class QuotationClientFixtures extends Fixture implements DependentFixtureInterfa
             $manager->persist($client);
             $this->addReference("client_" . $i, $client);
         }
+	$manager->flush();
     }
 
     public function getDependencies(): array

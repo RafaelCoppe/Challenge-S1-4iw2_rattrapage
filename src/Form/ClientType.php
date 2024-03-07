@@ -22,11 +22,8 @@ class ClientType extends AbstractType
             ->add('email')
             ->add('phone')
             ->add('address')
-            ->add('city', ChoiceType::class, [
-                'choices' => $this->traitChoices,
-            ])
-        ;
-    }
+            ->add('city');}
+
 
     public function configureOptions(OptionsResolver $resolver): void
     {

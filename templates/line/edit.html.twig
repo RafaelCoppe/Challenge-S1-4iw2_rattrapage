@@ -1,12 +1,26 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Édition de la ligne {{ line.place }}{% endblock %}
+{% block title %}Edit Product{% endblock %}
 
 {% block body %}
-    <h1>Édition de la ligne {{ line.place }}</h1>
 
-    {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button type="submit" class="btn btn-primary">Enregistrer</button>
-    {{ form_end(form) }}
+<div class="h-screen flex">
+    {% include '_composants/_topBar.html.twig' %}
+    <div class="flex-1 flex mt-14">
+        {% include '_composants/_sideBar.html.twig' %}
+        <div class="w-full ml-2">
+            {{ include('line/_form.html.twig', {'button_label': 'Modifier', 'title':'Modification'}) }}
+            <div class="flex justify-end gap-4 m-5 p-4">
+                <button type="submit" class="flex  items-center bg-primary text-white font-semibold py-2 px-4 rounded">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+                    </svg>
+                    <a href="{{ path('app_product_index') }}">Retour à la liste</a>
+                </button>
+            </div>
+        </div>
+        {% include '_composants/_sidebarRight.html.twig' %}
+    </div>
+</div>
+
 {% endblock %}

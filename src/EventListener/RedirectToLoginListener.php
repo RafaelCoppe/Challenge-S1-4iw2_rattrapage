@@ -22,7 +22,7 @@ class RedirectToLoginListener
     {
         $route = $event->getRequest()->attributes->get('_route');
 
-        if (!$this->security->getUser() && $route !== 'app_login') {
+        if (!$this->security->getUser() && $route !== 'app_login' && $route != 'contact') {
             $event->setResponse(new RedirectResponse($this->router->generate('app_login')));
         }
     }
