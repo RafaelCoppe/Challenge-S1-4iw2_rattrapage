@@ -14,3 +14,6 @@ bin/console text eol=lf
 
 *.ico binary
 *.png binary
+
+docker-compose.prod.yml merge=ours
+docker-compose.override.yml merge=ours
